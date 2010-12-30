@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb18030">
+<title>Order of Events Test</title>
+<script type="text/javascript">
+    var orderOfEvents = {},
+        isIE = window.ActiveXObject,
+
+        $ = function(id) { return typeof id == "string" ? document.getElementById(id) : id; },
+
+        addEvent = function(el, type, listener) {
+            if (window.attachEvent) {
+                el.attachEvent("on" + type, function() {
+                    listener.call(el);
+                });
+            } else {
+                el.addEventListener(type, listener, false);
+            }
+        };
+
+    orderOfEvents.htmlStartTime = [new Date, "HTML Start"];
+
+    function formatDate(date) {
+        return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "." + date.getMilliseconds();
+    }
+
+    function printResults() {
+        var html = [];
+        for(var i in orderOfEvents) {
+            html.push("[" + formatDate(orderOfEvents[i][0]) + "] " + orderOfEvents[i][1] + "<br />");
+        }
+        html.push("<br />");
+
+        // htmlLoadTime
+        html.push("[" + (orderOfEvents.htmlEndTime[0] - orderOfEvents.htmlStartTime[0]) + "] htmlLoadTime (HTML End - HTML Start)<br />");
+
+        // domContentLoadedTime
+        if(orderOfEvents.domContentLoadedTime) {
+            html.push("[" + (orderOfEvents.domContentLoadedTime[0] - orderOfEvents.htmlStartTime[0]) + "] domContentLoadedTime (DOMContentLoaded - HTML Start)<br />");
+        }
+
+        // doScrollTime
+        if(orderOfEvents.doScrollTime) {
+            html.push("[" + (orderOfEvents.doScrollTime[0] - orderOfEvents.htmlStartTime[0]) + "] doScrollTime (doScroll - HTML Start)<br />");
+        }
+
+        // documentInteractiveTime
+        if(orderOfEvents.documentReadyStateTime_interactive) {
+            html.push("[" + (orderOfEvents.documentReadyStateTime_interactive[0] - orderOfEvents.htmlStartTime[0]) + "] documentInteractiveTime (documentReadyStateTime_interactive - HTML Start)<br />");
+        }
+
+        // documentCompleteTime
+        if(orderOfEvents.documentReadyStateTime_complete) {
+            html.push("[" + (orderOfEvents.documentReadyStateTime_complete[0] - orderOfEvents.htmlStartTime[0]) + "] documentCompleteTime (documentReadyStateTime_complete - HTML Start)<br />");
+        }
+
+        // #sectionLoadTime
+        html.push("[" + (maxImgLoadTime - orderOfEvents.htmlEndTime[0]) + "] #section LoadTime (#section maxImgLoadTime - HTML End)<br />");
+
+        // windowLoadTime
+        html.push("[" + (orderOfEvents.windowOnloadTime[0] - orderOfEvents.htmlStartTime[0]) + "] windowLoadTime (window.onload - HTML Start)<br />");
+
+        document.getElementById("result").innerHTML = html.join("");
+    }
+
+    // window onload
+    window.onload = function() {
+        orderOfEvents.windowOnloadTime = [new Date, "window.onload"];
+        setTimeout(printResults, 200);
+    };
+
+    // domReady
+    if(window.addEventListener) {
+        window.addEventListener("DOMContentLoaded", function() {
+            orderOfEvents.domContentLoadedTime = [new Date, "DOMContentLoaded"];
+        }, false);
+    }
+
+    // onreadystatechange
+    if (isIE) {
+        document.onreadystatechange = function() {
+            var rs = document.readyState;
+            orderOfEvents["documentReadyStateTime_" + rs] = [new Date, "document.readyState = " + rs];
+        };
+    }
+
+    // doScroll
+    if (isIE && self === self.top) { // ie and no iframe
+        setTimeout(function() {
+            try {
+                // throws an error if doc is not ready
+                document.documentElement.doScroll("left");
+                orderOfEvents.doScrollTime = [new Date, "doScroll"];
+            } catch(ex) {
+                setTimeout(arguments.callee, 0);
+            }
+        }, 0); // 假定页面加载，至少需要 100ms
+    }
+
+</script>
+<script type="text/javascript" defer="defer">
+    orderOfEvents.deferInlineScriptTime = [new Date, "deferred inline script run time"];
+</script>
+<script type="text/javascript">
+    orderOfEvents.normalInlineScriptTime = [new Date, "normal inline script run time"];
+</script>
+<script type="text/javascript" defer="defer" src="defer.js"></script>
+<script type="text/javascript" src="normal.js"></script>
+<link rel="stylesheet" href="style.css"  type="text/css" />
+</head>
+<body>
+<p id="result"></p>
+
+<div id="testSection">
+    <img src="mm1.jpg" alt="test image" height="200"/>
+    <img src="mm2.jpg" alt="test image" height="200"/>
+    <script type="text/javascript" src="normal2.js"></script>
+    <img src="mm3.jpg" alt="test image" height="200"/>
+    <img src="mm4.jpg" alt="test image" height="200"/>
+</div>
+
+<script type="text/javascript" src="normal3.js"></script>
+
+<script type="text/javascript">
+    orderOfEvents.htmlEndTime = [new Date, "HTML End"];
+
+    // image readystatechange
+    var images = document.getElementsByTagName("img");
+    for (var i = 0, len = images.length; i < len; ++i) {
+        (function(i) {
+            if (isIE) {
+                images[i].onreadystatechange = function() {
+                    var rs = this.readyState;
+                    orderOfEvents["images[" + i + "]readyStateTime_" + rs] = [new Date, "images[" + i + "].readyState = " + rs];
+                };
+            }
+
+            addEvent(images[i], "load", function() {
+                orderOfEvents["images[" + i + "]onloadTime"] = [new Date, "images[" + i + "] onload"];
+            });
+        })(i);
+    }
+
+    // #section consume time
+    var sectImages = $("testSection").getElementsByTagName("img");
+    var maxImgLoadTime = orderOfEvents.htmlEndTime[0];
+    for (var j = 0, n = sectImages.length; j < n; ++j) {
+        addEvent(sectImages[j], "load", function() {
+            var currTime = new Date;
+            if(currTime > maxImgLoadTime) maxImgLoadTime = currTime;
+        });
+    }
+</script>
+</body>
+</html>

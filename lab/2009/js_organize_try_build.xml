@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="srp.build" default="build" basedir=".">
+    <description>SRP Build File</description>
+
+    <!-- 定义变量 -->
+    <property name="charset" value="GB18030"/>
+    <property name="build.dir" location="."/>
+    <property name="tools.dir" location="../../kissy/1.0.0/tools/"/>
+    <property name="kissy.dir" location="../../kissy/1.0.0/build/"/>
+    <property name="yui.dir" location="../../yui/2.7.0/build/"/>
+    <property name="tbra.dir" location="../../tbra/1.0/build/"/>
+    <property name="component.files" value="srp.css,srp-base.js,srp-bottom.js"/>
+
+    <!-- 引入第三方包 -->
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+    <typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpath="svnant.jar"/>
+
+    <!-- 合并文件 -->
+    <target name="concat">
+        <concat destfile="srp.css" encoding="${charset}" outputencoding="${charset}">
+            <path path="${kissy.dir}/cssreset-grids/reset-grids.css"/>
+            <path path="css/reset-grids-srp.css"/>
+            <path path="${kissy.dir}/cssbase/base.css"/>
+            <fileset dir="css" includes="mod-*.css"/>
+        </concat>
+        <concat destfile="srp-base.js" encoding="${charset}" outputencoding="${charset}">
+            <path path="${yui.dir}/yahoo/yahoo.js"/>
+            <path path="${yui.dir}/dom/dom.js"/>
+            <path path="${yui.dir}/event/event.js"/>
+            <path path="${yui.dir}/get/get.js"/>
+            <path path="${yui.dir}/json/json.js"/>
+
+            <path path="${tbra.dir}/core/lang.js"/>
+            <path path="${tbra.dir}/core/tb-clean.js"/>
+            <path path="${tbra.dir}/../locale/zh-cn.js"/>
+            <path path="${tbra.dir}/bom/bom.js"/>
+
+            <path path="js/srp-core.js"/>
+        </concat>
+        <concat destfile="srp-bottom.js" encoding="${charset}" outputencoding="${charset}">
+            <path path="${tbra.dir}/widget/simplepopup.js"/>
+            <path path="${kissy.dir}/imglazyload/imglazyload.js"/>
+        </concat>
+    </target>
+
+    <!-- 压缩前准备 -->
+    <target name="prepare">
+        <!-- 删除 min 版本 -->
+        <delete>
+            <fileset dir="${build.dir}" includes="*-min.js,*-min.css"/>
+        </delete>
+
+        <!-- 保留 debug 版本 -->
+        <mkdir dir="${build.dir}/bak"/>
+        <copy todir="${build.dir}/bak">
+            <fileset dir="${build.dir}" includes="*.js" />
+        </copy>
+
+        <!-- 注释 log 语句 -->
+        <replace dir="${build.dir}" includes="*.js" token="S.log(" value="//S.log("/>
+    </target>
+
+    <!-- 压缩代码 -->
+    <target name="compress" depends="prepare">
+        <apply executable="java" dest="${build.dir}">
+            <fileset dir="${build.dir}" includes="*.js,*.css"/>
+            <arg line="-jar"/>
+            <arg path="${tools.dir}/yuicompressor.jar"/>
+            <srcfile/>
+            <arg line="--charset ${charset} -o"/>
+            <targetfile/>
+            <mapper type="regexp" from="^(.*)\.(css|js)$" to="\1-min.\2"/>
+        </apply>
+    </target>
+
+    <!-- 对 JS 文件 ASCII 化 -->
+    <target name="native2ascii" depends="compress">
+        <mkdir dir="${build.dir}/tmp"/>
+        <move todir="${build.dir}/tmp">
+            <fileset dir="${build.dir}" includes="*-min.js"/>
+        </move>
+        <native2ascii encoding="${charset}"
+                      src="${build.dir}/tmp"
+                      dest="${build.dir}"
+                      includes="*.js"/>
+        <delete dir="${build.dir}/tmp"/>
+    </target>
+
+    <!-- 给文件加上版权信息 -->
+    <target name="copyright">
+        <tstamp>
+            <format property="build.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <svn>
+            <wcVersion path="." prefix="svn."/>
+        </svn>
+
+        <mkdir dir="${build.dir}/tmp"/>
+        <move todir="${build.dir}/tmp">
+            <fileset dir="${build.dir}" includes="*-min.css,*-min.js"/>
+        </move>
+
+        <for param="file">
+            <path>
+                <fileset dir="${build.dir}/tmp" includes="*.css,*.js"/>
+            </path>
+            <sequential>
+                <concat destfile="@{file}.tmp" encoding="${charset}" outputencoding="${charset}">
+                    <header filtering="no" trimleading="yes">/*
+                        Copyright (c) 2009, Taobao.com. All rights reserved.
+
+                        Date: ${build.time}
+                        Revision: ${svn.revision.max}
+                        */
+                    </header>
+                    <fileset file="@{file}" />
+                </concat>
+                <move file="@{file}.tmp" tofile="@{file}"/>
+            </sequential>
+        </for>
+
+        <move todir="${build.dir}">
+            <fileset dir="${build.dir}/tmp" includes="*.css,*.js"/>
+        </move>
+        <delete dir="${build.dir}/tmp"/>
+    </target>
+
+    <!-- 还原操作 -->
+    <target name="restore">
+        <!-- 还原保留的 js 副本 -->
+        <move todir="${build.dir}">
+            <fileset dir="${build.dir}/bak" includes="*.js"/>
+        </move>
+        <delete dir="${build.dir}/bak"/>
+    </target>
+
+    <target name="build" depends="concat,prepare,compress,native2ascii,copyright,restore">
+    </target>
+    
+</project>

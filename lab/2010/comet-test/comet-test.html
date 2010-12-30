@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="gbk"/>
+<title>Comet Test</title>
+</head>
+<body style="font: 12px/20px Verdana,Arial,sans-serif;">
+<script>
+
+    var msxml_progid = [
+        'Microsoft.XMLHTTP',
+        'MSXML2.XMLHTTP.3.0',
+        'MSXML2.XMLHTTP'
+    ];
+
+    function sendRequest(url) {
+        var xhr, i, len;
+
+        try {
+            xhr = new XMLHttpRequest();
+        } catch(ex) {
+            for (i = 0, len = msxml_progid.length; i < len; ++i) {
+                try {
+                    xhr = new ActiveXObject(msxml_progid[i]);
+                    break;
+                } catch(ex) { }
+            }
+        }
+
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = function() {
+            try {
+                //if (xhr.readyState === 3 && xhr.status === 200) { // 只有 firefox 支持 Streaming Ajax
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    output(xhr.responseText);
+                    if (--retry > 0) sendRequest(url);
+                }
+            } catch(ex) {
+                output('exeption: ' + ex.message);
+            }
+        };
+        xhr.send(null);
+
+        // 超时重连
+        setTimeout(function() {
+            if (xhr.readyState !== 4) {
+                xhr.abort();
+                if (--retry > 0) sendRequest(url);
+            }
+        }, timeout * 1000);
+    }
+
+    function output(res) {
+        res && (info.innerHTML += res);
+    }
+
+    var times, timeout, retry, info;
+    function go() {
+        times = document.getElementById('times').value,
+        timeout = document.getElementById('timeout').value;
+        retry = document.getElementById('retry').value;
+        info = document.getElementById('info');
+
+        for(var i = 0; i < times; ++i) {
+            sendRequest('backend.php');
+        }
+    }
+
+</script>
+<h2>Comet Test</h2>
+times: <input type="text" size="4" id="times" value="1">
+timeout: <input type="text" size="2" id="timeout" value="5">(s)
+retry: <input type="text" size="4" id="retry" value="10">
+<button onclick="go()" type="button">Go!</button>
+
+<div id="info" style="border: 1px solid #ccc; margin-top: 10px; padding: 10px"></div>
+</body>
+</html>

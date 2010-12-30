@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>NodeList Test</title>
+</head>
+<body>
+
+<h3>Ref: <a href="http://lifesinger.org/blog/2010/09/nodelist">http://lifesinger.org/blog/2010/09/nodelist</a></h3>
+
+<div id="test"><p id="out" class="p"></p><p id="tmp" class="p"></p><p class="p"></p></div>
+
+<script>
+    function log(msg) { doc.getElementById('out').innerHTML += (msg === undefined ? '' : msg) + '<br>' }
+
+    var doc = document,
+        toString = Object.prototype.toString,
+        slice = Array.prototype.slice,
+        childNodes = doc.getElementById('test').childNodes,
+        liveList = doc.getElementsByTagName('p'), // getElementsByClassName
+        staticList = doc.querySelectorAll ? doc.querySelectorAll('p') : [];
+
+    log('toString: ');
+    log(toString.call(childNodes));
+    log(toString.call(liveList));
+    log(toString.call(staticList));
+    log();
+
+    log('constructor: ');
+    log(childNodes.constructor);
+    log(liveList.constructor);
+    log(staticList.constructor);
+    log();
+
+    log('item: ');
+    log(typeof childNodes.item);
+    log(typeof liveList.item);
+    log(typeof staticList.item);
+    log();
+
+    log('namedItem: ');
+    log(typeof childNodes.namedItem);
+    log(typeof liveList.namedItem);
+    log(typeof staticList.namedItem);
+    log();
+
+    log('slice: ');
+    try { slice.call(childNodes); log('ok'); } catch(ex) { log('failed'); }
+    try { slice.call(liveList); log('ok'); } catch(ex) { log('failed'); }
+    try { slice.call(staticList); log('ok'); } catch(ex) { log('failed'); }
+    log();
+
+    log('for in: ');
+    for(var p in childNodes) log(p);
+    log();
+    for(p in liveList) log(p);
+    log();
+    for(p in staticList) log(p);
+    log();
+        
+
+    log('remove #tmp');
+    doc.getElementById('test').removeChild(doc.getElementById('tmp'));
+    log();
+
+    log('length: ');
+    log(childNodes.length);
+    log(liveList.length);
+    log(staticList.length);
+    log();
+
+</script>
+</body>
+</html>

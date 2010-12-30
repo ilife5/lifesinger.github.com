@@ -1,0 +1,429 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Combine Test</title>
+<style type="text/css">
+    body { font: 12px/18px Tahoma, sans-serif; }
+    td { padding: 2px 10px; }
+</style>
+</head>
+<body>
+
+<div id="result"></div>
+
+<script type="text/javascript">
+
+    /**
+     * 递归排列
+     * 从 arr[1...n] 中任选 num(0 < num <= n) 个数的所有排列
+     */
+    function recursion_permutate(arr, num) {
+        var r = [];
+        (function f(t, a, n) {
+            if (n == 0) return r.push(t);
+            for (var i = 0, l = a.length; i < l; i++) {
+                f(t.concat(a[i]), a.slice(0, i).concat(a.slice(i + 1)), n - 1);
+            }
+        })([], arr, num);
+        return r;
+    }
+
+    /**
+     * 递归组合
+     * 从 arr[1...n] 中任选 num(0 < num <= n) 个数的所有组合
+     */
+    function recursion_combine(arr, num) {
+        var r = [];
+        (function f(t, a, n) {
+            if (n == 0) return r.push(t);
+            for (var i = 0, l = a.length; i <= l - n; i++) {
+                f(t.concat(a[i]), a.slice(i + 1), n - 1);
+            }
+        })([], arr, num);
+        return r;
+    }
+
+    /**
+     * 快速组合 - 字符串
+     */
+    function quick_combine(n, m) {
+        var t = ((1 << n) - (1 << n - m)).toString(2),
+            r = [], s, p1, p2;
+
+        while((r.push(t), p1 = t.indexOf("10")) >= 0) {
+            s  = t.slice(0, p1);
+            p2 = s.indexOf("1");
+
+            t = (p2 > 0 ? ((1 << p1) - (1 << p2)).toString(2) : s)
+                 + "01" + t.slice(p1 + 2);
+        }
+        return r;
+    }
+
+    /**
+     * 快速组合 - 纯位移
+     */
+    function bit_quick_combine(n, m) {
+        var t = (1 << n + 1) - (1 << n - m), // 故意多留一个 1，免得补零
+            r = [], o, p1, p2;
+
+        while((o = t.toString(2).slice(1), r.push(o), p1 = o.indexOf("1"), p2 = o.indexOf("10")) >= 0){
+            t ^= ((p1 ? ((1 << p2) - (1 << p1) ^ (1 << p2 - p1) - 1) << 2 : 0) | 3) << n - p2 - 2;
+        }
+
+        return r;
+
+    }
+
+    /**
+     * 进位法
+     */
+    function carry_combine(n, m) {
+        var r = [], t = [], i, p, max;
+
+        // seed
+        for(i = 0; i < m; i++) t.push(i);
+        r.push(t.concat());
+
+        while(p = m - 1, max = n - 1) {
+            // increase
+            while(t[p] < max) {
+                t[p]++;
+                r.push(t.concat());
+            }
+
+            // carry
+            while(t[--p] === --max){}
+            t[p]++;
+            for(i = p + 1; i < m; i++) t[i] = t[p] + i - p;
+            r.push(t.concat());
+
+            // done
+            if(t[0] === n - m) break;
+        }
+
+        return r;
+    }
+
+    /**
+     * 沙漏法
+     */
+    function sandglass_combine(n, m) {
+        var p = [], r = [] , i, j;
+
+        for(i = m - 1, j = 0; i >= 0; i--, j++) {
+            p[j] = n - i - 1;
+        }
+
+        r.push(p.concat());
+        //5,4,3 5,4,2 5,4,1 5,4,0->5,3,2 5,3,1 5,3,0->5,2,1 5,2,0->5,1,0->5,0,0->4,3,2...
+
+        while (p[m - 1] >= m) {
+            if (--p[0] >= 0) {
+                r.push(p.concat());
+            }
+            else {
+                for (i = 1; i < m; i++) {
+                    if (p[i] > i) {
+                        p[i]--;
+                        for (j = i - 1; j >= 0; j--) {
+                            p[j] = p[j + 1] - 1;
+                        }
+
+                        r.push(p.concat());
+                        break;
+                    }
+                }
+            }
+        }
+        return r;
+    }
+
+    /**
+     * DP 组合
+     * @ref: http://bbs.51js.com/viewthread.php?tid=85574
+     * C(n, m) = C(n - 1, m) + C(n - 1, m - 1)
+     */
+    function dp_combine(a, m) {
+        var t = [[]], r = [];
+
+        for (var i = 0, n = a.length; i < n; ++i) {
+            for (var j = 0, l = t.length; j < l; ++j) {
+                (t[j].length < m - 1 ? t : r).push(t[j].concat([a[i]]));
+            }
+        }
+        return r;
+    }
+
+
+    //################################################################
+    // test cases
+    var resultEl = document.getElementById("result");
+    function print(msg) { resultEl.innerHTML += msg; }
+
+    // 组合算法性能测试
+    function test(SIZE, m , N, bf) {
+        var a = Array(SIZE + 1).join("a").split(""),
+            times = [], n = 0, i;
+        bf = bf || "";
+
+        times[n] = { desc: "递归组合算法" };
+        times[n].startTime = +new Date;
+        if(bf.indexOf("rc") == -1) {
+            for(i = 0; i < N; i++) times[n].result = recursion_combine(a, m);
+        }
+        times[n].endTime = +new Date;
+        n++;
+
+        times[n] = { desc: "DP 组合算法" };
+        times[n].startTime = +new Date;
+        if(bf.indexOf("dp") == -1) {
+            for(i = 0; i < N; i++) times[n].result = dp_combine(a, m);
+        }
+        times[n].endTime = +new Date;
+        n++;
+
+        times[n] = { desc: "快速组合算法" };
+        times[n].startTime = +new Date;
+        if(bf.indexOf("qc") == -1) {
+            for(i = 0; i < N; i++) times[n].result = quick_combine(a.length, m);
+        }
+        times[n].endTime = +new Date;
+        n++;
+
+        times[n] = { desc: "进位组合算法" };
+        times[n].startTime = +new Date;
+        if(bf.indexOf("cr") == -1) {
+            for(i = 0; i < N; i++) times[n].result = carry_combine(a.length, m);
+        }
+        times[n].endTime = +new Date;
+        n++;
+
+        times[n] = { desc: "沙漏组合算法" };
+        times[n].startTime = +new Date;
+        if(bf.indexOf("sg") == -1) {
+            for(i = 0; i < N; i++) times[n].result = sandglass_combine(a.length, m);
+        }
+        times[n].endTime = +new Date;
+        n++;
+
+        // print out
+        print("<br />" + SIZE + " 选 " + m + ", 循环 " + N + " 次：<br />");
+        var html = "<table><tbody>";
+        for(i = 0; i < n; i++) {
+            var t = times[i];
+            if(t.result) {
+               html += "<tr><td>" + t["desc"] + "</td><td>"
+                       + (t.endTime - t.startTime) + " ms </td><td>共有 "
+                       + t.result.length + " 种组合</td></tr>";
+            }
+        }
+        html +="</tbody></table>";
+        print(html);
+    }
+
+    var a = ["a", "b", "c", "d", "e"];
+    //print("快速组合：<ol><li>" + carry_combine(5, 3).join("</li><li>") + "</li></ol>");
+
+
+//    test(5, 3, 100);
+    test(10, 3, 100);
+    test(10, 5, 100);
+    test(10, 8, 100);
+    test(20, 5, 10, "rc");
+    //if(!window.ActiveXObject) test(20, 9, 5, "rc");
+    //test(30, 6, 1, "rc,dp,qc");
+    //test(49, 6, 1, "rc,dp,qc");
+
+    // 结果
+    print("<br />abcde 里 5 选 3 ：<br />");
+    print("递归组合：<ol><li>" + recursion_combine(a, 3).join("</li><li>") + "</li></ol>");
+    print("快速组合：<ol><li>" + quick_combine(a.length, 3).join("</li><li>") + "</li></ol>");
+    print("进位组合：<ol><li>" + carry_combine(a.length, 3).join("</li><li>") + "</li></ol>");
+    print("沙漏组合：<ol><li>" + sandglass_combine(a.length, 3).join("</li><li>") + "</li></ol>");
+    print("DP 组合：<ol><li>" + dp_combine(a, 3).join("</li><li>") + "</li></ol>");
+    //print("排列：<ol><li>" + recursion_permutate(a, 3).join("</li><li>") + "</li></ol>");
+
+
+
+    //################################################################
+    // 代码存档
+
+    /**
+     * 快速组合算法 输出数组版
+     */
+    function quick_combine_b(a, m) {
+        var n = a.length, s = "", e = "", r = [], i, t, p, reg = /(0*)(1*)/;
+
+        // 构建第一个和最后一个组合
+        for(i = 0; i < n; i++) {
+            s += (i < m ? 1 : 0);
+            e += (i < n - m ? 0 : 1);
+        }
+        t = s;
+        r[0] = b(s, m);
+
+        do {
+            // 将 t 中第一个 10 替换为 01, 并将 01 左边的 1 全部移动到最左端
+            p = t.indexOf("10");
+            t = t.slice(0, p).replace(reg, "$2$1") + "01" + t.slice(p + 2);
+            r.push(b(t, m));
+        } while(t !== e);
+
+        return r;
+
+        // 将 01101 转换为 [b,c,e]
+        function b(s, m) {
+            var r = [];
+            for(var i = 0, len = s.length, j = 1; i < len; i++) {
+                if(s.charAt(i) === "1") {
+                    r.push(a[i]);
+                    if(j++ === m) return r;
+                }
+            }
+        }
+    }
+
+    /**
+     * 快速组合算法  正则 replace 法
+     */
+    function quick_combine_c(a, m) {
+        var n = a.length, s = "", e = "", r = [], i, t, p, reg = /(0*)(1*)/;
+
+        // 构建第一个和最后一个组合
+        for(i = 0; i < n; i++) {
+            s += (i < m ? 1 : 0);
+            e += (i < n - m ? 0 : 1);
+        }
+        r[0] = t = s;
+
+        do {
+            // 将 t 中第一个 10 替换为 01, 并将 01 左边的 1 全部移动到最左端
+            p = t.indexOf("10");
+            t = t.slice(0, p).replace(reg, "$2$1") + "01" + t.slice(p + 2);
+            r.push(t);
+        } while(t !== e);
+
+        return r;
+    }
+
+    /**
+     * 快速组合算法  chrome 下用 relace 反而更快
+     */
+    function quick_combine_chrome(n, m) {
+        var x = Math.pow(2, n),
+            first = (x - Math.pow(2, n - m)).toString(2),
+            last = (x | Math.pow(2, m) - 1).toString(2).slice(1),
+            r = [], t, s, p1, p2, reg = /(0*)(1*)/;
+
+        r[0] = t = first;
+        do {
+            p1 = t.indexOf("10");
+            s  = t.slice(0, p1);
+            p2 = s.indexOf("1");
+
+            t = (p2 > 0 ? s.replace(reg, "$2$1") : s)
+                 + "01" + t.slice(p1 + 2);
+            r.push(t);
+        } while(t !== last);
+
+        return r;
+    }
+
+    /**
+     * 快速组合算法 月影修改版
+     */
+    function quick_combine_yy(a, m) {
+        var n = a.length, r = [], t, p, reg = /(0*)(1*)/,
+                y = Math.pow(2, n),
+                e = (y | Math.pow(2, m) - 1).toString(2).slice(1),
+                s = (y - 1 ^ Math.pow(2, n - m) - 1).toString(2);
+
+        r[0] = t = s;
+
+        do {
+            // 将 t 中第一个 10 替换为 01, 并将 01 左边的 1 全部移动到最左端
+            p = t.indexOf("10");
+            t = t.slice(0, p).replace(reg, "$2$1") + "01" + t.slice(p + 2);
+            r.push(t.split(""));
+        } while (t !== e);
+
+        return r;
+    }
+
+    /**
+     * 快速组合算法 ie 优化版
+     * 注：实际测试发现，在该代码中，字符串拼接改用 join 并没有提升性能
+     */
+    function quick_combine_ie(a, m) {
+        var n = a.length, s = [], e = [], r = [], i, t, p, reg = /(0*)(1*)/;
+
+        // 构建第一个和最后一个组合
+        for(i = 0; i < n; i++) {
+            s.push(i < m ? 1 : 0);
+            e.push(i < n - m ? 0 : 1);
+        }
+        r[0] = t = s.join("");
+        e = e.join("");
+
+        do {
+            // 将 t 中第一个 10 替换为 01, 并将 01 左边的 1 全部移动到最左端
+            p = t.indexOf("10");
+            t = [t.slice(0, p).replace(reg, "$2$1"), "01", t.slice(p + 2)].join("");
+            r.push(t);
+        } while(t !== e);
+
+        return r;
+    }
+
+    /**
+     * 快速组合算法 crazy replace
+     */
+    function quick_combine_crazy_replace(a, m) {
+        var n = a.length, s = [], e = [], r = [], i, t,
+            reg1 = /^(.*?)10/, reg2 = /(0*)(1*)/;
+
+        // 构建第一个和最后一个组合
+        for(i = 0; i < n; i++) {
+            s.push(i < m ? 1 : 0);
+            e.push(i < n - m ? 0 : 1);
+        }
+        r[0] = t = s.join("");
+        e = e.join("");
+
+        // 移位遍历所有组合
+        do {
+            r.push(t = c(t));
+        } while(t !== e);
+
+        return r;
+
+        // 寻找 str 中的第一个 10, 替换为 01
+        // 并将 01 左边的 1 全部移动到最左端
+        function c(str) {
+            return str.replace(reg1, function(m, l) {
+                return [l.replace(reg2, "$2$1"), "01"].join("");
+            });
+        }
+    }
+
+    /**
+     * DP 月影简化版
+     */
+    function dp_combine_yy(a, m) {
+        var t = [[]], r = [];
+
+        for (var i = 0, n = a.length; i < n; i++) {
+            for (var j = 0, k = t.length; j < k; j++) {
+                var s = t[j].concat([a[i]]);
+                s.length < m ? t.push(s) : r.push(s);
+            }
+        }
+        return r;
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Event Order Test</title>
+<style type="text/css">
+    div { border: 1px dashed #ccc; padding: 20px; margin: 20px; background-color: white; }
+    div.target { background-color: #FFE6E6; }
+</style>
+</head>
+<body>
+<div id="J_Test1">
+    test1
+    <div id="J_Test2">
+        test2
+        <div id="J_Test3">test3 please click me</div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var $ = function(id) {
+        return typeof id == 'string' ? document.getElementById(id) : id;
+    };
+
+    var addListener = function() { };
+    if (window.addEventListener) {
+        addListener = function(el, type, listener, useCapture) {
+            el.addEventListener(type, listener, useCapture);
+        };
+    } else if (window.attachEvent) {
+        addListener = function(el, type, listener) {
+            el.attachEvent('on' + type, function() {
+                listener.apply(el);
+            });
+        };
+    }
+
+    var test1 = $('J_Test1'), test2 = $('J_Test2'), test3 = $('J_Test3');
+
+    //test1.onclick = setBackground;
+    //test2.onclick = setBackground;
+    //test3.onclick = setBackground;
+
+    if (window.addEventListener) {
+        addListener(test1, 'click', setBackground, true);
+        addListener(test2, 'click', setBackground, true);
+        addListener(test3, 'click', setBackground, true);
+    }
+
+    addListener(test1, 'click', setBackground);
+    addListener(test2, 'click', setBackground);
+    addListener(test3, 'click', setBackground);
+
+    var prevTarget = null, t = -500;
+    function setBackground() {
+        var current = this;
+        setTimeout(function() {
+            if(prevTarget) prevTarget.className = '';
+            current.className = 'target';
+            prevTarget = current;
+        }, t = t == 2500 ? 0 : t + 500);
+    }
+
+</script>
+
+<h3>Ref</h3>
+<ol>
+    <li><a href="http://www.quirksmode.org/js/events_tradmod.html">http://www.quirksmode.org/js/events_tradmod.html</a></li>
+    <li><a href="http://www.quirksmode.org/js/events_advanced.html">http://www.quirksmode.org/js/events_advanced.html</a></li>
+    <li><a href="http://www.quirksmode.org/js/events_order.html">http://www.quirksmode.org/js/events_order.html</a></li>
+</ol>
+
+<h3>Notes:</h3>
+<ol>
+    <li>attachEvent里的this是window</li>
+    <li>onclick默认注册在bubbling phrase</li>
+    <li>target的命名来源于capturing的“打靶”象形</li>
+    <li>srcElement的命名来源于bubbling的“扩散”象形</li>
+    <li>W3C有一个currentTarget</li>
+    <li>window.event的值取决于当前正在触发的事件</li>
+    <li>PPK的addEventSimple是一道很好的面试题：1. 解决什么问题？2. 有什么缺点？ 3. 如何改进？</li>
+</ol>
+</body>
+</html>

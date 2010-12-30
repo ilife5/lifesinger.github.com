@@ -1,0 +1,259 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>SBC2DBC Performance Test</title>
+</head>
+<body>
+<script>
+/* http://kissy.googlecode.com/svn/trunk/src/test/test.js */
+KISSY=window.KISSY||{};
+(function(e,l,o){function p(){l.Test.init()}var i=e.document,f=function(a){return typeof a==="string"?i.getElementById(a):a},q=function(){return(new Date).getTime()},m=function(a){return a<10?"0"+a:a},t=function(){var a=new Date;return m(a.getHours())+":"+m(a.getMinutes())+":"+m(a.getSeconds())},c=[],j,r,k,h,n,g={init:function(){j=f("log");r=f("hidepasses").checked;k=f("times").value;h=f("wl").value},time:function(a){a.startTime=q()},timeEnd:function(a){a.tookTime=q()-a.startTime},echo:function(a,
+b,d){if(b===o)b="<br />";if(d===o)d=t()+" ";j.innerHTML+=d+a+b;this.scrollToEnd()},scrollToEnd:function(){n||(n=setTimeout(function(){j.scrollTop=j.scrollHeight;n=null},5))},log:function(a){var b="";b+='<span class="'+a.status+'">';b+="["+a.status.toUpperCase()+"] ";b+=a.name+": ";b+=a.tookTime+"ms ";if(a.extraMsg)b+=a.extraMsg;b+="</span>";a.status==="sep"?this.echo("","<hr />",""):this.echo(b)}};c.add=function(a,b){c.push({name:a,fn:function(){b.call(e,this)},fail:function(d){this.status="failed";
+if(d)this.extraMsg=d},status:"passed",extraMsg:""})};c.reset=function(){for(var a=0,b=c.length;a<b;a++){c[a].status="passed";c[a].extraMsg=""}};l.Test={Config:{},init:function(){var a=this.Config;if(a.times)f("times").value=a.times;if(a.hidepasses)f("hidepasses").checked=a.hidepasses;if(a.wl)f("wl").value=a.wl;g.init();a=e.RuntimeObject?e.RuntimeObject("test_*"):e;for(var b in a)b.indexOf("test_")===0&&typeof e[b]==="function"&&c.add(b,e[b]);navigator.userAgent.indexOf("Firefox")!==-1&&c.reverse()},
+render:function(){var a=i.getElementsByTagName("script");a='<link rel="stylesheet" href="'+a[a.length-1].src.replace(".js",".css")+'" /><form onsubmit="return false" action="" class="ks-test-form"><button type="button" onclick="KISSY.Test.start()">Start</button><div id="konsole"><div id="log"></div></div><div class="settings">Settings:<br/><input type="checkbox" id="hidepasses" name="hidepasses"/><label for="hidepasses">Hide passes</label><br/><input type="text" value="1" id="times" size="4"/><label for="times">Iteration times for each test function</label><br/><input type="text" value="" id="wl" size="12"/><label for="wl">The whitelist of test names</label></div></form>';
+i.body.className+=" ks-test";i.write(a)},start:function(){g.init();c.reset();var a=c.length,b,d,s;k=k||1;h=h||"";g.echo("[START]");for(d=0;d<a;d++){b=c[d];if(!(h&&h.indexOf(b.name)===-1)){s=k;for(g.time(b);s--;)b.fn();g.timeEnd(b);r&&b.status==="passed"||g.log(b)}}g.echo("[DONE]","<hr />")}};l.Test.render();e.attachEvent?e.attachEvent("onload",p):e.addEventListener("load",p,false)})(window,KISSY);
+</script>
+<style type="text/css">
+body.ks-test{margin:0;padding:15px;font-size:12px;line-height:20px;font-family:Verdana,Arial,sans-serif;}#konsole{border:1px solid #999;background-color:#eee;padding:10px;margin-top:10px;}#log{color:#666;border:1px solid #999;background-color:#fff;padding:5px;height:312px;overflow-x:auto;overflow-y:scroll;font:14px / 16px "Courier New",Courier,monospace;white-space:pre-wrap;}#log .passed{color:darkgreen;}#log .failed{color:#900;}#log hr{border:0;border-top:1px dotted #ccc;margin:3px 0;color:#fff;}.ks-test-form button{padding:2px 20px;}.ks-test-form .settings{padding:10px;line-height:25px;}
+</style>
+
+<h2>Test Data</h2>
+<div id="chrs-list"></div>
+
+<h2>References</h2>
+<ul>
+    <li><a href="http://snipt.org/sto">Transform a string from semiangle to fullangle</a></li>
+    <li><a href="http://ha1.seikyou.ne.jp/home/akairingosaita/hangul/dec-unicode-ks.txt">特殊字符</a></li>
+</ul>
+
+<!-- Test Cases -->
+<script>
+    var list = document.getElementById('chrs-list');
+    for (var code = 33; code < 127; ++code) {
+        list.innerHTML += String.fromCharCode(code) + '&nbsp;&nbsp;&nbsp;&nbsp;' +
+                          String.fromCharCode(code + 65248) + '<br />';
+    }
+
+    function sbc2dbc_hex(str) {
+        var ret = [], i = 0, len = str.length;
+        for (; i < len; ++i) {
+            ret[i] = String.fromCharCode(parseInt(str.charCodeAt(i).toString(16).toUpperCase(), 16) + 0xFEE0);
+        }
+        return ret.join('');
+    }
+
+    function sbc2dbc_push(str) {
+        var ret = [], i = 0, len = str.length;
+        for (; i < len; ++i) {
+            ret.push(String.fromCharCode(str.charCodeAt(i) + 65248));
+        }
+        return ret.join('');
+    }
+
+    function sbc2dbc_decimal(str) {
+        var ret = [], i = 0, len = str.length;
+        for (; i < len; ++i) {
+            ret[i] = String.fromCharCode(str.charCodeAt(i) + 65248);
+        }
+        return ret.join('');
+    }
+
+    function sbc2dbc_replace(str) {
+        return str.replace(/./g, function(chr) {
+            return String.fromCharCode(chr.charCodeAt(0) + 65248);
+        });
+    }
+
+    var cache = {};
+    function sbc2dbc_cache(str) {
+        if(!-[1,]) str = str.split('');
+
+        var ret = [], i = 0, len = str.length, chr;
+        for (; i < len; ++i) {
+            chr = str[i];
+            if(!(chr in cache)) {
+                cache[chr] = String.fromCharCode(chr.charCodeAt(0) + 65248);
+            }
+            ret[i] = cache[chr];
+        }
+        return ret.join('');
+    }
+
+    var cache_keys = {}, cache_vals = {};
+    function sbc2dbc_double_cache(str) {
+        if(!-[1,]) str = str.split('');
+
+        var ret = [], i = 0, len = str.length, chr;
+        for (; i < len; ++i) {
+            chr = str[i];
+            if(!cache_keys[chr]) {
+                cache_keys[chr] = true;
+                cache_vals[chr] = String.fromCharCode(chr.charCodeAt(0) + 65248);
+            }
+            ret[i] = cache_vals[chr];
+        }
+        return ret.join('');
+    }
+
+    // 注意：上面的函数都没考虑中文等字符。下面的都有考虑。
+    var sbc_chrs = '`~!@#$%^&*()-_=+[{]}\\|;:\'",<.>/?',
+        dbc_chrs = '·～！@#￥%……&×（）-——=+【『】』、|；：‘“，《。》/？';
+
+    function sbc2dbc_actual_decimal(str) {
+        if (!-[1,]) str = str.split('');
+        var ret = [], i = 0, len = str.length, code, t;
+
+        for (; i < len; ++i) {
+            t = str[i];
+            code = t.charCodeAt(0);
+            if (code > 32 && code < 127) {
+                t = String.fromCharCode(code + 65248);
+            } else if (code === 32) {
+                t = '\u3000';
+                //t = String.fromCharCode(12288);
+            }
+            ret[i] = t;
+        }
+        return ret.join('');
+    }
+    //alert(sbc2dbc_actual_decimal(' ') === '\u3000');
+    //alert(sbc2dbc_actual_decimal('string, 你好，嘿嘿。' + sbc_chrs + dbc_chrs));
+
+    function sbc2dbc_actual_replace(str) {
+        // 全角空格为 12288，半角空格为 32
+        // 其他字符半角(33-126)与全角(65281-65374)的对应关系是：均相差 65248
+        return str
+                .replace(/\u0020/g, '\u3000')
+                .replace(/[\u0021-\u007e]/g, function(chr) {
+                    return String.fromCharCode(chr.charCodeAt(0) + 65248);
+                });
+    }
+    //alert(/^[\u0020-\u007e]+$/.test(dbc_chrs));
+    //alert(/[^\u4e00-\u9fa5]*/.test(dbc_chrs));
+    //alert(sbc2dbc_actual_replace('hello, 你好，嘿嘿。' + sbc_chrs + dbc_chrs));
+
+    var hash = {'32' : '\u3000'};
+    function sbc2dbc_actual_cache(str) {
+        var ret = [], i = 0, len = str.length, code, chr;
+        for (; i < len; ++i) {
+            code = str.charCodeAt(i);
+            chr = hash[code];
+            if (!chr && code > 31 && code < 127) {
+                chr = hash[code] = String.fromCharCode(code + 65248);
+            }
+            ret[i] = chr ? chr : str.charAt(i);
+        }
+        return ret.join('');
+    }
+
+    // DBC2SBC
+    var hash2 = {'12288' : ' '};
+    function dbc2sbc_actual_cache(str) {
+        var ret = [], i = 0, len = str.length, code, chr;
+        for (; i < len; ++i) {
+            code = str.charCodeAt(i);
+            chr = hash2[code];
+            if (!chr && code > 65280 && code < 65375) {
+                chr = hash2[code] = String.fromCharCode(code - 65248);
+            }
+            ret[i] = chr ? chr : str.charAt(i);
+        }
+        return ret.join('');
+    }
+
+    // 仅替换[0-9a-zA-Z]
+    var hash3 = {};
+    function sbc2dbc_actual_onlychars(str) {
+        var ret = [], i = 0, len = str.length, code, chr;
+        for (; i < len; ++i) {
+            code = str.charCodeAt(i);
+            chr = hash3[code];
+            if (!chr &&
+                (47 < code && code < 58 ||
+                 64 < code && code < 91 ||
+                 96 < code && code < 123)) {
+                chr = hash3[code] = String.fromCharCode(code + 65248);
+            }
+            ret[i] = chr ? chr : str.charAt(i);
+        }
+        return ret.join('');
+    }
+
+    // TESTCASES BEGIN
+    KISSY.Test.Config.times = 100;
+
+    var data1 = 'hello, 你好,嘿嘿!' + sbc_chrs + 'crazy test string!',
+        data2 = 'hello, 你好,嘿嘿!' + sbc_chrs + 'This new version of the function inserts a do-while loop that will continuously process items until there are no further items to process or until the code has been executing for 50 milliseconds. Once that loop is complete, the logic is exactly the same: create a new timer if there’s more items to process. The addition of a callback function allows notification when all items have been processed.I set up a test to compare these two methods as they processed an array with 500 items and the results are overwhelming: timedChunk()  frequently takes less than 10% of the time of chunk() to completely process all of the items. Try it for yourself. Note that neither process causes the browser to appear frozen or locked up.',
+        actual1 = sbc2dbc_decimal(data1),
+        actual1_b = sbc2dbc_actual_replace(data1),
+        actual2 = sbc2dbc_decimal(data2),
+        actual2_b = sbc2dbc_actual_replace(data2);
+
+    function test_sbc2dbc_hex(test) {
+        if(sbc2dbc_hex(data1) !== actual1) test.fail();
+        if(sbc2dbc_hex(data2) !== actual2) test.fail();
+    }
+
+    function test_sbc2dbc_push(test) {
+        if(sbc2dbc_push(data1) !== actual1) test.fail();
+        if(sbc2dbc_push(data2) !== actual2) test.fail();
+    }
+
+    function test_sbc2dbc_decimal(test) {
+        if(sbc2dbc_decimal(data1) !== actual1) test.fail();
+        if(sbc2dbc_decimal(data2) !== actual2) test.fail();
+    }
+
+    function test_sbc2dbc_replace(test) {
+        if(sbc2dbc_replace(data1) !== actual1) test.fail();
+        if(sbc2dbc_replace(data2) !== actual2) test.fail();
+    }
+
+    function test_sbc2dbc_cache(test) {
+        if(sbc2dbc_cache(data1) !== actual1) test.fail();
+        if(sbc2dbc_cache(data2) !== actual2) test.fail();
+    }
+
+    function test_sbc2dbc_double_cache(test) {
+        if(sbc2dbc_double_cache(data1) !== actual1) test.fail();
+        if(sbc2dbc_double_cache(data2) !== actual2) test.fail();
+    }
+
+    function test_sbc2dbc_sep(test) {
+        test.status = 'sep';
+    }
+
+    function test_sbc2dbc_actual_decimal(test) {
+        if(sbc2dbc_actual_decimal(data1) !== actual1_b) test.fail();
+        if(sbc2dbc_actual_decimal(data2) !== actual2_b) test.fail();
+    }
+
+    function test_sbc2dbc_actual_replace(test) {
+        if(sbc2dbc_actual_replace(data1) !== actual1_b) test.fail();
+        if(sbc2dbc_actual_replace(data2) !== actual2_b) test.fail();
+    }
+
+    function test_sbc2dbc_actual_cache(test) {
+        if(sbc2dbc_actual_cache(data1) !== actual1_b) test.fail();
+        if(sbc2dbc_actual_cache(data2) !== actual2_b) test.fail();
+    }
+
+    function test_sbc2dbc_sep2(test) {
+        test.status = 'sep';
+    }
+
+    function test_sbc2dbc_actual_onlychars() {
+        sbc2dbc_actual_onlychars(data1);
+        sbc2dbc_actual_onlychars(data2);
+    }
+
+    function test_dbc2sbc_actual_cache(test) {
+        if(dbc2sbc_actual_cache(actual1_b) !== data1) test.fail();
+        if(dbc2sbc_actual_cache(actual2_b) !== data2) test.fail();
+    }
+
+</script>
+
+</body>
+</html>

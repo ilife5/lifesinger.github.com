@@ -1,0 +1,45 @@
+/*!
+Copyright (c) 2008, Taobao.com Inc. Some rights reserved.
+version: 0.0.1
+*/
+
+#doc {
+	width: 950px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+.tb-g,
+.tb-g2, .tb-g2f,
+.tb-g3, .tb-g3f, .tb-g3e, .tb-g3d {
+	overflow: hidden; _zoom: 1; /* clearing float */
+}
+
+.tb-m,
+.tb-s, .tb-s1, .tb-s2 { float: left; position: relative; }
+.tb-m { width: 100%; }
+
+
+/* 2 Columns: 190 : m(750) */
+.tb-g2 { padding: 0 10px 0 190px; }
+.tb-g2 .tb-m { padding-left: 10px; }
+.tb-g2 .tb-s { width: 190px; margin-left: -100%; left: -200px; _left: 0 }
+
+/* 2 Columns: m(750) : 190 */
+.tb-g2f { padding-right: 200px; }
+.tb-g2f .tb-m { padding-right: 10px; }
+.tb-g2f .tb-s { width: 190px; margin-right: -200px; }
+
+/* 3 Columns: 190 : m(510) : 230 */
+.tb-g3 { padding: 0 250px 0 190px; }
+.tb-g3 .tb-m { padding: 0 10px; }
+.tb-g3 .tb-s1 { width: 190px; margin-left: -100%; left: -210px; }
+.tb-g3 .tb-s2 { width: 230px; margin-right: -250px; }
+
+/* 3 Columns: 230 : m(510) : 190 */
+.tb-g3f { padding: 0 210px 0 230px; }
+.tb-g3f .tb-m { padding: 0 10px; }
+.tb-g3f .tb-s1 { width: 190px; margin-right: -190px; }
+.tb-g3f .tb-s2 { width: 230px; margin-left: -100%; }
+
+

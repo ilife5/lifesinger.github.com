@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+<title>Loop Benchmarks</title>
+<style type="text/css">
+    body{font-family:helvetica,arial,sans-serif;font-size:12px;}
+    span{display:none;}
+    table{border-collapse:collapse;margin:10px 0;}
+    caption{text-align:left;font-size:18px;font-weight:bold;margin:10px 0;}
+    td{padding:10px;border:2px solid #ccc;}
+    td.bench{color:#c60;font-weight:normal;}
+    td.code{font-family:"courier new",monospace;}
+</style>
+<script type="text/javascript">
+
+var chars = '0123456789abcdef';
+
+function getRandomString() {
+	var len = Math.ceil(Math.random() * 7) + 3; // 4-10
+	var result = "";
+	while (len--) {
+		result += chars.charAt(Math.floor(Math.random() * chars.length));
+	}
+	return result;
+}
+
+function esc(str) {
+	str=str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+	return str;
+}
+
+var forEachImp = 'native';
+if (!Array.prototype.forEach) {
+	forEachImp = 'custom';
+	Array.prototype.forEach = function(fun) {
+		var len = this.length;
+		if (typeof fun != "function") { throw new TypeError(); }
+		var thisp = arguments[1];
+		for (var i = 0; i < len; i++) {
+			if (i in this) { fun.call(thisp, this[i], i, this); }
+		}
+	};
+}
+
+function test() {
+
+    var isIE = window.ActiveXObject;
+    var size = isIE ? 1000 : 10000;
+    var mult = 100;
+
+	var arr = [];
+	var lsize = size;
+	while (lsize--) { arr.push('' + getRandomString() + ''); }
+
+	var
+            start = {},
+            end = {},
+            comment = {},
+            testDesc,
+            result = "",
+            n, i, len;
+
+	//#########################################
+
+	testDesc = "for (var i = 0; i < arr.length; i++) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		for (i = 0; i < arr.length; i++) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'Basic for loop.';
+
+	//#########################################
+
+	testDesc = "for (var i = 0, len = arr.length; i < len; i++) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		for (i = 0, len = arr.length; i < len; i++) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'For loop, but caching the length.';
+
+	//#########################################
+
+	testDesc = "for (var i = 0, len = arr.length; i < len; ++i) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		for (i = 0, len = arr.length; i < len; ++i) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'For loop, but caching the length. ++i';
+
+	//#########################################
+
+	testDesc = "for (var i = 0, len = arr.length; i < len; i += 1) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		for (i = 0, len = arr.length; i < len; i += 1) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'For loop, but caching the length. i += 1';
+
+    //#########################################
+
+	testDesc = "for (var i = 0, len = arr.length; i < len; i = i + 1) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		for (i = 0, len = arr.length; i < len; i = i + 1) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'For loop, but caching the length. i = i + 1';
+
+	//#########################################
+
+	testDesc = "var i = 0; while (i < arr.length) { i++; }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		i = 0; while (i < arr.length) { i++; }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'While loop that imitates a for loop.';
+
+	//#########################################
+
+	testDesc = "var i = 0, len = arr.length; while (i < len) { i++; }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		i = 0, len = arr.length; while (i < len) { i++; }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'While loop that imitates a for loop, caching the length.';
+
+	//#########################################
+
+	testDesc = "var i = arr.length; while (i--) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		i = arr.length; while (i--) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'While loop in reverse, simplifying the test condition.';
+
+	//#########################################
+
+	testDesc = "var i = arr.length - 1; do {  } while (i--);";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		i = arr.length - 1; do {  } while (i--);
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'do ... while loop in reverse.';
+
+	//#########################################
+
+	testDesc = "for (var i = arr.length; i--;) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		for (i = arr.length; i--;) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'for loop in reverse.';
+
+	//#########################################
+
+	var popArrs = [];
+	for (n = 0; n < mult; n++) { popArrs.push(arr.slice()); }
+
+	testDesc = "var x; while (x = arr.pop()) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		while (x = popArrs[n].pop()) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'While looping by popping values (this fails on sparse arrays).';
+
+	//#########################################
+
+	testDesc = "for (var i in arr) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		for (var x in arr) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'for ... in loop';
+
+
+	//#########################################
+
+	testDesc = "for (var i = 0; arr[i]; i++) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		for (i = 0; arr[i]; i++) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'For loop, testing on existence rather than length (this fails on sparse arrays).';
+
+	//#########################################
+
+	testDesc = "for (var i=0, x; x = arr[i++];) {  }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		for (i = 0, x; x = arr[i++];) {  }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'For loop, testing on existence rather than length, array lookup is combined with test.';
+
+	//#########################################
+
+	testDesc = "arr.forEach(function(x){});";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		arr.forEach(function(x){});
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'Array.forEach() ' + forEachImp + ' implementation.';
+
+	//#########################################
+
+	testDesc = "var f=function(x){}; for (var i = 0, len = arr.length; i < len; i++) { f(arr[i]); }";
+	start[testDesc] = new Date().getTime();
+	for(n = 0; n < mult; n++) {
+		var f = function(x){};
+        for (i = 0, len = arr.length; i < len; i++) { f(arr[i]); }
+	}
+	end[testDesc] = new Date().getTime();
+	comment[testDesc] = 'For reference against forEach().';
+
+	//#########################################
+
+	result += '<table class="data">';
+	result += '<caption>Native Array (length='+arr.length+', looped '+mult+' times)</caption>';
+	for (testDesc in start) {
+		result += '<tr>';
+		result += '<td class="comment">'+comment[testDesc]+'</td>';
+		result += '<td class="code">'+esc(testDesc)+'</td>';
+		result += '<td class="bench">'+(end[testDesc] - start[testDesc])+'ms</td>';
+		result += '</tr>';
+	}
+	result += '</table>';
+
+    if(isIE)
+        result += '<p style="color: #f00">注意：你使用的是 IE, 数组大小是 1000, 比其它浏览器小了 10 倍。</p>';
+
+	//#########################################
+
+	document.body.innerHTML += result;
+	document.getElementById('h').firstChild.data = 'Done Testing.';
+	document.getElementById('h').style.color='#060';
+}
+
+</script>
+
+</head>
+<body>
+<h1 id="h" style="color:#c60">Testing...</h1>
+<script type="text/javascript">
+    setTimeout(test, 500);
+</script>
+</body>
+</html>

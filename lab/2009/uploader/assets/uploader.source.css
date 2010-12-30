@@ -1,0 +1,135 @@
+/* Style for Taobao Picture Upload System by yubo @2009-03-19 */
+
+
+/* upload-container */
+.upload-container { background: #f7f7f7; }
+
+
+/* upload-table */
+.upload-table { width: 710px; }
+.upload-table .hd { color: #999; height: 22px; }
+
+.upload-table .name,
+.upload-table .size,
+.upload-table .misc,
+.upload-table .msg { float: left; overflow: hidden; white-space: nowrap; }
+
+.upload-table .name { width: 260px; text-indent: 1em; }
+.upload-table .size { width: 60px; margin: 0 10px; text-align: right; }
+.upload-table .misc { width: 40px; }
+.upload-table .msg { width: 310px; text-indent: 1em; overflow: hidden; }
+
+.upload-scroll {
+    height: 216px;
+    color: #000;
+    background: #FEFEFE;
+    border: 1px solid #ccc;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+/* upload-table foot */
+.upload-table .ft {
+    color: #000;
+    background: #e4e4e4;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.upload-table .total-files,
+.upload-table .total-size { display: block; float: left; }
+
+.upload-table .total-files { width: 200px; text-indent: 1em; }
+.upload-table .total-size { width: 130px; text-align: right; }
+.upload-table .total-files em,
+.upload-table .total-size em { font-weight: bold; }
+
+.upload-table .files-num,
+.upload-table .select-files { display: block; float: left; }
+
+.upload-table .select-files {
+    position: relative;
+    display: block;
+    height: 20px;
+    border-left: 1px solid #ccc;
+    padding-left: 10px;
+    margin: 5px 5px 5px 10px;
+}
+.upload-table .select-files a { position: absolute; left: 0; top: 0; width: 80px; *width: 90px; height: 20px; }
+
+
+/* upload-list */
+#tmpl-upload-item { display: none; }
+
+.upload-list li { border-bottom: 1px solid #E4E4E4; line-height: 22px; overflow: hidden; zoom: 1; }
+.upload-list li.processing { background: url(img/file_upload_progress.gif) no-repeat -795px 0; }
+
+.upload-list li .status { display: none; width: 10px; margin-left: 15px; text-indent: -9999px; }
+.upload-list li.ok { color: #999; }
+.upload-list li.ok .status { display: block; background: url(img/ok.gif) no-repeat -1px 50%; }
+
+.upload-list li .remove {
+    display: none;
+    background: url(img/trash_can.gif) no-repeat 0 50%;
+    width: 10px;
+    margin-left: 15px;
+    text-indent: -9999px;
+    outline: none;
+}
+.upload-list li.default .remove { display: block; }
+.upload-list li.default .remove:hover { background-position: -10px 50%; }
+.upload-list li.default .msg { display: none; }
+
+.upload-list li.warning { color: #999; }
+.upload-list li.warning .name { text-decoration: line-through; }
+.upload-list li.warning .misc { background-color: #FFFFD4; }
+.upload-list li.warning .remove { display: block; }
+
+.upload-list li.error { color: #c33; background: #FFFFD4; }
+.upload-list li.error .status { display: block; background: url(img/error.gif) no-repeat 0 50%; }
+.upload-list li.wait-to-publish { color: #999; }
+.upload-list li.wait-to-publish .status {
+    display: block;
+    background: url(img/wait_to_publish.png) no-repeat 0 50%;
+    width: 16px;
+    margin-left: 12px;
+}
+
+.ui-disabled li.default .remove { display: none; }
+
+.upload-list input.url { border: none; width: 300px; }
+
+
+/* upload-controls */
+.upload-controls { margin-top: 20px; }
+.upload-controls label { display: block; height: 24px; }
+.upload-controls label input { vertical-align: middle; margin-right: 5px; }
+
+.upload-controls .submit { margin-top: 10px; }
+.upload-controls .submit .loading { color: #999; display: none; }
+.upload-controls .submit .loading img { margin: 5px 8px -9px 10px; }
+.ui-disabled .upload-controls .submit .loading { display: inline; }
+
+.upload-controls button.disabled { color: #999; }
+.upload-controls button.disabled:hover { color: #999; }
+
+
+/* upload-result */
+.upload-result { margin-top: 20px; }
+.upload-result p { display: none; font-size: 17px; font-weight: bold; height: 51px; line-height: 51px; padding-left: 55px; }
+.upload-result p a { font-size: 13px; font-weight: normal; text-decoration: underline; }
+.upload-result p.ok { background: url(img/ok_big.png) no-repeat 0 0; }
+.upload-result p.error { background: url(img/error_big.gif) no-repeat 10px 50%; height: 30px; line-height: 30px; }
+
+.error-result p.error { display: block; }
+.ok-result p.ok { display: block; }
+
+
+/*************************
+ * only for test page
+ *************************/
+h1 { display: none; }
+.upload-container { margin: 50px 0; padding: 30px 20px; }

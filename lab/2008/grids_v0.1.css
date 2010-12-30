@@ -1,0 +1,136 @@
+/*!
+Copyright (c) 2008, Taobao.com Inc. Some rights reserved.
+version: 0.0.1
+*/
+
+#page { width: 950px; margin: 0 auto; }
+#page2 { width: 100% }
+
+.gl-g, /* gl-g means: grid-layout-general */
+.gl-g2, .gl-g2f, .gl-g2-c5, .gl-g2-c5f,
+.gl-g2-c4, .gl-g2-c4f, .gl-g2-c6, .gl-g2-c6f,
+.gl-g2-c7, .gl-g2-c7f, .gl-g2-c8, .gl-g2-c8f,
+.gl-g2-c9, .gl-g2-c9f, .gl-g2-c10, .gl-g2-c10f,
+.gl-g2-c11, .gl-g2-c11f, .gl-g2-c12, .gl-g2-c12f,
+.gl-g3, .gl-g3f, .gl-g3e, .gl-g3d, .gl-g3c, .gl-g3b {
+	overflow: hidden; _zoom: 1; /* clear float */
+}
+
+.col-main, .col-sub, .col-extra { float: left; position: relative; }
+.col-main { width: 100%; }
+
+
+/******************************************
+ * 2 Columns 
+ ******************************************/
+/* 2 Columns: sub width = 4 * 40 - 10 */
+.gl-g2-c4 .col-main .col-wrap { margin-left: 160px; }
+.gl-g2-c4 .col-sub { width: 150px; margin-left: -100%; }
+
+/* 2 Columns: sub(190) : main */
+.gl-g2 .col-main .col-wrap,
+.gl-g2-c5 .col-main .col-wrap{ margin-left: 200px; } /* 190 + 10 */
+.gl-g2 .col-sub,
+.gl-g2-c5 .col-sub{ width: 190px; margin-left: -100%; }
+
+/* 2 Columns: sub width = 6 * 40 - 10 */
+.gl-g2-c6 .col-main .col-wrap { margin-left: 240px; }
+.gl-g2-c6 .col-sub { width: 230px; margin-left: -100%; }
+
+/* 2 Columns: sub width = 7 * 40 - 10 */
+.gl-g2-c7 .col-main .col-wrap { margin-left: 280px; }
+.gl-g2-c7 .col-sub { width: 270px; margin-left: -100%; }
+
+/* 2 Columns: sub width = 8 * 40 - 10 */
+.gl-g2-c8 .col-main .col-wrap { margin-left: 320px; }
+.gl-g2-c8 .col-sub { width: 310px; margin-left: -100%; }
+
+/* 2 Columns: sub width = 9 * 40 - 10 */
+.gl-g2-c9 .col-main .col-wrap { margin-left: 360px; }
+.gl-g2-c9 .col-sub { width: 350px; margin-left: -100%; }
+
+/* 2 Columns: sub width = 10 * 40 - 10 */
+.gl-g2-c10 .col-main .col-wrap { margin-left: 400px; }
+.gl-g2-c10 .col-sub { width: 390px; margin-left: -100%; }
+
+/* 2 Columns: sub width = 11 * 40 - 10 */
+.gl-g2-c11 .col-main .col-wrap { margin-left: 440px; }
+.gl-g2-c11 .col-sub { width: 430px; margin-left: -100%; }
+
+/* 2 Columns: sub width = 12 * 40 - 10 */
+.gl-g2-c12 .col-main .col-wrap { margin-left: 480px; }
+.gl-g2-c12 .col-sub { width: 470px; margin-left: -100%; }
+
+/* gl-g2 -cnf */
+/* 2 Columns: sub width = 4 * 40 - 10 */
+.gl-g2-c4f .col-main .col-wrap { margin: 0 160px 0 0; }
+.gl-g2-c4f .col-sub { width: 150px; margin: 0 0 0 -150px; }
+
+/* 2 Columns: main : sub(190) */
+.gl-g2f .col-main .col-wrap,
+.gl-g2-c5f .col-main .col-wrap { margin: 0 200px 0 0; }
+.gl-g2f .col-sub,
+.gl-g2-c5f .col-su{ width: 190px; margin: 0 0 0 -190px; }
+
+/* 2 Columns: sub width = 6 * 40 - 10 */
+.gl-g2-c6f .col-main .col-wrap { margin: 0 240px 0 0; }
+.gl-g2-c6f .col-sub { width: 230px; margin: 0 0 0 -230px; }
+
+/* 2 Columns: sub width = 7 * 40 - 10 */
+.gl-g2-c7f .col-main .col-wrap { margin: 0 280px 0 0; }
+.gl-g2-c7f .col-sub { width: 270px; margin: 0 0 0 -270px; }
+
+/* 2 Columns: sub width = 8 * 40 - 10 */
+.gl-g2-c8f .col-main .col-wrap { margin: 0 320px 0 0; }
+.gl-g2-c8f .col-sub { width: 310px; margin: 0 0 0 -310px; }
+
+/* 2 Columns: sub width = 9 * 40 - 10 */
+.gl-g2-c9f .col-main .col-wrap { margin: 0 360px 0 0; }
+.gl-g2-c9f .col-sub { width: 350px; margin: 0 0 0 -350px; }
+
+/* 2 Columns: sub width = 10 * 40 - 10 */
+.gl-g2-c10f .col-main .col-wrap { margin: 0 400px 0 0; }
+.gl-g2-c10f .col-sub { width: 390px; margin: 0 0 0 -390px; }
+
+/* 2 Columns: sub width = 11 * 40 - 10 */
+.gl-g2-c11f .col-main .col-wrap { margin: 0 440px 0 0; }
+.gl-g2-c11f .col-sub { width: 430px; margin: 0 0 0 -430px; }
+
+/* 2 Columns: sub width = 12 * 40 - 10 */
+.gl-g2-c12f .col-main .col-wrap { margin: 0 480px 0 0; }
+.gl-g2-c12f .col-sub { width: 470px; margin: 0 0 0 -470px; }
+
+/******************************************
+ * 3 Columns 
+ ******************************************/
+/* 3 Columns: sub(190) : main(510) : extra(230) */
+.gl-g3 .col-main .col-wrap { margin: 0 240px 0 200px; }
+.gl-g3 .col-sub { width: 190px; margin-left: -100%; }
+.gl-g3 .col-extra { width: 230px; margin-left: -230px; }
+
+/* 3 Columns: extra(230) : main(510) : sub(190) */
+.gl-g3f .col-main .col-wrap { margin: 0 200px 0 240px; }
+.gl-g3f .col-sub { width: 190px; margin-left: -190px; }
+.gl-g3f .col-extra { width: 230px; margin-left: -100%; }
+
+/* 3 Columns: main(510) : sub(190) : extra(230) */
+.gl-g3e .col-main .col-wrap { margin-right: 440px } /* 10 + 190 + 10 + 230 */
+.gl-g3e .col-sub { width: 190px; margin-left: -430px; }
+.gl-g3e .col-extra { width: 230px; margin-left: -230px; }
+
+/* 3 Columns: main(510) : extra(230) : sub(190) */
+.gl-g3d .col-main .col-wrap { margin-right: 440px } /* 10 + 230 + 10 + 190 */
+.gl-g3d .col-sub { width: 190px; margin-left: -190px; }
+.gl-g3d .col-extra { width: 230px; margin-left: -430px; }
+
+/* 3 Columns: sub(190) : extra(230) : main(510) */
+.gl-g3c .col-main .col-wrap { margin-left: 440px } /* 190 + 10 + 230 + 10 */
+.gl-g3c .col-sub { width: 190px; margin-left: -100%; }
+.gl-g3c .col-extra { width: 230px; margin-left: -100%; left: 200px; }
+
+/* 3 Columns: extra(230) : sub(190) : main(510) */
+.gl-g3b .col-main .col-wrap { margin-left: 440px } /* 230 + 10 + 190 + 10 */
+.gl-g3b .col-sub { width: 190px; margin-left: -100%; left: 240px; }
+.gl-g3b .col-extra { width: 230px; margin-left: -100%; }
+
+/* EOF */

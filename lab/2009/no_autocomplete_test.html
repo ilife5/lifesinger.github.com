@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=gb18030" />	
+<title>No Autocomplete Test</title>
+<style type="text/css">
+	body { font: 12px/18px Tahoma,Arial,sans-serif; color: #333; padding: 60px }
+	table { border: 1px solid #ddd }
+	th, td { padding: 5px 20px; border: 1px solid #ccc }
+</style>
+</head>
+<body>
+<p>1. 请在所有输入框中输入字符后，按submit，然后再按后退键，检查表单值是否还原。</p>
+<p>2. 请在所有输入框中输入字符后，按F5刷新，检查表单值是否还原。</p>
+
+<form name="testForm" action="no_autocomplete_post.html" method="post">
+	<input name="input3" type="text" value="" size="12" /> nothing
+	<br />
+	<br />
+	<input name="input1" autocomplete="off" type="text" value="" size="12" /> has autocomplete="off"
+	<br />
+	<br />
+	<input name="input4" type="text" value="" size="12" /> js: input.value = ''
+	<br />
+	<br />
+	<input name="input2" type="text" value="" size="12" /> js: setTimeout: input.value = ''
+	<br />
+	<br />
+	<input name="input5" type="text" value="" size="12" /> js: onpageshow: input.value = ''
+	<br />
+	<br />
+	<input name="submitBtn" type="submit" value="submit" autocomplete="off" /> has autocomplete="off"
+	<br />
+	<br />
+	<input name="submitBtn2" type="submit" value="submit2" />
+</form>
+
+<script type="text/javascript">
+
+    var form = document.forms[0];
+
+    setTimeout(function() {
+        //form.reset();
+        form.input2.value = '';
+    }, 0);
+
+    form.input4.value = '';
+
+    form.onsubmit = function() {
+        this.submitBtn.setAttribute('disabled', 'disabled');
+        this.submitBtn2.setAttribute('disabled', 'disabled');
+    };
+
+    window.onpageshow = function() {
+        form.input5.value = '';
+    };
+</script>
+
+<p>前提：所有浏览器都默认安装，同时开启了表单提示功能。</p>
+
+<h3>Table A: 提交后，Backsapce后退</h3>
+<table>
+<thead>
+<tr><th></th><th>Firefox 3.0</th><th>IE 8</th><th>Safari 4 / Win</th><th>Chrome 2.0</th><th>Opera 9.64</th></tr>
+</thead>
+<tbody>
+<tr><th>default</th><td>保留</td><td>保留</td><td>还原</td><td>保留</td><td>保留</td></tr>
+<tr><th>autocomplete='off'</th><td>还原</td><td>保留</td><td>还原</td><td>还原</td><td>保留</td></tr>
+<tr><th>js reset</th><td>还原</td><td>保留</td><td>还原</td><td>还原</td><td>保留</td></tr>
+<tr><th>setTimeout reset</th><td>还原</td><td>还原</td><td>还原</td><td>还原</td><td>保留</td></tr>
+<tr><th>onpageshow reset</th><td>还原</td><td>保留</td><td>还原</td><td>保留</td><td>保留</td></tr>
+</tbody>
+</table>
+
+<br />
+<br />
+<h3>Table B: F5刷新</h3>
+<table>
+<thead>
+<tr><th></th><th>Firefox 3.0</th><th>IE 8</th><th>Safari 4 / Win</th><th>Chrome 2.0</th><th>Opera 9.64</th></tr>
+</thead>
+<tbody>
+<tr><th>default</th><td>保留</td><td>还原</td><td>提示 + 还原</td><td>还原</td><td>还原</td></tr>
+<tr><th>autocomplete='off'</th><td>还原</td><td>还原</td><td>提示 + 还原</td><td>还原</td><td>还原</td></tr>
+<tr><th>js reset</th><td>还原</td><td>还原</td><td>提示 + 还原</td><td>还原</td><td>还原</td></tr>
+<tr><th>setTimeout reset</th><td>还原</td><td>还原</td><td>提示 + 还原</td><td>还原</td><td>还原</td></tr>
+</tbody>
+</table>
+
+</body>
+</html>

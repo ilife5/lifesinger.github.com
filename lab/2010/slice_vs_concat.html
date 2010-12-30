@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Crazy Test</title>
+<style>
+    body {
+        background-color: black;
+        color: #bbb;
+        font: 18px/1.5 Consolas, '微软雅黑', monospace;
+        padding: 10px 20px;
+    }
+
+    a {
+        color: #9fc;
+        text-decoration: none;
+    }
+
+    h2 {
+        font: normal 26px Futura, Century Gothic, AppleGothic, sans-serif;
+        margin: 20px 0 10px;
+    }
+
+    button {
+        padding: 5px 20px;
+        margin: 10px;
+    }
+
+    #konsole {
+        border: 1px dashed #f97;
+        padding: 10px 20px;
+    }
+</style>
+</head>
+<body>
+
+<h2>Console</h2>
+<div id="konsole"></div>
+
+<script>
+
+    var konsole = document.getElementById('konsole');
+
+    function log(msg) {
+        if (msg === null) return konsole.innerHTML = '';
+
+        msg = (msg === undefined) ? '' : (msg + '').replace(/\n/g, '<br>');
+        konsole.innerHTML += msg + '<br>';
+    }
+
+    function logfn(msg) {
+        return function() {
+            log(msg);
+        };
+    }
+
+    function now() {
+        return new Date().getTime();
+    }
+
+    function times(n, fn) {
+        while (n--) fn();
+    }
+
+    //////////////////////////////////////////
+
+    function run(count) {
+        var start, result = [],
+                AP = Array.prototype,
+                slice = AP.slice,
+                concat = AP.concat,
+                push = AP.push;
+
+        log(null);
+
+        // prepare
+        var arr = [];
+        for (var i = 0; i < 5000; i++) {
+            arr[i] = 'a';
+        }
+
+        // test cases
+        start = now();
+        times(count, function() {
+            var ret = arr.slice();
+        });
+        result.push('slice: ' + (now() - start));
+
+        start = now();
+        times(count, function() {
+            var ret = arr.concat();
+        });
+        result.push('concat: ' + (now() - start));
+
+        start = now();
+        times(count, function() {
+            var ret = [];
+            push.apply(ret, arr);
+        });
+        result.push('push: ' + (now() - start));
+
+        start = now();
+        times(count, function() {
+            var ret = [];
+            for(var i = 0, len = arr.length; i < len; i++) {
+                ret[i] = arr[i];
+            }
+        });
+        result.push('loop: ' + (now() - start));
+
+        // print result
+        for (i in result) log(result[i] + ' ms');
+    }
+
+</script>
+<button onclick="run(1000)">Run</button>
+
+<h2>Summary</h2>
+<ol>
+</ol>
+
+<h2>References</h2>
+<ol>
+</ol>
+
+</body>
+</html>

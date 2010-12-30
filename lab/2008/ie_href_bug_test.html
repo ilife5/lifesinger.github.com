@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>IE href bug</title>
+</head>
+
+<body>
+
+<div id="c1"><a id="link" href="#">click me</a></div>
+<div id="c2"></div>
+
+<script type="text/javascript">
+
+var a = document.getElementById('link');
+//alert(a.href);
+//alert(a.getAttribute('href'));
+// Ref: http://www.glennjones.net/Post/809/getAttributehrefbug.htm
+//alert(a.getAttribute('href', 2));
+
+var c1 = document.getElementById('c1');
+var c2 = document.getElementById('c2');
+
+c2.innerHTML = c1.innerHTML;
+alert(c2.innerHTML);
+
+var links1 = c1.getElementsByTagName('a');
+var links2 = c2.getElementsByTagName('a');
+for(var i = 0, len = links1.length; i < len; ++i) {
+	links2[i].href = links1[i].getAttribute('href', 2);
+}
+
+alert(c2.innerHTML);
+
+// 还有一个办法是：DOM操作，将c1下的所有childNodes复制到c2中 by 空帷
+
+</script>
+
+</body>
+</html>

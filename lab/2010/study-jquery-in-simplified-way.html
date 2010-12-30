@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Study jQuery Test</title>
+</head>
+<style type="text/css">
+    body {
+        font: 14px / 16px "Courier New", Courier, monospace;
+    }
+</style>
+<body>
+<h1>Study jQuery in a simplified way!</h1>
+<div id="test">
+    <p data-test="1">1</p>
+    <p data-test="2">2</p>
+    <p>3</p>
+    <p>4</p>
+    <p>5</p>
+    <p>6</p>
+    <p>7</p>
+    <p>8</p>
+    <p>9</p>
+    <p>10</p>
+    <p>11</p>
+    <p>12</p>
+</div>
+<script>
+(function(win, undefined) {
+    var jQuery = function(selector, context) {
+            return new jQuery.fn.init(selector, context);
+        },
+        document = window.document,
+        push = Array.prototype.push,
+        slice = Array.prototype.slice;
+
+    jQuery.fn = jQuery.prototype = {
+        init: function(selector, context) {
+            var ret = (context || document).querySelectorAll(selector);
+            ret = slice.call(ret);
+            push.apply(this, ret);
+            return this;
+        },
+        length: 0,
+        attr: function(name, value) {
+            return access(this, name, value, jQuery.attr);
+        }
+    };
+
+    jQuery.fn.init.prototype = jQuery.fn;
+
+    jQuery.attr = function(elem, name, value) {
+        if (value === undefined) {
+            return elem.getAttribute(name);
+        }
+        return elem.setAttribute(name, value);
+    };
+
+    function access(elems, key, value, fn) {
+        var length = elems.length;
+
+        if (value !== undefined) {
+            for (var i = 0; i < length; i++) {
+                fn(elems[i], key, value);
+            }
+            return elems;
+        }
+
+        return length ? fn(elems[0], key) : null;
+    }
+
+    win.$ = win.jQuery = jQuery;
+})(window);
+
+document.write("jQuery('#test p').length = " + jQuery('#test p').length);
+document.write("<br />");
+document.write("jQuery('#test p').attr('rel') = " + jQuery('#test p').attr('data-test'));
+</script>
+</body>
+</html>

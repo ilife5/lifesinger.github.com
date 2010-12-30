@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<title>Test</title>
+<style type="text/css">
+    strong {
+        font-weight: normal;
+        color: red;
+    }
+
+    td, th {
+        padding: 5px 20px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<style type="text/css">
+    .on { background-image: url(http://htstars.googlepages.com/HTStar_On.gif); }
+    .off { background-image: url(http://htstars.googlepages.com/HTStar_Off.gif); }
+
+    .star2 .on { background-image: url(http://htstars.googlepages.com/HTStar_yellow_On.gif); }
+    .star2 .off { background-image: url(http://htstars.googlepages.com/HTStar_yellow_Off.gif); }
+
+    .star span, .star2 span {
+        display: block;
+        width: 16px; height: 16px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        float: left;
+    }
+    p { clear: both; }
+</style>
+
+<p>请在IE下运行，将鼠标在星星处移来移去至少10次。</p>
+<div id="J_Stars" class="star" style="padding: 20px 100px">
+    <span class="off"></span>
+    <span class="off"></span>
+    <span class="off"></span>
+    <span class="off"></span>
+    <span class="off"></span>
+</div>
+<p>注意状态栏，每次悬浮到星星上时，IE都会产生一个HTTP请求。</p>
+
+<hr />
+
+<p>下面这些星星是乖孩子，悬浮时不会产生多余的HTTP请求：</p>
+<div id="J_Stars2" class="star2" style="padding: 20px 100px">
+    <span class="off"></span>
+    <span class="off"></span>
+    <span class="off"></span>
+    <span class="off"></span>
+    <span class="off"></span>
+</div>
+<div class="star2"><span class="on"></span></div>
+
+
+<script type="text/javascript">
+
+    function initStars(containerId) {
+        var starEls = document.getElementById(containerId).getElementsByTagName('span');
+        for (var i = 0, len = starEls.length; i < len; ++i) {
+            starEls[i].onmouseover = function() {
+                this.className = 'on';
+            };
+            starEls[i].onmouseout = function() {
+                this.className = 'off';
+            };
+        }
+    }
+
+    initStars('J_Stars');
+    initStars('J_Stars2');
+
+   // try {document.execCommand("BackgroundImageCache", false, true);}catch(e){};
+</script>
+</body>
+</html>

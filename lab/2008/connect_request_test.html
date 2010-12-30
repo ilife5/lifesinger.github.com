@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=gbk">
+<title>Connection Manager Transaction</title>
+
+<style type="text/css">
+/*margin and padding on body element
+  can introduce errors in determining
+  element position and are not recommended;
+  we turn them off as a foundation for YUI
+  CSS treatments. */
+body {
+	margin:0;
+	padding:0;
+}
+</style>
+
+<link rel="stylesheet" type="text/css" href="http://assets.taobaocdn.com/yui/2.6.0/build/fonts/fonts-min.css" />
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.6.0/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.6.0/build/event/event-min.js"></script>
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.6.0/build/connection/connection-min.js"></script>
+
+
+<!--begin custom header content for this example-->
+<style>
+#container li {margin-left:2em;}
+</style>
+
+
+<!--end custom header content for this example-->
+
+</head>
+
+<body class=" yui-skin-sam">
+
+
+<h1>Connection Manager Transaction</h1>
+
+<div class="exampleIntro">
+	<p>To create a POST/GET transaction using <a href="http://developer.yahoo.com/yui/connection/">Connection Manager</a>, you will need to construct a data string as the POST/GET message. The following code example provides a step-by-step approach to creating a simple POST/GET transaction.</p>
+
+<p>Click "Send a POST/GET Request" below to try it out, then read the description below to learn how to send POST/GET data to the server using Connection Manager.</p>			
+</div>
+
+<!--BEGIN SOURCE CODE FOR EXAMPLE =============================== -->
+<form id="testForm1" action="connect_get_respond.php" method="get">
+	<input name="username" type="text" value="test val" />
+	<input name="password" type="password" />
+	<input name="isOK" type="radio" checked="checked" />
+	<textarea name="msg">非常棒</textarea>
+	<input type="submit" value="Send a GET Request" />
+</form>
+
+<script type="text/javascript">	
+var Y = YAHOO.util, D = Y.Dom, E = Y.Event;
+
+E.on('testForm1', 'submit', function(ev) {
+	E.preventDefault(ev); // 阻止默认提交，采用异步提交
+	
+	Y.Connect.asyncRequest('GET', this.action, {
+		
+		success: function(o) {
+			alert('success: ' + o.responseText);
+		},
+
+		failure: function(o) {
+			alert('fail: ' + o.responseText);
+		},
+
+		timeout: 2000,
+
+		cache: false
+	},
+	Y.Connect.setForm('testForm1'));
+
+});
+</script>
+<!--END SOURCE CODE FOR EXAMPLE =============================== -->
+
+<!--BEGIN SOURCE CODE FOR EXAMPLE =============================== -->
+<form id="testForm2" action="connect_post_respond.php" method="post">
+	<input name="username" type="text" value="test val" />
+	<input name="password" type="password" />
+	<input name="isOK" type="radio" checked="checked" />
+	<textarea name="msg">非常棒</textarea>
+	<input type="submit" value="Send a POST Request" />
+</form>
+
+<script type="text/javascript">	
+var Y = YAHOO.util, D = Y.Dom, E = Y.Event;
+
+E.on('testForm2', 'submit', function(ev) {
+	E.preventDefault(ev); // 阻止默认提交，采用异步提交
+
+	Y.Connect.asyncRequest('POST', this.action, {
+		
+		success: function(o) {
+			alert('success: ' + o.responseText);
+		},
+
+		failure: function(o) {
+			alert('fail: ' + o.responseText);
+		},
+
+		timeout: 2000,
+
+		cache: false
+	},
+	Y.Connect.setForm('testForm2'));
+
+});
+</script>
+<!--END SOURCE CODE FOR EXAMPLE =============================== -->
+
+<p>如果response的编码不能设为utf-8，请参考 <a href="http://design.alibaba-inc.com/?q=node/1073">如何防止在Ajax交互中产生乱码</a> 解决乱码问题</p>
+<p>
+一般可以要求后台开发在response文件中加入：
+<input type="text" size="50" value='header("Content-type: text/html;charset=utf-8");' />
+来避免乱码问题
+</p>
+
+</body>
+</html>

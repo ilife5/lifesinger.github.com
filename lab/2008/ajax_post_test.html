@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Connection Manager POST Transaction</title>
+
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.6.0/yui-base.js"></script>
+
+<!--begin custom header content for this example-->
+<style>
+#container li {margin-left:2em;}
+textarea { width: 500px; height: 100px; }
+</style>
+
+
+<!--end custom header content for this example-->
+
+</head>
+
+<body class=" yui-skin-sam">
+
+
+<h1>Connection Manager POST Transaction</h1>
+
+<div class="exampleIntro">
+	<p>To create a POST transaction using <a href="http://developer.yahoo.com/yui/connection/">Connection Manager</a>, you will need to construct a data string as the POST message. The following code example provides a step-by-step approach to creating a simple POST transaction.</p>
+	<p>Click "Send a POST Request" below to try it out, then read the description below to learn how to send POST data to the server using Connection Manager.</p>			
+</div>
+
+
+<div id="container"></div>
+
+<script>
+var div = document.getElementById('container');
+
+var handleSuccess = function(o){
+	//if(o.responseText !== undefined){
+		div.innerHTML = "<li>Transaction id: " + o.tId + "</li>";
+		div.innerHTML += "<li>HTTP status: " + o.status + "</li>";
+		div.innerHTML += "<li>Status code message: " + o.statusText + "</li>";
+		div.innerHTML += "<li>HTTP headers received: <ul>" + o.getAllResponseHeaders + "</ul></li>";
+		div.innerHTML += "<li>PHP response: " + o.responseText + "</li>";
+		div.innerHTML += "<li>Argument object: Array ([0] => " + o.argument[0] +
+						 " [1] => " + o.argument[1] + " )</li>";
+	//}
+};
+
+var handleFailure = function(o){
+	//if(o.responseText !== undefined){
+		div.innerHTML = "<li>Transaction id: " + o.tId + "</li>";
+		div.innerHTML += "<li>HTTP status: " + o.status + "</li>";
+		div.innerHTML += "<li>Status code message: " + o.statusText + "</li>";
+	//}
+};
+
+var callback =
+{
+  success:handleSuccess,
+  failure:handleFailure,
+  argument:['foo','bar']
+};
+
+var postData = "username=anonymous&userid=0";
+
+function makeRequest(url){
+	YAHOO.util.Connect.asyncRequest('POST', url, callback, postData);
+}
+
+</script>
+
+<form>
+	<input type="button" value="Send a POST Request 200" onClick="makeRequest('post200.php');">
+	<input type="button" value="Send a POST Request 301" onClick="makeRequest('post301.php');">
+</form>
+
+<h4>post200.php</h4>
+<textarea>
+<?php
+// yadl_spaceid - Skip Stamping
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+
+// always modified
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+
+// HTTP/1.1
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+//print_r($_POST);
+?>
+</textarea>
+
+
+<h4>post301.php</h4>
+<textarea>
+<?php
+header ('HTTP/1.1 301 Moved Permanently');
+header ('Location: post301_redirect.html');
+?>
+</textarea>
+
+</body>
+</html>

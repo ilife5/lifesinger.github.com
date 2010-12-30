@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>firefox img src cache test</title>
+</head>
+
+<body>
+
+<p>点击下图，Firefox下会新增3个HTTP请求：</p>
+<img id="J_Img" src="assets/evolution.jpg" alt="evolution.jpg" />
+
+<script type="text/javascript">
+    var imgEl = document.getElementById('J_Img');
+    imgEl.onclick = function() {
+        imgEl.src = 'assets/evolution.jpg';
+
+        new Image().src = 'assets/evolution.jpg';
+        new Image().src = 'assets/evolution.jpg';
+    };
+</script>
+</body>
+</html>

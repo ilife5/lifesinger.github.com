@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />	
+<title>Clear Float Test</title>
+<link rel="stylesheet" href="assets/reset-grids.css" type="text/css" media="screen" />
+<style type="text/css">
+	#page3 { font: 12px/1.5 Tahoma,Arial,sans-serif; color: #333; }
+	h1 { font-size: 32px; text-align: center }
+	ol li { list-style: decimal inside }
+
+	.demo { background: #f3f3f3; padding: 10px; margin: 10px }
+	.demo .sub-content { float: left; background: #E9E2D2; width: 120px; padding: 10px; margin-right: 10px }
+	.demo p { color: #888 }
+	.demo p.info { color: #333 }
+</style>
+</head>
+<body>
+<div id="page3">
+	<h1>浮动门Bug探析</h1>
+	
+	<div id="demo1" class="demo">
+		<div class="sub-content">
+			<p class="info">#demo1</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+		</div>
+		<p class="info">当浮动元素的高度小于容器高度时，没任何问题</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+	</div>
+
+	<div id="demo2" class="demo">
+		<div class="sub-content">
+			<p class="info">#demo2</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+		</div>
+		<p class="info">讨厌的浮动门bug出现了</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+	</div>
+	
+	<div style="clear: both"></div>
+
+	<style type="text/css">
+		#demo3 { width: 760px }
+	</style>
+	<div id="demo3" class="demo">
+		<div class="sub-content">
+			<p class="info">#demo3</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+		</div>
+		<p class="info">对于IE来说，只要触发容器的hasLayout就行了，比如 #demo3 { width: 760px } 或者经典的 zoom : 1 </p>
+		<p class="info">注意 width: 100% 触发不了 hasLayout. 详情请见：http://bit.ly/26bJ3n</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+	</div>
+
+	<div style="clear: both"></div>
+
+	<style type="text/css">
+		#demo4 { float: left }
+	</style>
+	<div id="demo4" class="demo">
+		<div class="sub-content">
+			<p class="info">#demo4</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+		</div>
+		<p class="info">通用解决办法一：#demo4 { float: left }  点评：你浮我也浮  缺点：1. 大家都要浮 2. 默认宽度不一致</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+	</div>
+
+	<div style="clear: both"></div>
+
+	<style type="text/css">
+		#demo5 { overflow: auto; _zoom: 1 }
+	</style>
+	<div id="demo5" class="demo">
+		<div class="sub-content">
+			<p class="info">#demo5</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+		</div>
+		<p class="info">通用解决办法二：#demo5 { overflow: auto; _zoom: 1 }  点评：很简单 缺点：好像没啥缺点</p>
+		<p class="info">overflow: hidden 也可以。对ie6，依旧需要触发hasLayout来解决</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+	</div>
+
+	<div style="clear: both"></div>
+
+	<style type="text/css">
+		#demo6 { zoom: 1 }
+		#demo6:after { content: "\0020"; display: block; clear: both; height: 0 }
+	</style>
+	<div id="demo6" class="demo">
+		<div class="sub-content">
+			<p class="info">#demo6</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+		</div>
+		<p class="info">通用解决办法三：</p>
+		<p class="info">#demo6 { zoom: 1 }</p>
+		<p class="info">#demo6:after { content: "\0020"; display: block; clear: both; height: 0 }</p>
+		<p class="info">点评：巧妙的利用CSS的伪类来解决 缺点：代码显得有点复杂</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+	</div>
+
+	<div style="clear: both"></div>
+
+	<div id="demo7" class="demo">
+		<div class="sub-content">
+			<p class="info">#demo7</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+			<p>sub content content</p>
+		</div>
+		<p class="info">通用解决办法四：</p>
+		<p class="info">添加 &lt;div style="clear: both"&gt;&lt;/div&gt;</p>
+		<p class="info">点评：简单明了，W3C推荐  缺点：要增加额外标签</p>
+		<p>main content content content content content contentcontent content contentcontent content content</p>
+		<div style="clear: both; border: 1px dashed #555">我就是多余的清扫浮动的打工妹</div>
+	</div>
+
+	<div style="clear: both"></div>
+
+	<div id="references" class="demo">
+		<div class="sub-content" style="height: 50px">
+			<h2>参考资料</h2>
+		</div>
+		<ol>
+			<li><a href="http://www.positioniseverything.net/easyclearing.html">How To Clear Floats Without Structural Markup</a> 虽然文章长点，但值得一读</li>
+			<li><a href="http://www.sitepoint.com/blogs/2005/02/26/simple-clearing-of-floats/">Simple Clearing of Floats</a> 我喜欢这个方法，简单啊</li>
+			<li><a href="http://www.satzansatz.de/cssd/onhavinglayout.html">On having layout — the concept of hasLayout in IE/Win</a> 这就是国外和国内的差距</li>
+			<li><a href="http://www.quirksmode.org/css/clearing.html">Clearing floats</a> PPK的总结</li>
+		</ol>
+	</div>
+
+	<style type="text/css">
+		#copyright { overflow: auto; _zoom: 1; margin-bottom: 60px }
+	</style>
+	<div id="copyright" class="demo">
+		<div class="sub-content">
+			<h2>维护更新</h2>
+		</div>
+		<ul>
+			<li>2008-10-29: Created by <a href="http://lifesinger.org/">lifesinger</a></li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

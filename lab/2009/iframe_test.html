@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<title>Crazy Test</title>
+</head>
+
+<body>
+<iframe id="test" name="test2" src="iframe_test2.html"></iframe>
+<p id="msg">parent</p>
+
+<script type="text/javascript">
+
+    function parentFn() {
+        alert('parent function');
+    }
+
+    window.onload = function() {
+        var testFrame = document.getElementById('test');
+        testFrame.contentDocument.getElementById('msg').innerHTML += 'set from parent';
+
+        debug('window.frames[0].iframeFn = ' + window.frames[0].iframeFn);
+        debug('window.frames[0] == iframe.contentWindow: ' + (window.frames[0] == testFrame.contentWindow));
+        debug('window.frames[0] == window.test: ' + (window.frames[0] == window.test));
+        debug('window.frames[0] == window.frames["test"]: ' + (window.frames[0] == window.frames["test"]));
+    };
+
+    var msgEl = document.getElementById('msg');
+    function debug(info) {
+        msgEl.innerHTML += '<br />' + info;
+    }
+</script>
+</body>
+</html>

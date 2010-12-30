@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Load Test</title>
+<style type="text/css">
+    li { line-height: 1.5 }
+    ul, ol { margin: 5px 5px 10px }
+</style>
+</head>
+<body>
+<h1>Load Test</h1>
+<ol>
+    <li>在 window load 完成后添加到 window.onload 中的 handler 不会执行。但是：
+        <ul>
+            <li>Firefox 中，当 setTimeout 的延时为 0，高频率刷新时，偶尔会触发。</li>
+            <li>Opera 中，当 setTimeout 的延时为 0 时，总是触发；延时为 1 时，和 Firefox 的症状一样。</li>
+            <li>注意：要测试以上两点，请保存源码，将 Test 1 后面的代码都注释掉。</li>
+        </ul>
+    </li>
+    <li>动态添加的 script, 在 script 下载完成前，不会触发 window.onload 事件。但是：
+        <ul>
+            <li>IE 下，F5 刷新页面，会先触发 window.onload 事件。</li>
+            <li>Safari/Win 有一个诡异的现象：两次刷新后，浏览器崩溃。</li>
+        </ul>
+    </li>
+    <li>DOMContentLoaded 事件，一旦当 DOM content 加载完毕就会触发。但是：
+        <ul>
+            <li>Opera 要等到 image 和 js 都下载完毕后，才会触发 DOMContentLoaded 事件。</li>
+        </ul>
+    </li>
+</ol>
+
+<h4>测试环境</h4>
+<p>Firefox 3.0 + Safari 4/Win + Chrome 2.0 + IE 8 + Opera 10.0</p>
+
+<img src="http://farm1.static.flickr.com/98/248876814_219df97e13.jpg?v=0" alt="" onload="alert('img loaded')" />
+
+<h4>参考资料</h4>
+<ul>
+    <li><a href="http://dean.edwards.name/weblog/2006/06/again/">window.onload (again)</a></li>
+    <li><a href="http://www.hedgerwow.com/360/dhtml/ie-dom-ondocumentready.html">http://www.hedgerwow.com/360/dhtml/ie-dom-ondocumentready.html</a></li>
+    <li><a href="http://www.kryogenix.org/days/2007/09/26/shortloaded">DOMContentLoaded for IE, Safari, everything, without document.write</a></li>
+    <li><a href="http://javascript.nwbox.com/IEContentLoaded/">IEContentLoaded</a></li>
+</ul>
+
+<script type="text/javascript">
+    var doc = document, ie = ('v' === '\v');
+
+    var onLoad = function(fn) {
+        if (window.addEventListener) {
+            window.addEventListener('load', fn, false);
+        } else if (window.attachEvent) {
+            window.attachEvent('onload', fn);
+        }
+    };
+
+    var getScript = function(url, callback) {
+        var scriptEl = doc.createElement('script');
+        scriptEl.type = 'text/javascript';
+        scriptEl.charset = 'utf-8';
+        scriptEl.src = url;
+        if (ie) {
+            scriptEl.onreadystatechange = function() {
+                if ('loaded' === scriptEl.readyState || 'complete' === scriptEl.readyState) {
+                    scriptEl.onreadystatechange = null;
+                    callback();
+                }
+            };
+        } else {
+            scriptEl.onload = callback;
+        }
+        doc.getElementsByTagName('head')[0].appendChild(scriptEl);
+    };
+
+    var onReady = function(callback) {
+        if (ie) {
+            var timer = setInterval(function() {
+                try {
+                    document.documentElement.doScroll('left');
+                    clearInterval(timer);
+                    callback();
+                } catch (ex) {
+                }
+            }, 50);
+        } else { // FireFox, Opera, Safari 3+
+            window.addEventListener('DOMContentLoaded', callback, false);
+        }
+
+    };
+
+
+    // Test 1. 在 onload 后添加 onload handler
+    setTimeout(function() {
+        onLoad(function() {
+            alert('Test 1: window loaded.');
+        });
+    }, 5000); // 5s: 确保 jquery.js 已经加载完。需要根据网速调整。
+
+    // Test 2. 测试动态添加 script
+    onLoad(function() { alert('Test 2: window loaded.'); });
+    getScript('http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js', function() {
+       alert('Test 2: jQuery loaded.');
+        onReady(function() { alert('Test 2: content loaded.'); });
+    });
+
+    // Test 3. 测试 DOMContentLoaded
+    onReady(function() { alert('Test 3: content loaded.'); });
+    setTimeout(function() {
+        onReady(function() { alert('Test 3: content loaded 2.'); });
+    }, 20);
+
+
+</script>
+
+</body>
+</html>

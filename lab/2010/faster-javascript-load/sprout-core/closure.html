@@ -1,0 +1,76 @@
+<html>
+<head>
+</head>
+<body onload="didLoad()">
+
+<script>
+
+    function now() {
+        return new Date().getTime();
+    }
+
+    // extract query
+    var query = {}, q = window.location.search.toString(), i;
+    if (q.length > 0) {
+        q = q.slice(1).split('&');
+        for (i = 0; i < q.length; i++) {
+            var x = q[i], z = x.indexOf('=');
+            if (z < 0) continue;
+            query[x.slice(0, z)] = parseInt(x.slice(z + 1), 0);
+        }
+    }
+    window.QUERY = query;
+
+    var rep = query.rep || 0, max = query.max || 5;
+    var times = {
+        begin: now(),
+        load:  0,
+        setup: 0
+    };
+    window.TIMES = times;
+
+    // execute the jQuery closure to make it ready...
+    function setup() {
+        window.CLOSURE();
+    }
+
+    function didLoad() {
+        times.load = now();
+        setup();
+        times.setup = now();
+
+        query.rep = rep + 1;
+        query.max = max;
+        query.load = (query.load || 0) + (times.load - times.begin);
+        query.setup = (query.setup || 0) + (times.setup - times.begin);
+
+        // if rep is < max, just update location and write out.
+        if (rep < max) {
+            var href = [window.location.pathname.toString(), '?'];
+            for (var key in query) {
+                href.push(key);
+                href.push('=');
+                href.push(query[key].toString());
+                href.push('&');
+            }
+            href.pop(); // drop last &
+            window.location = href.join('');
+
+            // otherwise, just emit a report
+        } else {
+            var report = ['<table><tr><td>Load:<\/td><td>'];
+
+            times.load = Math.round((query.load || 0) * 1000 / max) / 1000;
+            report.push(times.load.toString());
+            report.push(' msec<\/td><\/tr><tr><td>Setup:<\/td><td>');
+            times.setup = Math.round((query.setup || 0) * 1000 / max) / 1000;
+            report.push(times.setup.toString());
+            report.push(' msec<\/td><\/tr><table>');
+            report.push('<p><a href="' + window.location.pathname.toString() + '">Run Again<\/a><\/p>');
+            document.body.innerHTML = report.join('');
+        }
+    }
+</script>
+<script src="jquery-closure.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Input Hint</title>
+<script type="text/javascript" src="http://kissy.googlecode.com/svn/trunk/lib/yui2/yahoo-dom-event.js"></script>
+<style type="text/css">
+    body { font-size: 12px; }
+</style>
+</head>
+<body>
+
+<form action="">
+
+    <!-- 方案一 -->
+    <input type="text" id="test1" size="20" value="请输入内容"
+           style="color: gray"
+           onfocus="if(this.value == '请输入内容') {
+                        this.value = '';
+                        this.style.color = '';
+                    }"
+           onblur="if(this.value == '') {
+                       this.value = '请输入内容';
+                       this.style.color = 'gray';
+                   }"
+    />
+    （方案一）
+
+    <br /><br />
+
+    <!-- 方案二 -->
+    <style type="text/css">
+        .hint { color: gray; }
+    </style>
+    <input type="text" id="test2" class="hint" size="20" value="" />
+    （方案二）
+    <script type="text/javascript">
+        (function() {
+            var Y = YAHOO.util, Dom = Y.Dom, Event = Y.Event,
+                inputEl = Dom.get("test2"),
+                HINT_CLS = "hint",
+                HINT_TEXT = "请输入内容";
+
+            inputEl.value = HINT_TEXT;
+
+            Event.on(inputEl, "focus", function() {
+                if(Dom.hasClass(this, HINT_CLS)) {
+                    this.value = "";
+                    Dom.removeClass(this, HINT_CLS);
+                }
+            });
+            Event.on(inputEl, "blur", function() {
+               if(this.value == "") {
+                   this.value = HINT_TEXT;
+                   Dom.addClass(this, HINT_CLS);
+               }
+            });
+        })();
+    </script>
+
+    <br /><br />
+    
+    <!-- 方案三 -->
+    <style type="text/css">
+        .hint { color: gray; }
+    </style>
+    <input type="text" id="test3" class="other-class1 hint other-class2" size="20" value="" />
+    （方案三）
+    <script type="text/javascript">
+        (function() {
+            var addEvent = window.addEventListener ?
+                           function(el, type, fn) {
+                               el.addEventListener(type, fn, false);
+                           } :
+                           function(el, type, fn) {
+                               el.attachEvent("on" + type, function() {
+                                   fn.call(el, window.event);
+                               });
+                           },
+                inputEl = document.getElementById("test3"),
+                HINT_CLS = "hint",
+                HINT_REG = new RegExp("(^|\\s+)" + HINT_CLS + "(\\s+|$)"),
+                HINT_TEXT = "请输入内容";
+
+            inputEl.value = HINT_TEXT;
+
+            addEvent(inputEl, "focus", function() {
+                var className = this.className;
+                if(HINT_REG.test(className)) {
+                    this.value = "";
+                    this.className = className.replace(HINT_REG, " ");
+                }
+            });
+            addEvent(inputEl, "blur", function() {
+               if(this.value == "") {
+                   this.value = HINT_TEXT;
+                   this.className += " " + HINT_CLS;
+               }
+            });
+        })();
+    </script>
+    
+    <br /><br />
+
+    <!-- 方案四 -->
+    <style type="text/css">
+        .hint-input {
+            position: relative;
+        }
+        .hint-input label {
+            color: gray; font-size: 12px;
+        }
+        .hint-input label.hint-on {
+            position: absolute;
+            top: 4px; *top: 6px; left: 3px;
+            cursor: text;
+        }
+        .hint-input label.hint-off {
+            position: absolute;
+            visibility: hidden;
+        }
+    </style>
+    <div class="hint-input">
+        <label for="test4">请输入内容</label>
+        <input type="text" id="test4" size="20" value="" />
+        （方案四）        
+    </div>
+    <script type="text/javascript">
+        YAHOO.util.Event.onDOMReady(function() {
+            var Y = YAHOO.util, Dom = Y.Dom, Event = Y.Event,
+                inputEl = Dom.get("test4"),
+                container = inputEl.parentNode,
+                label = container.getElementsByTagName("label")[0],
+                HINT_ON = "hint-on",
+                HINT_OFF = "hint-off";
+
+            Dom.addClass(label, inputEl.value == "" ? HINT_ON : HINT_OFF);
+
+            Event.on(inputEl, "focus", function() {
+                if(Dom.hasClass(label, HINT_ON)) {
+                    Dom.replaceClass(label, HINT_ON, HINT_OFF);
+                }
+            });
+            Event.on(inputEl, "blur", function() {
+               if(this.value == "") {
+                   Dom.replaceClass(label, HINT_OFF, HINT_ON);
+               }
+            });
+        });
+    </script>
+
+    <br />
+
+    <!-- 方案五 -->
+    <style type="text/css">
+        .hint { color: #999; }
+    </style>
+    <input type="text" id="test5" size="20" value=""
+           placeholder="请输入内容" />
+    （方案五）
+    <script type="text/javascript">
+        YAHOO.util.Event.onDOMReady(function() {
+            if(supportsHint()) return;
+            setTimeout(function() { // setTimeout 可以保证在 form autocomplete 后运行
+                simulateHint("test5");
+            }, 0);
+
+            function supportsHint() {
+                var t = document.createElement("input");
+                return "placeholder" in t;
+            }
+
+            function simulateHint(id) {
+                var Y = YAHOO.util, Dom = Y.Dom, Event = Y.Event,
+                    inputEl = Dom.get(id),
+                    HINT_CLS = "hint",
+                    HINT_TEXT = inputEl.getAttribute("placeholder");
+
+                // 1. 当用户没有输入时，2. 或者浏览器自动填充了提示文字时
+                // 注：忽略用户刚好输入了 HINT_TEXT 的情况
+                if(inputEl.value === "" || inputEl.value === HINT_TEXT) {
+                    Dom.addClass(inputEl, HINT_CLS);
+                    inputEl.value = HINT_TEXT;
+                }
+
+                Event.on(inputEl, "focus", function() {
+                    if(Dom.hasClass(this, HINT_CLS)) {
+                        this.value = "";
+                        Dom.removeClass(this, HINT_CLS);
+                    }
+                });
+                Event.on(inputEl, "blur", function() {
+                   if(this.value == "") {
+                       this.value = HINT_TEXT;
+                       Dom.addClass(this, HINT_CLS);
+                   }
+                });
+            }
+        });
+    </script>
+</form>
+
+</body>
+</html>

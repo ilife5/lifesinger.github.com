@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Simple Timer</title>
+<style type="text/css">
+    body { background-color: black; }
+    #time { font: 32px Verdana, serif; color: white; }
+</style>
+</head>
+<body>
+<div id="time"></div>
+<script>
+
+function Timer(id) {
+    this.container = document.getElementById(id);
+}
+
+Timer.prototype = {
+
+    constructor: Timer,
+
+    begin: function(count) {
+        var container = this.container;
+        setTimeout(function() {
+            container.innerHTML = count > 0 ? count-- : "over";
+            if(count + 1) {
+                setTimeout(arguments.callee, 1000);
+            }
+        }, 1000);
+    }
+    
+};
+
+new Timer("time").begin(20);
+
+</script>
+</body>
+</html>

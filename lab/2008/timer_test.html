@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=gbk'>
+<title>Timer Test</title>
+</head>
+<body>
+</body>
+<script type="text/javascript">
+
+    // 在我的电脑T61上，Chrome 1.0.154.48下，大约需要100ms
+    function timeoutCallback() {
+        document.write('timeout callback: <br />');
+        var begin = new Date().getTime();
+        document.write('begin: ' + begin + ' ');
+        for (var i = 0; i < 10000; ++i) {
+            document.body.appendChild(document.createElement('div'));
+        }
+        var end = new Date().getTime();
+        document.write('end: ' + end + '<br />');
+        document.write('diff: ' + (end - begin) + '<br /><br />');
+    }
+
+    // 在我的电脑T61上，Chrome 1.0.154.48下，大约需要50ms
+    var intervalEnd;
+    function intervalCallback() {
+        if (intervalEnd) {
+            var nowTime = new Date().getTime();
+            document.write('本次interval开始时间 - 上次interval结束时间: ' + (nowTime - intervalEnd) + '<br />');
+        }
+        var begin = new Date().getTime();
+        document.write('interval callback: <br />');
+        document.write('begin: ' + begin + ' ');
+        for (var i = 0; i < 5000; ++i) {
+            document.body.appendChild(document.createElement('div'));
+        }
+        intervalEnd = new Date().getTime();
+        document.write('end: ' + intervalEnd + '<br />');
+		document.write('diff: ' + (intervalEnd - begin) + '<br /><br />');
+		intervalEnd = new Date().getTime();
+    }
+
+    var timer = setInterval(intervalCallback, 10);
+    setTimeout(timeoutCallback, 500);
+    setTimeout(function() { clearInterval(timer); }, 1000);
+
+</script>
+</html>

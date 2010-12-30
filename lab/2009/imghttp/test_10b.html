@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<title>Test</title>
+<style type="text/css">
+    strong {
+        font-weight: normal;
+        color: red;
+    }
+
+    td, th {
+        padding: 5px 20px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<table>
+    <tbody>
+    <tr>
+        <th>浏览器</th>
+        <th>图片的HTTP请求数</th>
+    </tr>
+    <tr>
+        <td>Firefox 3.0.10</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>Safari 4(528.16)/Win</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>Chrome 1.0.154.65</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>IE 8.0.7100.0</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>IE 7/IETester</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>IE 6.0.2900.2180</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>Opera 9.64</td>
+        <td>1</td>
+    </tr>
+    </tbody>
+</table>
+
+<style type="text/css">
+    .test1, .test2 { background: url(1.jpg) 0 0; }
+    .test2 { background-position: 100% 100%; }
+</style>
+<div class="test1" id="J_Test">test</div>
+<a href="#" id="J_Link">切换className</a>
+<script type="text/javascript">
+    document.getElementById('J_Link').onclick = function() {
+        var el = document.getElementById('J_Test');
+        el.className = (el.className == 'test1') ? 'test2' : 'test1';
+        return false;
+    };
+</script>
+
+</body>
+</html>

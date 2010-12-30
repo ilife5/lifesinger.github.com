@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<title>Crazy Test</title>
+</head>
+
+<body>
+<style type="text/css">
+
+    .test-wrap { float: left; border: 1px dashed #ccc; }
+    .test-box { height: 20px; border: 1px solid red; }
+    .test-box2 { height: 20px; width: 500px; border: 1px solid blue; }
+
+    #example-2 .test-wrap { width: 500px; }
+    #example-3 .test-wrap { width: 600px; }
+    #example-4 .test-box { height: auto; }
+
+    .example { overflow: hidden; zoom: 1; } /* clearfix */
+    div div {  margin: 10px; }
+</style>
+
+<div class="example" id="example-1">
+    <div class="test-wrap">
+        <code>.test-wrap { float: left; }</code>
+        <div class="test-box"><code>.test-box { height: 20px; }</code></div>
+        <div class="test-box2"><code>.test-box2 { height: 20px; width: 500px; }</code></div>
+    </div>
+</div>
+
+<div class="example" id="example-2">
+    <div class="test-wrap">
+        <code>.test-wrap { float: left; width: 500px; }</code>
+        <div class="test-box"><code>.test-box { height: 20px; }</code></div>
+        <div class="test-box2"><code>.test-box2 { height: 20px; width: 500px; }</code></div>
+    </div>
+</div>
+
+
+<div class="example" id="example-3">
+    <div class="test-wrap">
+        <code>.test-wrap { float: left; width: 600px; }</code>
+        <div class="test-box"><code>.test-box { height: 20px; }</code></div>
+        <div class="test-box2"><code>.test-box2 { height: 20px; width: 500px; }</code></div>
+    </div>
+</div>
+
+<div class="example" id="example-4">
+    <div class="test-wrap">
+        <code>.test-wrap { float: left; }</code>
+        <div class="test-box"><code>.test-box { /* no hasLayout */ }</code></div>
+        <div class="test-box2"><code>.test-box2 { height: 20px; width: 500px; }</code></div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>IE下事件冒泡测试</title>
+<!--<script type="text/javascript" src="http://t-yubo/assets/yui/2.7.0/yuiloader-dom-event-debug.js"></script>-->
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.7.0/yuiloader-dom-event.js"></script>
+</head>
+
+<body>
+
+<h4>Test Case:</h4>
+<form action="">
+    <label for="J_Select">1. Please change option:</label>
+    <select id="J_Select">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+    </select>
+    <br />
+    <label for="J_Input">2. Please type text: </label>
+    <input id="J_Input" size="20" />
+</form>
+
+<div id="J_TestParent">
+    <div id="J_Test">3. Please click to remove me. id = J_Test</div>
+</div>
+
+<div id="J_Test2Parent">
+    <div id="J_Test2">4. Please click to remove me. id = J_Test2</div>
+</div>
+
+<div id="J_Test3">5. Please click me in IE, and don't cry.</div>
+<div id="J_Test4">6. Please click me in IE, and don't smile.</div>
+
+<hr />
+<div id="J_DebugInfo">
+    <h4>Debug Info:</h4>
+</div>
+<hr />
+
+<h4>结论：</h4>
+<ol>
+    <li>IE下，父级容器只接收自身也有的冒泡事件。</li>
+    <li>IE下，即便是自身有的事件类型，比如propertychange，也不会产生冒泡。</li>
+    <li>IE下，移除自身的事件，冒泡会被终止。</li>
+    <li>上一条的解决办法是，将移除自身的操作放在setTimeout里，排队到线程后面。</li>
+    <li>IE里，setTimeout改变了某些执行环境，比如Event.getTarget(ev)放在里面将导致错误。</li>
+    <li>将Event.getTarget(ev)放在setTimeout外面，一切ok. 这究竟是为何呢？</li>
+</ol>
+
+<script type="text/javascript">
+    var Y = YAHOO.util, Dom = Y.Dom, Event = Y.Event;
+
+    var debugInfoEl = Dom.get('J_DebugInfo');
+    function debug(info) {
+        debugInfoEl.innerHTML = debugInfoEl.innerHTML + info  + '<br />';
+    }
+
+    function handle(info) { return function() { debug(info); }; }
+    
+    Event.on(document.body, 'click', handle('document.body click fired'));
+    Event.on(document.body, 'change', handle('document.body change fired'));
+    Event.on(document.body, 'keyup', handle('document.body keyup fired'));
+    Event.on(document.body, 'input', handle('document.body input fired'));
+    Event.on(document.body, 'propertychange', handle('document.body propertychange fired'));
+    Event.on('J_Input', 'propertychange', handle('J_Input propertychange fired'));
+
+    Event.on('J_Test', 'click', function() {
+        this.parentNode.removeChild(this);
+    });
+    Event.on('J_Test2', 'click', function() {
+        var testEl = this;
+        setTimeout(function() { testEl.parentNode.removeChild(testEl); }, 0);
+    });
+    Event.on('J_TestParent', 'click', handle('J_TestParent click fired'));
+    Event.on('J_Test2Parent', 'click', handle('J_Test2Parent click fired'));
+
+    // IE bug?
+    Event.on(document.body, 'click', function(ev) {
+        var el = Event.getTarget(ev);
+        if(el.id == 'J_Test3') {
+            setTimeout(function() {
+                alert(Event.getTarget(ev));
+            }, 0);
+        }
+    });
+
+    // fix IE bug?
+    Event.on(document.body, 'click', function(ev) {
+        var el = Event.getTarget(ev);
+        if(el.id == 'J_Test4') {
+            setTimeout(function() {
+                alert(el);
+            }, 0);
+        }
+    });
+
+</script>
+
+</body>
+</html>

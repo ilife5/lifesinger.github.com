@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Crazy Test</title>
+<style>
+    body {
+        background-color: black;
+        color: #bbb;
+        font: 18px/1.5 Consolas, '微软雅黑', monospace;
+        padding: 10px 20px;
+    }
+
+    a {
+        color: #9fc;
+        text-decoration: none;
+    }
+
+    #out {
+        border: 1px dashed #f97;
+        padding: 10px 20px;
+    }
+
+    h2 {
+        font: normal 26px Futura, Century Gothic, AppleGothic, sans-serif;
+        margin: 20px 0 10px;
+    }
+</style>
+</head>
+<body>
+
+<h2>Console</h2>
+<div id="out"></div>
+
+<h2>Test Data</h2>
+<button id="test-btn" onclick="fn('onclick via markup')()">Click to test</button>
+
+<h2>Summary</h2>
+<ol>
+    <li>非 ie 下，onxxx 相当于 addEventListener, 顺序严格遵守 FIFO (First In, First Out)</li>
+    <li>ie 下执行顺序为：onxxx 添加的先执行，接着再执行 addEventListener/attachEvent 添加的</li>
+    <li>ie9 beta: attachEvent 等同 addEventListener, 顺序严格遵守 FIFO</li>
+    <li>ie8 -: 只支持 attachEvent, 顺序严格遵守 LIFO (Last In, First Out)</li>
+    <li>opera 支持 attachEvent, 和 ie9 beta 一样；但 onxxx 规律和非 ie 一致，不会优先执行</li>
+    <li>ie9 beta: 在 document 等元素上添加的 onxxx, 执行位置和非 ie 一致，不会优先执行</li>
+    <li>ie6 下，执行顺序很奇怪，有某种规律在里面，有兴趣的可以继续探索</li>
+</ol>
+
+<h2>References</h2>
+<ol>
+</ol>
+<script>
+
+    function log(msg) {
+        msg = (msg === undefined) ? '' : (msg + '')
+                .replace(/\n/g, '<br>')
+                .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+
+        document.getElementById('out').innerHTML += msg + '<br>';
+    }
+
+    function fn(msg) {
+        return function() {
+            log(msg);
+        };
+    }
+
+    function test(elem) {
+        if (elem.attachEvent) elem.attachEvent('onclick', fn('attachEvent 1'), false);
+        if (elem.addEventListener) elem.addEventListener('click', fn('addEventListener 1'), false);
+
+        if (elem.attachEvent) elem.attachEvent('onclick', fn('attachEvent 2'), false);
+        if (elem.addEventListener) elem.addEventListener('click', fn('addEventListener 2'), false);
+
+        elem.onclick = fn('onclick via script');
+
+        if (elem.attachEvent) elem.attachEvent('onclick', fn('attachEvent 3'), false);
+        if (elem.addEventListener) elem.addEventListener('click', fn('addEventListener 3'), false);
+
+        if (elem.attachEvent) elem.attachEvent('onclick', fn('attachEvent 4'), false);
+        if (elem.addEventListener) elem.addEventListener('click', fn('addEventListener 4'), false);
+    }
+
+    test(document); // window, document, document.body, document.documentElement etc.
+    test(document.getElementById('test-btn'));
+
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta content="text/html; charset=gb18030">
+<title>SRP 前端代码组织约定</title>
+<!-- 全站通用的 css 和 js, 通过 vmcommon/sys/assets.vm 引入 -->
+<link rel="stylesheet" href="http://assets.taobaocdn.com/tbsp/global_nav.css" />
+<script type="text/javascript" src="http://assets.taobaocdn.com/sys/header/header_v5.js"></script>
+
+<!-- SRP 的 css -->
+<link rel="stylesheet" href="srp-min.css" />
+<!-- SRP 的基础依赖脚本 -->
+<script type="text/javascript" src="srp-base-min.js"></script>
+</head>
+<body>
+<h1>SRP 前端代码组织约定</h1>
+
+<p>请查看源代码</p>
+
+<!-- a lot of code -->
+
+<!-- p4p -->
+<script type="text/javascript" src="srp-p4p.js"></script>
+
+<!-- a lot of code -->
+
+<!-- html 中需要立刻执行的 js 嵌入块 -->
+<script type="text/javascript">
+    (function() {
+        var Y = YAHOO.util, Dom = Y.Dom, Event = Y.Event;
+        //your code
+    })();
+</script>
+
+<!-- a lot of code -->
+
+<!-- bottom.js.vm -->
+<!-- SRP 相对稳定的脚本模块 -->
+<script type="text/javascript" src="srp-bottom-min.js"></script>
+<script type="text/javascript">
+(function() {
+    var Y = YAHOO.util, Dom = Y.Dom, Event = Y.Event;
+
+    // srp-bottom-min.js 中组件的初始化
+    TB.SRP.init({
+        // configs
+    });
+
+    // html 中可以放在 domready 中执行的 js 代码块 1
+    TB.SRP.ready(function() {
+       // your code
+    });
+
+    // html 中可以放在 domready 中执行的 js 代码块 2
+    TB.SRP.ready(function() {
+       // your code
+    });
+})();
+</script>
+<script type="text/javascript" src="http://assets.taobaocdn.com/sys/wangwang/tbww_v1.2.js"></script>
+<!-- end of bottom.js.vm -->
+
+</body>
+</html>

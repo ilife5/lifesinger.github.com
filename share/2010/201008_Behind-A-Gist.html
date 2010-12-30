@@ -1,0 +1,482 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Behind a Gist</title>
+<style>
+body{position:absolute;left:0;top:0;width:100%;height:100%;padding:0;margin:0;font:14px Candara,\5FAE\8F6F\96C5\9ED1,Verdana,sans-serif;}.presentation{position:absolute;left:0;top:0;height:100%;width:100%;overflow:hidden;background:#778;}.slides{position:absolute;left:0;top:0;width:100%;height:100%;-webkit-transition:-webkit-transform 1s ease-in-out;-moz-transition:-moz-transform 1s ease-in-out;-o-transition:-o-transform 1s ease-in-out;}.slide{display:none;width:900px;height:700px;overflow:hidden;position:absolute;left:50%;top:50%;margin-top:-350px;opacity:0;background:-webkit-gradient(linear,left bottom,left top,from(#bbd),to(#fff));background:-moz-linear-gradient(bottom,#bbd,#fff);-webkit-transition:margin .25s ease-in-out;-moz-transition:margin .25s ease-in-out;-o-transition:margin .25s ease-in-out;}.slide.far-past{display:block;margin-left:-2400px;}.slide.past{display:block;margin-left:-1400px;}.slide.current{display:block;margin-left:-450px;opacity:1;}.slide.future{display:block;margin-left:500px;}.slide.far-future{display:block;margin-left:1500px;}.slide header,.slide section{display:none;}.slide.current header,.slide.current section{display:block;}.slide:nth-child(even){border-top-left-radius:20px;border-bottom-right-radius:20px;-webkit-border-top-left-radius:20px;-webkit-border-bottom-right-radius:20px;-moz-border-radius-topleft:20px;-moz-border-radius-bottomright:20px;}.slide:nth-child(odd){border-top-right-radius:20px;border-bottom-left-radius:20px;-webkit-border-top-right-radius:20px;-webkit-border-bottom-left-radius:20px;-moz-border-radius-topright:20px;-moz-border-radius-bottomleft:20px;}.slide .counter{position:absolute;left:20px;bottom:20px;display:block;color:#999;}header{position:absolute;left:30px;top:25px;margin:0;padding:0;font-size:50px;letter-spacing:-.05em;text-shadow:rgba(0,0,0,0.2) 0 2px 5px;}section{margin-left:30px;margin-right:30px;margin-top:100px;display:block;overflow:hidden;font-size:50px;color:#3f3f3f;text-shadow:rgba(0,0,0,0.2) 0 2px 5px;line-height:1.5;}p{font-size:25px;margin:10px 0;}h1{padding:0;margin:0;letter-spacing:-2px;font-size:60px;}h2{padding:0;margin:15px 0 5px 0;font-size:50px;font-weight:normal;}a{text-decoration:none;line-height:110%;}button{font-size:20px;}blockquote,ul,ol,dl{margin:1em;}ul,ol,dl{margin-left:2em;font-size:40px;}li{list-style:none;}.small li{font-size:25px;}ul li:before{content:'· ';}dl dd{margin-left:1em;}th,td{padding:.5em;}caption{margin-bottom:.5em;}hr{visibility:hidden;padding:0;margin:0 0 -20px 0;}section.intro h1{margin-top:80px;}section.intro p{font-size:35px;}section.intro .author{margin-top:120px;margin-bottom:-40px;}.notes{display:none;}section.center{line-height:180%;text-align:center;display:table-cell;vertical-align:middle;height:700px;width:900px;}blockquote{font-size:20px;white-space:pre;padding:10px 20px;background:rgba(0,0,255,0.05);border-radius:8px;border:1px solid rgba(0,0,255,0.2);text-shadow:none;}pre,.pre{display:block;white-space:pre;text-align:left;font-size:16px;font-family:'Bitstream Vera Sans Mono',Courier,monospace;padding:10px 20px;background:rgba(255,0,0,0.05);border-radius:8px;border:1px solid rgba(255,0,0,0.2);text-shadow:none;}pre b{font-weight:normal;color:#c61800;text-shadow:#c61800 0 0 1px;}pre em{font-weight:normal;font-style:normal;color:#18a600;text-shadow:#18a600 0 0 1px;}.css,.js,.html{color:black;display:inline-block;padding:6px 10px 3px 10px;font-size:25px;line-height:30px;text-shadow:none;letter-spacing:0;bottom:10px;position:relative;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;background:white;box-shadow:rgba(0,0,0,0.1) 0 2px 5px;-webkit-box-shadow:rgba(0,0,0,0.1) 0 2px 5px;-moz-box-shadow:rgba(0,0,0,0.1) 0 2px 5px;}.css{background:-webkit-gradient(linear,left top,left bottom,from(#ff4),to(#ffa));background:-moz-linear-gradient(left top,#ff4,#ffa);background-color:#ff4;}.js{background:-webkit-gradient(linear,left top,left bottom,from(#4f4),to(#afa));background:-moz-linear-gradient(left top,#4f4,#afa);background:#4f4;}.html{background:-webkit-gradient(linear,left top,left bottom,from(#e88),to(#fee));background:-moz-linear-gradient(left top,#e88,#fee);background:#e88;}
+</style>
+</head>
+<body>
+<div class="presentation">
+    <div class="slides">
+
+        <div class="slide">
+            <section class="center intro">
+                <h1>Behind a Gist</h1>
+
+                <p class="author">玉伯</p>
+                <p>lifesinger@gmail.com</p>
+                <p>2010/08</p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <section class="center">
+                <h2>一、背景介绍：IE 探测大观</h2>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>Detect IE using UA</header>
+            <section>
+                <script class="pre">
+var ie = (function(ua, m) {
+
+    if ((m = ua.match(/MSIE\s([^;]*)/)) && m[1]) {
+        return m[1];
+    }
+
+})(navigator.userAgent);
+                </script>
+                <p>Result: <br>
+                    ie = <script>document.write(ie);</script><br>
+                    ua = <script>document.write(navigator.userAgent);</script>
+                </p>
+                <p>注意：未考虑 Opera 9.70 及其以下版本</p>                
+            </section>
+        </div>
+        
+        <div class="slide">
+            <header>Detect IE using feature</header>
+            <section>
+                <script class="pre">
+var ie = (function(win, undef) {
+
+    return win.ActiveXObject ?
+               win.XMLHttpRequest ?
+                   win.XDomainRequest ? 8 : 7
+               : 6
+           : undef;
+
+})(window);
+                </script>
+                <p>Result: <br>
+                    ie = <script>document.write(ie);</script><br>
+                </p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>Detect IE using vertical tab escape</header>
+            <section>
+                <script class="pre">
+var ie = '\v' == 'v';
+// or
+var ie = !+'\v1';
+                </script>
+                <p>Result: <br>
+                    ie = <script>document.write(ie);</script><br>
+                </p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>The shortest IE tiny detecting</header>
+            <section>
+                <script class="pre">
+var ie = !+[1,];
+                </script>
+                <p>Result: <br>
+                    ie = <script>document.write(ie);</script><br>
+                </p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>More tiny detecting</header>
+            <section>
+                <pre>
+ie = !!top.execScript;
+ie = /*@cc_on!@*/!1;
+jscriptVer = /*@cc_on @_jscript_version@*/;
+<del>ff = /a/[-1] == 'a';</del>
+<del>ff3 = (function x(){})[-5] == 'x';</del>
+<del>ff2 = (function x(){})[-6] == 'x';</del>
+safari = /a/.__proto__ == '//';
+<del>chrome = /source/.test((/a/.toString+''));</del>
+<del>opera = /^function (/.test([].sort);</del>
+                </pre>
+                <p><a href="http://dean.edwards.name/weblog/2007/03/sniff/">http://dean.edwards.name/weblog/2007/03/sniff/</a></p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>Summary</header>
+            <section class="summary">
+                <ul>
+                    <li>小心伪 feature 探测</li>
+                    <li>小心 tiny detecting 被“修复”</li>
+                    <li>浏览器嗅探不总是恶魔</li>
+                    <li>信息完备性：UA &gt; feature &gt; tiny</li>
+                    <li>UA 是可靠的</li>
+                </ul>
+                <ul>
+                    <li>自适应未来版本</li>
+                    <li>自适应未知设备</li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="slide">
+            <section class="center">
+                <h2>二、条件注释探测法及其前世今生</h2>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>Detect IE using conditional comments</header>
+            <section>
+                <script class="pre">
+var ie = (function(){
+
+    var undef,
+        v = 3,
+        div = document.createElement('div'),
+        all = div.getElementsByTagName('i');
+
+    while (
+        div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',
+        all[0]
+    );
+
+    return v > 4 ? v : undef;
+
+}());
+                </script>
+                <p>Result: ie = <script>document.write(ie);</script></p>
+                <p>Gist: <a href="http://gist.github.com/527683">http://gist.github.com/527683</a></p>
+                <p>Ajaxian: <a href="http://ajaxian.com/archives/attack-of-the-ie-conditional-comment">Attack of the IE Conditional Comment…</a></p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>并不陌生的 Conditional Comments</header>
+            <section>
+                <pre>
+&lt;script&gt;
+var isIE6 = false;
+&lt;/script&gt;
+&lt;!--[if lte IE 6]&gt;
+&lt;script&gt;
+isIE6 = true;
+&lt;/script&gt;
+<![endif]-->
+                </pre>
+                <p><a href="http://www.electrictoolbox.com/detect-ie6-jquery-conditional-comments/">Detect IE6 with jQuery or Conditional Comments</a></p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>Scott Jehl 的早期版本</header>
+            <section>
+                <pre>
+var isIE = (function(undefined) {
+    var doc = document,
+        cache = {},
+        elem;
+
+    return function(version, comparison) {
+        if (/*@cc_on!@*/true) return false;
+
+        var key = [ comparison || '', 'IE', version || '' ].join(' ');
+
+        if (cache[ key ] === undefined) {
+            elem = elem || doc.createElement('B');
+            elem.innerHTML = '<!--[if ' + key + ']><b></b><![endif]-->';
+            cache[ key ] = !!elem.getElementsByTagName('b').length;
+        }
+
+        return cache[ key ];
+    };
+})();</pre>
+                <p><a href="http://gist.github.com/358029">http://gist.github.com/358029</a></p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>Mootools 早已应用</header>
+            <section>
+                <script class="pre">
+function trident() {
+    return (!window.ActiveXObject) ?
+            false :
+            parseInt(new Element('div',
+            {'html': '<!--[if IE 6]>4<![endif]-->' +
+                     '<!--[if IE 7]>5<![endif]-->' +
+                     '<!--[if IE 8]>6<![endif]-->'})
+            .get('html'));
+}
+                </script>
+                <p><a href="https://mootools.lighthouseapp.com/projects/2706/tickets/798-ie78-incorrectly-identified-as-trident4">IE7/8 incorrectly identified as trident4</a></p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>James Padolsey 版本的亮点</header>
+            <section>
+                <ul>
+                    <li>undef 压缩优化</li>
+                    <li>while 空语句</li>
+                    <li>逗号表达式</li>
+                    <li>条件注释</li>
+                    <li>NodeList 的 live 特性</li>
+                    <li>自适应未来版本</li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>完美是不存在的</header>
+            <section>
+                <ul>
+                    <li>空语句的压缩问题，“自作多情”的 Closure Compiler</li>
+                    <li>性能问题：<a href="http://jsperf.com/ie">jsperf.com/ie</a></li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>基于已有知识的创新</header>
+            <section>
+                <ul>
+                    <li>关注业界的新想法、新点子</li>
+                    <li>深入理解，把握本质</li>
+                    <li>针对场景的发散性思维</li>
+                    <li>融会贯通已有知识</li>
+                    <li>创新不等于原创</li>
+                </ul>
+                <p>范例：<a href="http://ajaxian.com/archives/want-to-pack-js-and-css-really-well-convert-it-to-a-png-and-unpack-it-via-canvas">CSS Sprites + CSS + JS 合三为一的方案</a></p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>优化无止境</header>
+            <section>
+                <script class="pre">
+var ie = function(v, p, needle, undef) {
+
+    needle = p.getElementsByTagName('br');
+
+    while(
+        p.innerHTML = '<!--[if gt IE ' + (++v) + ']><br><![endif]-->',
+        needle[0]
+    );
+
+    return v > 4 ? v : undef;
+
+}(3, document.createElement('p'));
+                </script>
+            </section>
+        </div>
+
+        <div class="slide">
+            <section class="center">
+                <h2>三、此中有真意：代码的背后</h2>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>Really Bad Parts?</header>
+            <section>
+                <pre>
+'' == '0'          // ?
+0 == ''            // ?
+0 == '0'           // ?
+
+false == 'false'   // ?
+false == '0'       // ?
+
+false == undefined // ?
+false == null      // ?
+null == undefined  // ?
+
+' \t\r\n ' == 0    // ?
+                </pre>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>a == b 的判断规律</header>
+            <section>
+                <p>基本类型：string, number, boolean, undefined</p>
+                <p>复合类型：object, function, null</p>
+                <p>toPrimite 先获取 b.valueOf(), 如果返回值不是基本类型，再调用 b.toString()</p>
+                <ul style="font-size: 25px">
+                    <li>a 和 b 是相同的基本类型，直接比较值</li>
+                    <li>a 和 b 是不同的基本类型，等价为 Number(a) == Number(b)</li>
+                    <li>a 和 b 是复合类型，直接比较引用的对象是否相同</li>
+                    <li>a 是基本类型，b 是复合类型，等价为 a == toPrimite(b)</li>
+                </ul>
+                <pre>
+Number(true); // 1;
+Number(false); Number(''); Number('\t\n'); Number(null); // 0
+Number(undefined); // NaN  toPrimite(null); // undefined</pre>
+                <p>凡是弱类型语言，都面临隐性转换。JS 的处理，已经非常不错。</p>
+                <p>参考：<a href="http://www.javaeye.com/topic/696802">http://www.javaeye.com/topic/696802</a></p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>undefined vs. false</header>
+            <section>
+                <blockquote>
+@jdalton, just noticed -- with yours, since it returns false, expressions like ie < 7 cannot
+be used because ie will be false and Number(false) is 0, and therefore the expression ie < 7
+will return true in non-IE browsers.
+
+I chose undefined as the non-IE return value because Number(undefined) is NaN and this
+means the following expressions can be used everywhere(without wrong results in non IE
+browsers):
+
+ie === 6 // IE6
+ie > 7 // IE8, IE9 ...
+ie < 9 // Anything less than IE9
+                </blockquote>
+                <p><a href="http://gist.github.com/527683#gistcomment-7664">527683#gistcomment-7664</a></p>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>API 的细节设计</header>
+            <section>
+                <pre>
+var ie = YAHOO.env.ua.ie;
+if(ie && ie < 8) {
+    // do sth.
+}</pre>
+                <p>vs.</p>
+                <pre>
+var UA = KISSY.UA;
+if(UA.ie < 8) {
+    // do sth.
+}</pre>
+                <ul style="font-size: 30px">
+                    <li>默认值是有讲究的</li>
+                    <li>使用场景决定默认值</li>
+                    <li>在 UA 的使用场景中，undefined 优于 false/0/null/'' </li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="slide">
+            <section class="center">
+                <h2>四、管中窥豹：前端知识体系</h2>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>分解条件注释 Gist 的知识点</header>
+            <section>
+                <table class="small" style="line-height: 1">
+                    <tbody>
+                    <tr>
+                        <th>HTML</th>
+                        <td>
+                            <ul>
+                                <li>标签选取（div, i, p, br），嵌套规则</li>
+                                <li>IE 条件注释</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>DOM</th>
+                        <td>
+                            <ul>
+                                <li>createElment</li>
+                                <li>getElementsByClassName, innerHTML</li>
+                                <li>NodeList</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>JS</th>
+                        <td>
+                            <ul>
+                                <li>while 空语句</li>
+                                <li>逗号表达式、闭包等</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="slide">
+            <header>纯前端知识体系</header>
+            <section>
+                <table style="font-size: 40px">
+                    <tr>
+                        <th></th>
+                        <th>初级</th>
+                        <th>中级</th>
+                        <th>高级</th>
+                        <th>专家级</th>
+                    </tr>
+                    <tr>
+                        <th>HTML/CSS</th>
+                        <td>掌握</td>
+                        <td>熟悉</td>
+                        <td>精通</td>
+                        <td>精通</td>
+                    </tr>
+                    <tr>
+                        <th>(X)OM</th>
+                        <th>掌握</th>
+                        <th>熟悉</th>
+                        <th>熟悉</th>
+                        <th>精通</th>
+                    </tr>
+                    <tr>
+                        <th>(X)Script</th>
+                        <th>掌握</th>
+                        <th>掌握</th>
+                        <th>精通</th>
+                        <th>精通</th>
+                    </tr>
+                    <tr>
+                        <th>相关知识</th>
+                        <th>了解</th>
+                        <th>掌握</th>
+                        <th>熟悉</th>
+                        <th>熟悉</th>
+                    </tr>
+                </table>
+            </section>
+        </div>
+
+        <div class="slide">
+            <section class="center">
+                <p style="font-size: 60px; margin-top: 180px">FAQ</p>
+            </section>
+        </div>
+
+    </div>
+    <!-- slides -->
+
+</div>
+<script>
+(function(){var e=document;if(!e.all){var u=0,v=/\s+/,m=[""],n=function(a){return Array.prototype.slice.call(a||[],0)},w=function(a){if(typeof a=="string")return e.getElementById(a);return a},o=function(a,b){if(!a)return[];if(typeof a!="string")return n(a);if(typeof b=="string"){b=w(b);if(!b)return[]}b=b||document;var d=b.nodeType==9,c=d?b:b.ownerDocument||document;if(!d||">~+".indexOf(a.charAt(0))>=0){b.id=b.id||"qUnique"+u++;a="#"+b.id+" "+a}if(">~+".indexOf(a.slice(-1))>=0)a+=" *";return n(c.querySelectorAll(a))},
+p=function(a){if(typeof a=="string"||a instanceof String)if(a.indexOf(" ")<0){m[0]=a;return m}else return a.split(v);return a},j=function(a){return a.replace(/^\s\s*/,"").replace(/\s\s*$/,"")},k=function(a,b){b=p(b);for(var d=" "+a.className+" ",c=0,f=b.length,h;c<f;++c)if((h=b[c])&&d.indexOf(" "+h+" ")<0)d+=h+" ";a.className=j(d)},g=function(a,b){var d;if(b!==undefined){b=p(b);d=" "+a.className+" ";for(var c=0,f=b.length;c<f;++c)d=d.replace(" "+b[c]+" "," ");d=j(d)}else d="";if(a.className!=d)a.className=
+d},x=function(a,b){(" "+a.className+" ").indexOf(" "+j(b)+" ")>=0?g(a,b):k(a,b)},i=navigator.userAgent,l=parseFloat(i.split("Firefox/")[1])||undefined,q=parseFloat(i.split("WebKit/")[1])||undefined,r=parseFloat(i.split("Opera/")[1])||undefined,y=function(){var a=parseFloat(i.split("Version/")[1])||undefined,b=q||l&&l>3.6||r&&a>=10.5;return function(){return b}}(),z=document.getElementsByClassName("slide").length,s=function(a,b){this._node=a;if(b>=0)this._count=b+1;this._node&&k(this._node,"slide distant-future");
+this._makeCounter();this._makeBuildList()};s.prototype={_node:null,_count:0,_buildList:[],_visited:false,_currentState:"",_states:["distant-past","far-past","past","current","future","far-future","distant-future"],setState:function(a){if(typeof a!="string")a=this._states[a];if(a=="current"&&!this._visited){this._visited=true;this._makeBuildList()}g(this._node,this._states);k(this._node,a);this._currentState=a;var b=this;setTimeout(function(){b._runAutos()},400)},_makeCounter:function(){if(this._count&&
+this._node){var a=e.createElement("span");a.innerHTML=this._count+" / "+z;a.className="counter";this._node.appendChild(a)}},_makeBuildList:function(){this._buildList=[]},_runAutos:function(){if(this._currentState=="current"){var a=-1;this._buildList.some(function(h,A){if(h.hasAttribute("data-auto")){a=A;return true}return false});if(a>=0){var b=this._buildList.splice(a,1)[0],d=q?"webkitTransitionEnd":l?"mozTransitionEnd":"oTransitionEnd",c=this;if(y()){var f=function(){b.parentNode.removeEventListener(d,
+f,false);c._runAutos()};b.parentNode.addEventListener(d,f,false);g(b,"to-build")}else setTimeout(function(){g(b,"to-build");c._runAutos()},400)}}},buildNext:function(){if(!this._buildList.length)return false;g(this._buildList.shift(),"to-build");return true}};var t=function(a){this._slides=(a||[]).map(function(c,f){return new s(c,f)});a=window.location.hash;try{this.current=parseInt(a.split("#slide")[1],10)}catch(b){}this.current=isNaN(this.current)?1:this.current;var d=this;e.addEventListener("keydown",
+function(c){d.handleKeys(c)},false);e.addEventListener("mousewheel",function(c){d.handleWheel(c)},false);e.addEventListener("DOMMouseScroll",function(c){d.handleWheel(c)},false);e.addEventListener("touchstart",function(c){d.handleTouchStart(c)},false);e.addEventListener("touchend",function(c){d.handleTouchEnd(c)},false);window.addEventListener("popstate",function(c){d.go(c.state)},false);this._update();[].forEach.call(document.querySelectorAll(".force-render"),function(c){setTimeout(function(){g(c,
+"force-render")},2E3)})};t.prototype={_slides:[],_update:function(a){if(history.pushState)a||history.pushState(this.current,"Slide "+this.current,"#slide"+this.current);else window.location.hash="slide"+this.current;for(a=this.current-1;a<this.current+7;a++)this._slides[a-4]&&this._slides[a-4].setState(Math.max(0,a-this.current))},current:0,next:function(){if(!this._slides[this.current-1].buildNext()){this.current=Math.min(this.current+1,this._slides.length);this._update()}},prev:function(){this.current=
+Math.max(this.current-1,1);this._update()},go:function(a){history.pushState&&this.current!=a&&history.replaceState(this.current,"Slide "+this.current,"#slide"+this.current);this.current=a;this._update(true)},_notesOn:false,showNotes:function(){this._notesOn=!this._notesOn;o(".notes").forEach(function(a){a.style.display=notesOn?"block":"none"})},switch3D:function(){x(document.body,"three-d")},handleWheel:function(a){var b=0;if(a.wheelDelta){b=a.wheelDelta/120;if(r)b=-b}else if(a.detail)b=-a.detail/
+3;if(b>0)this.prev();else b<0&&this.next()},handleKeys:function(a){switch(a.keyCode){case 37:this.prev();break;case 39:this.next();break;case 50:this.showNotes();break;case 51:this.switch3D();break}},_touchStartX:0,handleTouchStart:function(a){this._touchStartX=a.touches[0].pageX},handleTouchEnd:function(a){a=this._touchStartX-a.changedTouches[0].pageX;if(a>150)this.next();else a<-150&&this.prev()}};new t(o(".slide"))}})();
+</script>
+</body>
+</html>

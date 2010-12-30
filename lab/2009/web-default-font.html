@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+<title>Web Default Font</title>
+</head>
+<body>
+
+<h2>效果对比</h2>
+
+<p style="font: 12px tahoma;">The quick brown fox jumps over the lazy dog. <a href="">下划线测试 english text</a> 1234567890 ,.?!:''" ，。？！：；‘“”’…… []{}()<>|/\`~@#$%^&*-+=&copy; font: 12px tahoma;</p>
+<p style="font: 12px arial;">The quick brown fox jumps over the lazy dog. <a href="">下划线测试 english text</a> 1234567890 ,.?!:''" ，。？！：；‘“”’…… []{}()<>|/\`~@#$%^&*-+=&copy; font: 12px arial;</p>
+<p style="font: 12px helvetica;">The quick brown fox jumps over the lazy dog. <a href="">下划线测试 english text</a> 1234567890 ,.?!:''" ，。？！：；‘“”’…… []{}()<>|/\`~@#$%^&*-+=&copy; font: 12px helvetica;</p>
+<p style="font: 12px \5b8b\4f53;">The quick brown fox jumps over the lazy dog. <a href="">下划线测试 english text</a> 1234567890 ,.?!:''" ，。？！：；‘“”’…… []{}()<>|/\`~@#$%^&*-+=&copy; font: 12px \5b8b\4f53;</p>
+<hr />
+
+<h2>Tahoma 的问题</h2>
+
+<h3>1) 下划线粘贴问题</h3>
+<p style="font: 12px Tahoma;"><a href="">所有浏览器里，下划线都会紧紧贴住中文字，很难看。font: 12px tahoma;</a></p>
+<ul><li style="font: 12px tahoma;"><a href="">IE6 下，如果链接在 li 元素里，则不会粘，显示得很好。（究竟是为什么呢？除了 li, 还有什么元素有此疗效？） font: 12px tahoma;</a></li></ul>
+
+<h3>2) 13px 中文显示问题</h3>
+<p style="font: 12px tahoma;">在 IE6 里，13px 的中文很难看。其它浏览器会用 12px 来显示。font: 12px tahoma;</p>
+<p style="font: 13px tahoma;">在 IE6 里，13px 的中文很难看。其它浏览器会用 12px 来显示。font: 13px tahoma;</p>
+<p style="font: 14px tahoma;">在 IE6 里，13px 的中文很难看。其它浏览器会用 12px 来显示。font: 14px tahoma;</p>
+
+<h3>3) 中英文混排问题</h3>
+<p style="font: 12px tahoma;"><a href="">如果一行里同时出现中文和英文，且这一行里有元素被定义了 <span style="vertical-align: top;">vertical</span>-align 属性，在IE6-8 里会导致文字高低不齐，甚至下划线错位。font: 12px tahoma;</a></p>
+<p style="font: 12px tahoma;zoom: 1">zoom: 1 触发 hasLayout <strong>不能</strong>解决所有问题。 <a href="">中文与英文混排 <span style="vertical-align: top;">vertical</span>-align。font: 12px tahoma;</a></p>
+<hr />
+
+<h2>Arial 的问题</h2>
+
+<h3>1) 下划线粘贴问题</h3>
+<p style="font: 12px arial;"><a href="">除了 IE6, 其它所有浏览器里，下划线都会紧紧贴住中文字，很难看。font: 12px arial;</a></p>
+
+<h3>2) 13px 中文显示问题</h3>
+<p style="font: 12px arial;">在 IE6 里，13px 的中文显示比 Tahoma 好，但依旧有点怪。其它浏览器会用 12px 来显示。font: 12px arial;</p>
+<p style="font: 13px arial;">在 IE6 里，13px 的中文显示比 Tahoma 好，但依旧有点怪。其它浏览器会用 12px 来显示。font: 13px arial;</p>
+<p style="font: 14px arial;">在 IE6 里，13px 的中文显示比 Tahoma 好，但依旧有点怪。其它浏览器会用 12px 来显示。font: 14px arial;</p>
+
+<h3>3) 中英文混排问题</h3>
+<p style="font: 12px arial;"><a href="">如果一行里同时出现中文和英文，且这一行里有元素被定义了 <span style="vertical-align: top;">vertical</span>-align 属性，在IE6-8 里会导致文字高低不齐，<strong>IE6 里下划线不会错位</strong>，IE7-8 里下划线错位。font: 12px arial;</a></p>
+<p style="font: 12px arial;zoom: 1">zoom: 1 触发 hasLayout <strong>不能</strong>解决所有问题。 <a href="">中文与英文混排 <span style="vertical-align: top;">vertical</span>-align。font: 12px arial;</a></p>
+<hr />
+
+<h2>Helvetica 的问题</h2>
+
+<h3>1) 找不到时，漠视第二字体</h3>
+<p style="font: 12px helvetica,tahoma;">[] 用 font: 12px helvetica,tahoma; 定义字体时，在 XP / Win7 等操作系统中，如果没有安装 helvetica 字体，会直接调用默认字体，而不是排在第二的 tahoma.</p>
+<p style="font: 12px helvetica2,tahoma;">[] 恼人的是，用 font: 12px helvetica2,tahoma; 定义字体时，会调用排在第二的 tahoma. 浏览器的世界，啥都有可能。</p>
+<p style="font: 12px xxx,tahoma;">[] 或者 font: 12px xxx,tahoma; 一切正常。<strong>helvetica 进了某个秘密名单？</strong></p>
+
+<h3>2) 非 Mac 下的 Helvetica 都是 Rip 版，效果不是很好</h3>
+<hr />
+
+<h2>宋体的问题</h2>
+
+<h3>1) Opera 下，只认 "宋体"， 不认 SimSun</h3>
+<p style="font: 12px '宋体', '微软雅黑';">Opera 下，只认 "宋体"， 不认 SimSun. font: 12px '宋体', '微软雅黑';</p>
+<p style="font: 12px SimSun, '微软雅黑';">Opera 下，只认 "宋体"， 不认 SimSun. font: 12px SimSun, '微软雅黑';</p>
+<p style="font: 12px \5b8b\4f53, '微软雅黑';">为了避免编码问题，推荐用：font: 12px \5b8b\4f53, '微软雅黑';</p>
+<p style="font: 12px arial;">font: 12px arial; 此时，Opera 默认中文字体就是宋体。</p>
+<p style="font: 12px sans-serif;">font: 12px sans-serif; 此时，Opera 默认中文字体就是宋体。</p>
+<p style="font: 12px tahoma,arial,simsun,sans-serif;">font: 12px tahoma,arial,simsun,sans-serif; 对于'宋体'来说，如果后面已经没有中文字体，用 simsun 还是 ok 的。</p>
+
+<h3>2) 设计偏好</h3>
+<p style="font: 12px \5b8b\4f53;">宋体自带的英文和标点很难看，中英混排效果不好。中文和abcgtrfhjj256346中文</p>
+<p style="font: 12px \5b8b\4f53;">优点是：英文字符是中文的一半，对齐容易。</p>
+<hr />
+
+<h2>行高问题</h2>
+
+<p style="height: 12px; margin: 0; padding: 0; font: 12px/1 \5b8b\4f53;">font: 12px/1 \5b8b\4f53; 行高为 1 时，IE6-7 下，高度不够时，会导致中文上下显示不全。</p>
+<p style="margin: 0; padding: 0; font: 12px/1.5 \5b8b\4f53;">font: 12px/1.5 \5b8b\4f53; 行高为 1.5 时，一切正常。</p>
+<hr />
+
+<h2>GB 编码的问题</h2>
+
+<p style="font: 12px sans-serif;">font: 12px sans-serif; 不设置宋体，页面为 GB 系列编码时，非中文操作系统下，IE 的默认字体是 Microsoft Sans Serif Regular, 很难看。</p>
+<p style="font: 12px simsun,sans-serif;">font: 12px simsun,sans-serif; 不设置宋体，页面为 GB 系列编码时，非中文操作系统下，IE 的默认字体是 Microsoft Sans Serif Regular, 很难看。</p>
+<p style="font: 12px arial;">font: 12px arial; 可以不写 sans-serif 来避免上面的问题。譬如百度的首页。 测试文字：设置宋体。</p>
+
+<hr />
+<h2>总结</h2>
+
+可以看出，与 Tahoma 相比，Arial 只在 IE6 下略有优势。考虑以上各点，推荐使用以下方案：
+<br/><br/>
+理想主义者方案 A（所有页面用 utf-8 编码）：
+<pre>
+font: 12px/1.5 tahoma, arial, sans-serif;
+</pre>
+理想主义者方案 B（有 gb 编码的页面）：
+<pre>
+font: 12px/1.5 tahoma, arial, simsun, sans-serif;
+</pre>
+现实主义者方案 A：
+<pre>
+font: 12px/1.5 tahoma, arial;
+</pre>
+现实主义者方案 B：
+<pre>
+font: 12px/1.5 arial;
+</pre>
+</body>
+</html>

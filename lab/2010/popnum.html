@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Pop Numbers</title>
+</head>
+
+<body>
+
+<style>
+    body {
+        font: 14px/1 Courier New, Courier, monospace;
+        color: #999;
+    }
+
+    .box {
+        width: 100px;
+        height: 60px;
+        text-align: center;
+        padding-top: 40px;
+        position: absolute;
+        left: 300px;
+        top: 200px;
+        cursor: pointer;
+    }
+
+    #src {
+        border: 1px solid #D4D4D4;
+    }
+
+    .fly {
+        color: #F60;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    #info {
+        position: absolute;
+        bottom: 20px;
+        right: 100px;
+    }
+</style>
+
+<div id="src" class="box">START</div>
+<div id="info">Native transition: <span></span></div>
+
+<script src="http://kissyteam.github.com/kissy/build/kissy-min.js"></script>
+<script>
+(function() {
+    var S = KISSY,
+        MAX = 2012, MIN_GAP = 100,
+        n = 0, t = 0,
+        nativeTransition = location.search.indexOf('off') === -1,
+        box = S.one('#src');
+
+    function fly() {
+        if(n === MAX) { box.text('BANG!'); return; }
+        if(S.now() - t < MIN_GAP) return;
+
+        t = S.now();
+        box.text(n + 1);
+
+        S.Node('<div class="box fly"></div>')
+                .text(n++)
+                .appendTo(document.body)
+                .animate({
+                    top: random(0, 400) + 'px',
+                    left: random(100, 500) + 'px',
+                    opacity: 0
+                }, random(1, 3), 'easeOutStrong', flies(1, 5), nativeTransition);
+    }
+
+    function random(min, max) {
+        return min + Math.ceil(Math.random() * (max - min));
+    }
+
+    function times(num, fn) {
+        return function() { while(num--) fn(); };
+    }
+
+    function flies(min, max) {
+        return times(random(min, max), function() {
+            setTimeout(fly, random(50, 1000));
+        });
+    }
+
+    function once(fn) {
+        return function() { fn && fn(); fn = null; };
+    }
+
+    S.one(document.body).on('keyup click', once(flies(10, 20)));
+
+    S.one('#info span').text(nativeTransition && S.Anim.supportTransition() ? 'on' : 'off');
+})();
+</script>
+
+</body>
+</html>

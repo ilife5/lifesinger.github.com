@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Crazy Test</title>
+<style>
+    body {
+        background-color: black;
+        color: #bbb;
+        font: 14px/1.5 Consolas, '宋体', monospace;
+        padding: 10px 20px;
+    }
+
+    a {
+        color: #9fc;
+        text-decoration: none;
+    }
+
+    h2 {
+        font: normal 26px Futura, Century Gothic, AppleGothic, sans-serif;
+        margin: 20px 0 10px;
+    }
+
+    button {
+        padding: 5px 20px;
+        margin: 10px;
+    }
+
+    #konsole {
+        border: 1px dashed #f97;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+</style>
+</head>
+<body>
+
+<h2>Console</h2>
+<div id="konsole"></div>
+
+<script>
+
+    var konsole = document.getElementById('konsole');
+
+    function log(msg) {
+        if (msg === null) return konsole.innerHTML = '';
+
+        msg = (msg === undefined) ? '' : (msg + '').replace(/\n/g, '<br>');
+        konsole.innerHTML += msg + '<br>';
+    }
+
+    function logfn(msg) {
+        return function() {
+            log(msg);
+        };
+    }
+
+    function now() {
+        return new Date().getTime();
+    }
+
+    function times(n, fn) {
+        while (n--) fn();
+    }
+
+
+    // prepare
+    var i = 1000, start, result = [], oldIE = !+[1,], slice = Array.prototype.slice;
+    while (i--) {
+        document.body.appendChild(document.createElement('a'));
+    }
+
+    function toArray(list) {
+        return slice.call(list);
+    }
+    if (oldIE) {
+        toArray = function(list) {
+            var arr = [], i = 0, len = list.length;
+            for (; i < len; i++) {
+                arr[i] = list[i];
+            }
+            return arr;
+        }
+    }
+
+    function set(list) {
+        for (var i = list.length - 1; i;) {
+            list[i--].src = '';
+        }
+    }
+
+    function run(count) {
+
+        log(null);
+        var nodes;
+
+        start = now();
+        times(count, function() {
+            document.getElementsByTagName('a');
+        });
+        result.push('get liveNodeList: ' + (now() - start));
+
+        nodes = document.getElementsByTagName('a');
+        start = now();
+        times(count, function() {
+            toArray(nodes);
+        });
+        result.push('toArray liveNodeList: ' + (now() - start));
+
+        start = now();
+        times(count, function() {
+            toArray(document.getElementsByTagName('a'));
+        });
+        result.push('toArray + get liveNodeList: ' + (now() - start));
+
+        nodes = document.getElementsByTagName('a');
+        start = now();
+        times(count, function() {
+            set(nodes);
+        });
+        result.push('set liveNodeList: ' + (now() - start));
+
+        start = now();
+        times(count, function() {
+            set(document.getElementsByTagName('a'));
+        });
+        result.push('set + get liveNodeList: ' + (now() - start));
+
+        nodes = toArray(document.getElementsByTagName('a'));
+        start = now();
+        times(count, function() {
+            set(nodes);
+        });
+        result.push('set array of liveNodeList: ' + (now() - start));
+
+        start = now();
+        times(count, function() {
+            set(toArray(document.getElementsByTagName('a')));
+        });
+        result.push('set + toArray + get liveNodeList: ' + (now() - start));
+
+        //////////////////////////////////////
+
+        if (document.querySelectorAll) {
+            result.push('');
+
+            start = now();
+            times(count, function() {
+                document.querySelectorAll('a');
+            });
+            result.push('get staticNodeList: ' + (now() - start));
+
+            nodes = document.querySelectorAll('a');
+            start = now();
+            times(count, function() {
+                toArray(nodes);
+            });
+            result.push('toArray staticNodeList: ' + (now() - start));
+
+            start = now();
+            times(count, function() {
+                toArray(document.querySelectorAll('a'));
+            });
+            result.push('toArray + get staticNodeList: ' + (now() - start));
+
+            nodes = document.querySelectorAll('a');
+            start = now();
+            times(count, function() {
+                set(nodes);
+            });
+            result.push('set staticNodeList: ' + (now() - start));
+
+            start = now();
+            times(count, function() {
+                set(document.querySelectorAll('a'));
+            });
+            result.push('set + get staticNodeList: ' + (now() - start));
+
+            nodes = toArray(document.querySelectorAll('a'));
+            start = now();
+            times(count, function() {
+                set(nodes);
+            });
+            result.push('set array of staticNodeList: ' + (now() - start));
+
+            start = now();
+            times(count, function() {
+                set(toArray(document.querySelectorAll('a')));
+            });
+            result.push('set + toArray + get staticNodeList: ' + (now() - start));
+        }
+
+        // print result
+        for (i in result) log(result[i]);
+    }
+</script>
+
+<button id="run-btn">Run</button>
+<script>
+    document.getElementById('run-btn').onclick = function() {
+        var btn = this;
+
+        btn.disabled = true;
+        btn.innerHTML = 'Running...';
+
+        setTimeout(function() {
+            run(500);
+
+            btn.disabled = false;
+            btn.innerHTML = 'Run';
+        }, 100);
+    }
+</script>
+
+<h2>Summary</h2>
+<ol>
+    <li>对于获取操作来说，getElementsByTagName 的速度远远大于 querySelectoAll</li>
+    <li>从访问安全性和类库的普适上讲，Selector 需要将 liveNodeList 转换为 pureArray</li>
+    <li>从集合访问上来讲，pureArray &gt;&gt; liveNodeList / staticNodeList</li>
+    <li>综合考虑，采用 getElementsByTagName 优于 querySelector</li>
+</ol>
+
+<h2>References</h2>
+<ol>
+    <li><a href="http://jsperf.com/access-to-nodes-via-queryselectorall-vs-getelementsbyta/2">Access to nodes via querySelectorAll vs getElementsByTagName</a></li>
+    <li><a href="http://www.nczonline.net/blog/2010/09/28/why-is-getelementsbytagname-faster-that-queryselectorall">Why is getElementsByTagName() faster that querySelectorAll()?</a></li>
+</ol>
+
+</body>
+</html>

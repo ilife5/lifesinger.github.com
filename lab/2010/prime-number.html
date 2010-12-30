@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Prime Number</title>
+</head>
+<body>
+寻找小于 <input id="max" value="10000" size="4" /> 的质数 <button id="go">Go</button>
+<div id="r" style="margin: 10px; padding: 20px; border: 1px solid #ccc"></div>
+<script>
+
+    var doc = document, r = doc.getElementById('r'), btn,
+        n, MAX, start,
+        re = /^(11+?)\1+$/, C = '1', s;
+
+    function go() {
+        var t = +new Date;
+        do {
+            o();
+        } while (n < MAX && (+new Date - t < 50));
+
+        if (n < MAX) {
+            setTimeout(go, 25);
+        } else {
+            sum();
+        }
+    }
+
+    function o() {
+        n = (s += C).length;
+        if (!re.test(s)) {
+            r.appendChild(doc.createTextNode(n + ' '));
+        }
+    }
+
+    (btn = doc.getElementById('go')).onclick = function() {
+        s = C;
+        MAX = doc.getElementById('max').value;
+        r.innerHTML = '';
+        btn.disabled = true;
+        start = +new Date;
+        go();
+    };
+
+    function sum() {
+        var diff = +new Date - start,
+            p = doc.createElement('P'),
+            total = r.childNodes.length;
+            p.innerHTML = '耗时：' + diff + ' ms<br>找到小于 ' + MAX + ' 的质数：' + total + ' 个';
+        r.appendChild(p);
+        btn.disabled = false;
+    }
+
+</script>
+<script>
+function prime(MAX) {
+    var re = /^(11+?)\1+$/,
+        n, C = '1', s = C,
+        r = [], j = 0;
+
+    while ((n = (s += C).length) < MAX) {
+        !re.test(s) && (r[j++] = n);
+    }
+    return r;
+}
+//alert(prime(10000).length);
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Img Src RegExp Test</title>
+</head>
+<body>
+<h3>Booklet:</h3>
+<p>
+    <a href="javascript:var o='<ol>',bd=document.body;bd.innerHTML.replace(/(<img[^>]*)(src *= *(\u0022[^\u0022]*\u0022|\u0027[^\u0027]*\u0027|[^ >]*))/ig,function(a,b,e,d){b=d;e=d.charAt(0);if(e=='\u0027'||e=='\u0022'){b=b.slice(1,-1);}o+='<li>'+b+'<img src='+d+'/></li>';});bd.innerHTML=o+'</ol>';">Show Images...</a>（将我拖动到收藏夹，点击即可使用）
+</p>
+
+<h3>测试：</h3>
+<textarea rows="30" cols="80" id="output"></textarea>
+
+<script type="text/javascript">
+
+    var html = '<img src="http://img.xctkfs.c=om/images/dianpuzhuangxiu/xiangqingnv ren.jpg" style="border: 0px solid rgb(0, 0, 0);"/>'
+            + "<img src='http://img.xctkfs.c=om/images/dianpuzhuangxiu/xiangqingnv ren.jpg' />"
+            + "<img src='http://img.xctkfs.c=om/images/dianp\"uzhuangxiu/xiangqingnv ren.jpg' />"
+            + '<img src="http://img.xctkfs.c=om/images/dianpuzhuangxiu/xiangqingn\'v ren.jpg" />'
+            + "<img src=http://pics.taobaocdn.com/newrank/b_red_1.gif />"
+            + "<img src  =   http://pics.taobaocdn.com/newrank/b_red_1.gif>"
+            + '<img width="50" heigth="50" src="http://pics.taobaocdn.com/new><rank/b_re\'d.gif" />'
+            + '<img src =  http://pics.taobaocdn.com/newrank/b_re\'d"1.gif />'
+            + '<img align="baseline" alt="" border="0" src="http://www45.babidou.com/pic/2009/4/1/zeng_qianwen/09长袖/t恤 027.jpg" />'
+            + '<img src=>';
+
+    var imgs = [], p, c;
+    html = html.replace(
+            /(<img[^>]*)(src *= *("[^"]*"|'[^']*'|[^ >]*))/ig,
+            function(m, p1, p2, p3) {
+                p = p3, c = p.charAt(0);
+                if (c == '"' || c == "'") p = p.slice(1, -1);
+                imgs[imgs.length] = p;
+                return p1 + 'src="path/to/replacement" data-src=' + p3;
+            });
+
+    var out = html + "\n\n";
+    for (var i = 0, len = imgs.length; i < len; i++) {
+        out += imgs[i] + "\n";
+    }
+
+    out += html;
+    document.getElementById("output").value = out;
+</script>
+</body>
+</html>

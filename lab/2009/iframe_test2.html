@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Crazy Test</title>
+</head>
+
+<body>
+<p id="msg">iframe</p>
+
+<script type="text/javascript">
+
+    function iframeFn() {
+        alert('iframe function');
+    }
+
+    window.onload = function() {
+        window.parent.document.getElementById('msg').innerHTML = 'set from iframe';
+        debug('window.parent.parentFn = ' + window.parent.parentFn);
+    };
+
+    var msgEl = document.getElementById('msg');
+    function debug(info) {
+        msgEl.innerHTML += '<br />' + info;
+    }
+</script>
+</body>
+</html>

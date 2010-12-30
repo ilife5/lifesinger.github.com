@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />	
+<title>Holy Grail Test</title>
+<link rel="stylesheet" href="assets/reset.css" type="text/css" media="screen" />
+<style type="text/css">
+	body { font: 12px Tahoma,Arial,sans-serif }
+
+	#bd .col { float: left; padding: 10px }
+
+	#bd { padding: 0 170px 0 200px; min-width: 200px } 
+	#main { width: 100%; background: #D6D6D6 }
+	#left { width: 180px; margin-left: -100%; position: relative; right: 220px; _left: 150px; background: #77BBDD }
+	#right { width: 130px; margin-right: -150px; background: #FF6633 }
+
+	#hd, #ft { height: 80px; background: #666666 }
+	#ft { clear: both; position: relative }
+</style>
+</head>
+<body>
+<div id="doc">
+	<div id="hd"></div>
+	<div id="bd">
+		<div id="main" class="col">
+			One of the drawbacks of using percentages with the One True Layout to create liquid columns that it makes padding the columns a bit tricky. Percentage paddings tend to look bad at some screen widths. Fixed paddings can be added, but only by cluttering the markup with a div nested inside each column.
+			The padding plus a width of 100% causes the center column to expand beyond the non-padded width of the container. In order to tame it back into place, we need to increase the right margin by the total amount of the padding. This ensures that the center column is only as large as we expect it to be.
+			Also, since the center column is now wider, the left column has a larger distance to move in order to get to the correct place. Increasing the offset by the total center padding does the trick.
+		</div>
+		<div id="left" class="col">
+			I’m no designer, but looking at the layout above offends even my aesthetic sensibilities. The unpadded columns are hard on the eyes and difficult to read. We need whitespace.
+		</div>
+		<div id="right" class="col">
+			With this technique, padding isn’t a problem. Padding can be added directly to the left and right columns; just adjust the width accordingly. To give a 10-pixel padding to the left column in the example above, but keep it’s full width (padding + width) at 200px, simply change the rule as follows
+		</div>
+	</div>
+	<div id="ft"></div>
+</div>
+</body>
+</html>

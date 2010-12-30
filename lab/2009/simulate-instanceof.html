@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Crazy Test</title>
+</head>
+<body>
+<p>请在 Firefox 下通过 Firebug Console 查看测试结果。</p>
+<script type="text/javascript">
+
+    /**
+     * Gecko 引擎下，模拟 instanceof
+     */
+    function _instanceof(obj, cls) {
+        // instanceof 的左操作数必须是非null对象或函数对象
+        if((typeof obj !== "object" || obj === null)
+                && typeof obj !== "function") {
+            return false;
+        }
+
+        // instanceof 的右操作数必须是函数对象
+        if(typeof cls !== "function") {
+            throw new Error("invalid instanceof operand (" + cls + ")");
+        }
+
+        // 向上回溯判断
+        var p = obj.__proto__, cp = cls.prototype;
+        while(p) {
+            if(p === cp) return true;
+            p = p.__proto__;
+        }
+        return false;
+    }
+
+    function test(obj, cls) {
+        var expected = obj instanceof cls,
+            actual = _instanceof(obj, cls);
+        if(expected === actual) {
+            console.info("passed. value is " + expected);
+        } else {
+            console.warn("failed");
+        }
+
+    }
+    // Test Cases:
+    var str = new String();
+    var date = new Date();
+
+    console.log("str:");
+    test(str, String);
+    test(str, Object);
+    test(str, Date);
+
+    console.log("date:");
+    test(date, Date);
+    test(date, Object);
+    test(date, String);
+
+    function Animal() {}
+    function Dog() {}
+    var animal = new Animal();
+    Dog.prototype = animal;
+
+    console.log("dog:");
+    var dog = new Dog();
+    test(dog, Dog);
+    test(dog, Animal);
+
+    console.log("bird:");
+    function Bird() {}
+    var bird = new Bird();
+    var o = {};
+    bird.__proto__ = o;
+    Bird.prototype = o;
+    test(bird, Bird);
+
+</script>
+</body>
+</html>

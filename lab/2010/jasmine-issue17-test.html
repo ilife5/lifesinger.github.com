@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<title>Crazy Test</title>
+
+<link rel="stylesheet" href="http://github.com/pivotal/jasmine/raw/master/lib/jasmine.css">
+<script src="http://github.com/pivotal/jasmine/raw/master/lib/jasmine.js"></script>
+<script src="http://github.com/pivotal/jasmine/raw/master/lib/jasmine-html.js"></script>
+
+</head>
+<body>
+
+<script>
+
+    var TestObject = {
+        methodA: function() { return 'a'; },
+        methodB: function() { return this.methodA(); }
+    };
+
+    describe('TestObject', function() {
+        var methodB = TestObject.methodB;
+
+        describe('methodB', function() {
+            it('should return a', function() {
+                expect(methodB()).toBe('a');
+            });
+        });        
+    });
+
+</script>
+
+
+<script>
+    jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+    jasmine.getEnv().execute();
+</script>
+</body>
+</html>

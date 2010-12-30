@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Inline Script Position Test</title>
+<script type="text/javascript">
+    var startTime = new Date().getTime();
+</script>
+
+<link rel="stylesheet" href="http://assets.taobaocdn.com/tbsp/tbsp.source.css" type="text/css" />
+<script type="text/javascript">
+    var t = Number(new Date()), tmp = t;
+    while(t  + 2000 > tmp) {
+        tmp = Number(new Date());
+    }
+</script>
+
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.7.0/yuiloader-dom-event.js"></script>
+</head>
+<body>
+<p>Case: inline script after style link</p>
+<script type="text/javascript">
+    var endTime = new Date().getTime();
+    document.write('page load time: ' + (endTime - startTime) + ' ms');
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Event Test</title>
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.7.0/yuiloader-dom-event.js"></script>
+<script src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="http://demos.mootools.net/demos/mootools.js"></script>
+</head>
+<body>
+
+<h4>Test Case in <em>IE</em>:</h4>
+<button id="J_Btn1">Click me YUI</button>
+<button id="J_Btn2">Click me jQuery</button>
+<button id="J_Btn5">Click me MooTools</button>
+<br />
+<button id="J_Btn3">Click me YUI fix</button>
+<button id="J_Btn4">Click me YUI trouble again</button>
+<br />
+<button id="J_Btn6">One thread</button>
+<button id="J_Btn7">jQuery stopImmediatePropagation</button>
+<br />
+<button id="J_Btn8" onclick="debugInfoEl.innerHTML=''">Clear Debug Info</button>
+
+<hr />
+
+<h4>Debug Info:</h4>
+<ul id="J_DebugInfo"> </ul>
+
+<script type="text/javascript">
+    // Common functions
+    var debugInfoEl = document.getElementById('J_DebugInfo');
+    function debug(info) {
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(info));
+        debugInfoEl.appendChild(li);
+    }
+
+    // YUI
+    (function() {
+        var Y = YAHOO.util, Event = Y.Event;
+
+        // normal
+        Event.on('J_Btn1', 'click', function() {
+            debug('[YUI] click fired 1');
+        });
+        Event.on('J_Btn1', 'click', function() {
+            debug('[YUI] click fired 2');
+        });
+
+        // fix?
+        Event.on('J_Btn3', 'click', function() {
+            debug('[YUI] click fired 1');
+        });
+        Event.on('J_Btn3', 'click', function() {
+            setTimeout(function() {
+                debug('[YUI] click fired 2');
+            }, 0);
+        });
+
+        // trouble again
+        Event.on('J_Btn4', 'click', function() {
+            debug('[YUI] click fired 1');
+        });
+        Event.on('J_Btn4', 'click', function() {
+            setTimeout(function() {
+                debug('[YUI] click fired 2');
+            }, 0);
+        });
+        Event.on('J_Btn4', 'click', function() {
+            setTimeout(function() {
+                debug('[YUI] click fired 3');
+            }, 0);
+        });
+
+        // one thread
+        Event.on('J_Btn6', 'click', function() {
+            debug('[YUI] click fired 1');
+        });
+
+        Event.on('J_Btn6', 'click', function() {
+            debug('[YUI] click fired 2');
+            for(var i = 0; i < 100; i++) {
+                debug('[YUI] click fired 2 - ' + (i + 1));
+            }
+        });
+        Event.on('J_Btn6', 'click', function() {
+            debug('[YUI] click fired 3');
+        });
+    })();
+
+    // jQuery
+    (function() {
+        google.load('jquery', '1.3.2');
+        google.setOnLoadCallback(function() {
+            jQuery('#J_Btn2').click(function() {
+                debug('[jQuery] click fired 1');
+            });
+
+            jQuery('#J_Btn2').click(function() {
+                debug('[jQuery] click fired 2');
+            });
+
+            // stop
+            jQuery('#J_Btn7').click(function(event) {
+                debug('[jQuery] click fired 1');
+                 event.stopImmediatePropagation();
+            });
+
+            jQuery('#J_Btn7').click(function() {
+                debug('[jQuery] click fired 2');
+            });
+        });
+    })();
+
+    // MooTools
+    (function() {
+       $('J_Btn5').addEvent('click', function() {
+           debug('[MooTools] click fired 1');
+       });
+
+        $('J_Btn5').addEvent('click', function() {
+           debug('[MooTools] click fired 2');
+       });
+    })();
+</script>
+
+</body>
+</html>

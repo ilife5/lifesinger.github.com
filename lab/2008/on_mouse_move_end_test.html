@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=gbk'>
+<title>onMouseMoveEnd Test</title>
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.6.0/yui-base.js"></script>
+</head>
+<body>
+<p>请将鼠标在图片上移动</p>
+<div class="pic-container">
+    <img id="J_Pic" src="assets/funny_bed.jpg" alt="测试图片" />
+    <ul>
+        <li id="J_Info_MovedTimes">鼠标移动次数</li>
+        <li id="J_Info_ExecTimes">回调函数执行次数</li>
+        <li id="J_Info_MousePosition">坐标信息</li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    var Y = YAHOO.util, Dom = Y.Dom, Event = Y.Event;
+
+    // 模拟onMouseMoveEnd
+    Event.on('J_Pic', 'mousemove', function() {
+        var executionTimer, count = 0, movedTimes = 0;
+        var picPos = Dom.getXY('J_Pic');
+
+        return function(ev) {
+            if(executionTimer) clearTimeout(executionTimer);
+            var pos = Event.getXY(ev);
+            Dom.get('J_Info_MovedTimes').innerHTML = 'moved times: ' + (++movedTimes);
+
+            executionTimer = setTimeout(function() {
+                var diff = [pos[0] - picPos[0], pos[1] - picPos[1]];
+                Dom.get('J_Info_MousePosition').innerHTML = 'position: (' + diff[0] + ', ' + diff[1] + ')';
+                Dom.get('J_Info_ExecTimes').innerHTML = 'executed times: ' + (++count);
+            }, 50);
+        };
+    }());
+</script>
+</body>
+</html>

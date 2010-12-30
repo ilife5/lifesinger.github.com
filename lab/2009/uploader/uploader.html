@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=gbk"/>
+<title>Uploader Demo</title>
+<link type="text/css" href="http://assets.taobaocdn.com/tbra/2.0/tbsp.css" rel="stylesheet" />
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.7.0/yui-base.js"></script>
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.7.0/build/element/element-min.js"></script>
+<script type="text/javascript" src="http://assets.taobaocdn.com/yui/2.7.0/build/uploader/uploader-min.js"></script>
+<link type="text/css" href="assets/uploader.source.css" rel="stylesheet" />
+<script type="text/javascript" src="assets/tbuploader.source.js"></script>
+</head>
+<body>
+<div id="page3">
+    <div id="header">
+        <h1>Taobao Uploader Demo</h1>
+    </div>
+    <div id="content">
+        <form id="J_UploadForm" action="uploader.php" method="post">
+            <input type="hidden" name="fileSizeLimit" value="2" /> <!-- 文件不能超过2M -->
+            <input type="hidden" name="uploadTimeout" value="10" /> <!-- 单个文件的传输时间不能超过的秒数 -->
+            <input type="hidden" name="publishUrl" value="publish.php" /> <!-- 提交发布请求的Url -->
+
+            <div class="upload-container">
+                <div class="upload-table">
+                    <div class="hd">
+                        <div class="name">文件</div>
+                        <div class="size">大小</div>
+                    </div>
+                    <div class="upload-scroll">
+                        <ul class="upload-list" id="J_UploadList">
+                            <li class="default" id="tmpl-upload-item">
+                                <div class="name">%filename</div>
+                                <div class="size">%filesize</div>
+                                <div class="misc">
+                                    <a class="remove J_RemoveFile" href="#" title="从列表中移除">移除</a>
+                                    <span class="status">状态</span>
+                                </div>
+                                <div class="msg"><!--返回的url或错误信息--></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ft">
+                        <div class="total-files">
+                            <span class="files-num">
+                                <em id="J_TotalFilesNum">0</em> 个文件
+                            </span>
+                            <span class="select-files">
+                                <a id="J_UploadFlashBox" href="#">添加…</a>
+                            </span>
+                        </div>
+                        <div class="total-size">合计：<em id="J_TotalFilesSize">0 B</em></div>
+                    </div>
+                </div>
+
+                <div class="upload-controls">
+                    <label>
+                        <input name="needValidate" type="checkbox" checked="checked" autocomplete="off" />校验文件大小和尺寸，并对图片做优化处理
+                    </label>
+                     <label>
+                        <input name="batchPublish" type="checkbox" checked="checked" autocomplete="off" />上传后，作为整体发布（只要有一个文件出错，就都不发布上线。适合上传活动等页面的切图）
+                    </label>
+                    <div class="submit skin-gray">
+                        <button class="disabled btn" type="submit" id="J_UploadAll" disabled="disabled">上 传</button>
+                        <span class="loading">
+                            <img src="assets/img/loading.gif" alt="正在运行…" width="32" height="32" />正在运行…
+                        </span>
+                    </div>
+                </div>
+
+                <div class="upload-result hidden">
+                    <p class="ok">上传成功！<a href="#" class="J_ResetUpload">继续上传文件</a></p>
+                    <p class="error">上传失败！有 <em id="J_UploadFailedNum">0</em> 个文件在上传时发生了错误！<a href="#" class="J_ResetUpload">重新上传文件</a></p>
+                </div>
+            </div>
+        </form>
+        <script type="text/javascript">
+            TB.Uploader.assetsConfig = {
+                swfUrl: 'assets/uploader.swf',
+                buttonSkin: 'assets/img/select_file.png'
+            };
+        </script>
+
+        <style type="text/css">
+            .section { margin-bottom: 50px; }
+            .section h3 { font-weight: bold; margin: 0.5em 0; }
+            .section ol li { list-style: decimal inside; line-height: 170%; }
+            .section pre { border-left: 3px solid #ddd; padding-left: 15px; margin: 10px 0 15px 25px; } 
+        </style>
+        <div id="test-cases" class="section">
+            <h3>测试用例：</h3>
+            <ol>
+                <li>条件：需要校验，非整体发布。操作：a. 上传单张满足校验的图片</li>
+                <li>条件：需要校验，非整体发布。操作：b. 上传单张不满足校验的图片，比如大于2M</li>
+                <li>条件：需要校验，非整体发布。操作：c. 选择单张不满足校验的图片，比如大于2M. 然后再切换校验选项</li>
+                <li>条件：需要校验，非整体发布。操作：d. 选择一个符合校验的文件，硬盘上删掉该文件，再点击上传</li>
+                <li>条件：需要校验，非整体发布。操作：e. 上传多张都满足校验的图片</li>
+                <li>条件：需要校验，非整体发布。操作：g. 上传多张部分不满足校验的图片</li>
+                <li>条件：不需要校验，非整体发布。操作：a. 上传多张都不满足校验的图片</li>
+                <li>条件：不需要校验，非整体发布。操作：b. 上传单张大于100M的图片，超时设为1s，检验超时设置</li>
+                <li>条件：不需要校验，非整体发布。操作：c. 上传单张大于100M的图片，将超时设为10m，再点击上传</li>
+                <li>条件：整体发布。操作：重复上面所有操作</li>
+                <li>各种UI状态测试，比如上传时不能点击选择按钮等等</li>
+                <li>服务器模拟错误信息，测试各种异常情况</li>
+            </ol>
+        </div>
+        <div id="docs" class="section">
+            <h3>接口文档：</h3>
+            <ol>
+                <li>文件是单个并发上传的，POST数据为：
+                    <pre>
+$_FILES['Filedata'] = Array
+(
+    [name] => 00_good_img_2.jpg
+    [type] => application/octet-stream
+    [tmp_name] => D:\web_root\tmp\php804B.tmp
+    [error] => 0
+    [size] => 2689
+)
+$_POST = Array
+(
+    [Filename] => 00_good_img_2.jpg
+    [batchPublishId] => 1237796894671 // 批量发布id，为0时表示不需要批量发布，默认需要
+    [needValidate] => true // 是否需要校验和优化，默认需要
+    [Upload] => Submit Query
+)
+                    </pre>
+                </li>
+                <li>当不需要批量发布时，服务器校验后直接发布，Response数据为：
+                    <pre>
+// 校验和发布都成功时：
+{"result": "1", "msg": "http://t-yubo/lab/2009/uploader/uploads/00_good_img_1.jpg"}
+
+// 校验有误或有其他错误发生时：
+{"result": "0", "msg": "具体的错误信息"}
+                    </pre>
+                </li>
+                <li>当需要批量发布时，服务器进行校验后，立刻返回Response数据：
+                    <pre>
+// 校验成功时：
+{"result": "3", "msg": "等待发布…"}
+
+// 校验有误时：
+{"result": "0", "msg": "具体的校验错误信息"}
+                    </pre>
+                </li>
+                <li>当需要批量发布时，客户端获取到所有文件的校验信息后，如果都校验通过，则发送发布请求，POST数据为：
+                    <pre>
+$_POST = Array
+(
+    [batchPublishId] => 1237798008029 // 批量发布id
+    [fileServeIds] => 116685732,1218419642 // 文件id，用逗号隔开
+)
+                    </pre>
+                </li>
+                <li>服务器获取到批量发布请求后，返回的Response数据为：
+                    <pre>
+// 都发布成功时：
+{
+  "934959144":"http://tps.taobao.com/934959144.xxx", // 文件id和发布后的URL
+  "127640376":"http://tps.taobao.com/127640376.xxx"
+}
+
+// 发布过程中有错误发生：
+{"result": "4", "msg": "上传已取消"}
+                    </pre>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div id="footer">
+        
+    </div>
+</div>
+</body>
+</html>
+

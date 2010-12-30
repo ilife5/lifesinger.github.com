@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>IE6 Test</title>
+<style>
+	#page select,
+	.hidden { display: none; }
+</style>
+</head>
+
+<body>
+<form action="">
+	<select id="J_Test">
+        <option>haha</option>
+	</select>
+	<br /><br />
+	<button type="button" onclick="hiddenA()">I can hidden select.</button><br />
+	<button type="button" onclick="hiddenB()">I can't hidden select!</button><br />
+	<button type="button" onclick="hiddenC()">I can hidden select too.</button>
+</form>
+
+<script type="text/javascript">
+	
+	function hiddenA() {
+		 document.getElementById('J_Test').style.display = 'none';
+	}
+
+	function hiddenB() {
+		 document.body.id = 'page';
+	}
+
+	function hiddenC() {
+		 document.getElementById('J_Test').className = 'hidden';
+	}
+
+</script>
+
+</body>
+</html>
+

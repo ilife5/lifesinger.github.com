@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Crazy Test</title>
+<style>
+    body {
+        background-color: black;
+        color: #ddd;
+        font: 18px/1.5 Consolas, '微软雅黑', monospace;
+        padding: 10px 20px;
+    }
+
+    a {
+        color: #9fc;
+        text-decoration: none;
+    }
+
+    #out {
+        border: 1px dashed #f97;
+        padding: 10px 20px;
+    }
+
+    h2 {
+        font: normal 26px Futura, Century Gothic, AppleGothic, sans-serif;
+        margin: 20px 0 10px;
+    }
+</style>
+</head>
+<body>
+
+<h2>Console</h2>
+<div id="out"></div>
+
+<h2>Summary</h2>
+<ol>
+    <li>所有浏览器都有：ex.message</li>
+    <li>除了 Opera, 都有：ex.name</li>
+    <li>ex 的其它属性，各有千秋</li>
+    <li>目前只有 IE 和 Firefox 支持 window.onerror </li>
+    <li>onerror 的参数含义依次为：exMessage, exFileName, exLineNumber</li>
+</ol>
+
+<h2>References</h2>
+<ol>
+    <li><a href="http://code.google.com/p/chromium/issues/detail?id=7771">Chromium Issue 7771: Event window.onerror doesn't work</a></li>
+    <li><a href="http://www.dailycoding.com/Posts/javascript_exception_handling_techniques.aspx">JavaScript Exception Handling Techniques</a></li>
+</ol>
+
+<script>
+
+    function log(msg) {
+        msg = (msg === undefined) ? '' : msg.replace(/\n/g, '<br>');
+        document.getElementById('out').innerHTML += msg + '<br>';
+    }
+
+    try {
+        var x = y / 2;
+    } catch(ex) {
+        for (var p in ex) log('ex.' + p + ' = ' + ex[p]);
+        log('ex.toString() = ' + ex);
+    }
+
+    window.onerror = function() {
+        log('\nwindow onerror: ');
+        for (var i = 0; i < arguments.length; i++) {
+            log('arguments[' + i + '] = ' + arguments[i]);
+        }
+    };
+
+    // throw error
+    var t = y;
+
+    log('\ndone');
+
+</script>
+</body>
+</html>

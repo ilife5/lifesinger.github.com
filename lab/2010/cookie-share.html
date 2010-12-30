@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Cookie Share</title>
+<link href="http://kissyteam.github.com/kissy/build/cssreset/reset-min.css" rel="stylesheet" />
+<style>
+    body { padding: 20px; }
+    h1 { font: 28px Candara; margin: 20px 0; }
+</style>
+</head>
+<body>
+<h1>Cookie Share Test</h1>
+
+<button id="set">Set</button> <span id="set-out"></span>
+<br><br>
+<button id="get">Get</button> <span id="get-out"></span>
+
+<script src="http://kissyteam.github.com/kissy/build/packages/ks-core-min.js"></script>
+<script>
+KISSY.ready(function(S) {
+    var DOM = S.DOM, Cookie = S.Cookie,
+        i = 0, key = '__test__';
+
+    S.one('#set').on('click', function() {
+        Cookie.set(key, ++i, 30, 'github.com', '/');
+        S.one('#set-out').html(i);
+    });
+
+    S.one('#get').on('click', function() {
+        S.one('#get-out').html(Cookie.get(key));
+    });
+});
+</script>
+</body>
+</html>

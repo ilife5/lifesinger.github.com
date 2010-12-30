@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	
+<title>Validation - Check Length</title>
+<script src="http:/assets.taobaocdn.com/yui/2.6.0/yui-base.js" type="text/javascript"></script>
+<style type="text/css">
+	body { padding: 60px; font-size: 12px }
+	.tips { padding-left: 5px; color: #666 }
+	.h { color: #f30 }
+</style>
+</head>
+<body>
+	<form action="#" method="get">
+		用户名：<input type="text" size="20" id="demo1" /><span class="tips">不能超过16个字符（汉字占两个字符）</span>
+	</form>
+
+<script type="text/javascript">
+(function() {
+	var Y = YAHOO.util;
+
+	// Ref: http://lifesinger.org/blog/?p=77
+	Y.Event.on('demo1', 'input', checkLength);
+	Y.Event.on('demo1', 'propertychange', checkLength);
+	
+	function checkLength() {
+		var val = this.value,
+			tips = Y.Dom.getNextSibling(this);
+
+		if(getBytesLength(val) > 16) {
+			this.value = subStringByBytes(val, 16);
+			Y.Dom.addClass(tips, 'h');
+		} else {
+			Y.Dom.removeClass(tips, 'h');
+		}
+	}
+	
+	/**
+	 * 得到字符串的字符长度（一个汉字占两个字符长）
+	 */
+	function getBytesLength(str) {
+		// 在GBK编码里，除了ASCII字符，其它都占两个字符宽
+		return str.replace(/[^\x00-\xff]/g, 'xx').length;
+	}
+
+	/**
+	 * 根据字符长来截取字符串
+	 */
+	function subStringByBytes(val, maxBytesLen) {
+		var len = maxBytesLen;
+		var result = val.slice(0, len);
+		while(getBytesLength(result) > maxBytesLen) {
+			result = result.slice(0, --len);
+		}
+
+		return result;
+	}
+})();
+</script>
+
+</body>
+</html>

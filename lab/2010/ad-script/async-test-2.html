@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="gbk"/>
+<title>Async Test</title>
+</head>
+<body>
+<script>
+    (function(d) {
+        var a = d.createElement('script');
+        a.src = 'async-test.js?t=' + new Date().getTime();
+        d.getElementsByTagName('head')[0].appendChild(a);
+    })(document);
+</script>
+<script>
+    alert(typeof g);
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JSONP Memory Leak Test</title>
+<style>
+    body {
+        background: black;
+        color: white;
+    }
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script>
+
+    function getScript(url) {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = url;
+        document.body.appendChild(script);
+        return script;
+    }
+
+    var n = 0;
+    function go() {
+        var script = getScript('jsonp.js?t=' + new Date().getTime());
+        setTimeout(function() {
+            for(var p in script) delete script[p];
+            document.body.removeChild(script);
+        }, 100);
+
+        if(n++ < 300) {
+            setTimeout(go, 200);
+        }
+    }
+    go();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Position: Fixed For IE6</title>
+<meta content="text/html; charset=utf-8" />
+<style type="text/css">
+
+#float-img {
+	position: fixed;
+	right: 5px;
+	bottom: 5px;
+    _position: absolute;
+    _zoom: expression(function(el) {
+              el.style.zoom = 1;
+
+              var docEl = document.documentElement;
+              window.onscroll = function() {
+                  el.style.top = (docEl.scrollTop + docEl.clientHeight - el.clientHeight - 5) + "px";
+              };
+          }(this));
+}
+
+* html { background:url(null) no-repeat fixed; } /* avoid floatImage Shake for IE6 */
+
+</style>
+</head>
+<body>
+
+<h2>Code:</h2>
+<pre>
+#float-img {
+	position: fixed;
+	right: 5px;
+	bottom: 5px;
+    _position: absolute;
+    _zoom: expression(function(el) {
+              el.style.zoom = 1;
+
+              var docEl = document.documentElement;
+              window.onscroll = function() {
+                  el.style.top = (docEl.scrollTop + docEl.clientHeight - el.clientHeight - 5) + "px";
+              };
+          }(this));
+}
+</pre>
+
+<h2>References:</h2>
+<ol>
+    <li><a href="http://lifesinger.org/blog/2009/07/ie6-fixed-position/">fixed 定位在 IE6 下的实现技巧一则</a></li>
+    <li><a href="http://old9.blogsome.com/2008/10/26/css-expression-reloaded/">CSS Expression Reloaded</a></li>
+</ol>
+
+<a id="float-img" href="http://taobao.com/">
+	<img src="http://img01.taobaocdn.com/tps/i1/T1NCFkXf2pC0QTadfo-227-59.png" alt="十年启程，百年阿里" />
+</a>
+
+<p>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</p>
+
+</body>
+</html>

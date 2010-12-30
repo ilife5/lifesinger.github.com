@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Crazy Test</title>
+<script type="text/javascript" src="http://kissy.googlecode.com/svn/trunk/lib/yui2/yahoo-dom-event.js"></script>
+</head>
+<body>
+
+<h2>1.传统方式实现</h2>
+<ul id="navigation">
+	<li><a href="#">Handlers Test 1</a>
+		<ul style="display: none;">
+			<li><a href="#">Handlers Test 1_1</a></li>
+			<li><a href="#">Handlers Test 1_2</a></li>
+			<li><a href="#">Handlers Test 1_3</a></li>
+			<li><a href="#">Handlers Test 1_4</a></li>
+			<li><a href="#">Handlers Test 1_5</a></li>
+		</ul>
+	</li>
+	<li><a href="#">Handlers Test 2</a>
+		<ul style="display: none;">
+			<li><a href="#">Handlers Test 2_1</a></li>
+			<li><a href="#">Handlers Test 2_2</a></li>
+			<li><a href="#">Handlers Test 2_3</a></li>
+			<li><a href="#">Handlers Test 2_4</a></li>
+			<li><a href="#">Handlers Test 2_5</a></li>
+		</ul>
+	</li>
+	<li><a href="#">Handlers Test 3</a>
+		<ul style="display: none;">
+			<li><a href="#">Handlers Test 3_1</a></li>
+			<li><a href="#">Handlers Test 3_2</a></li>
+			<li><a href="#">Handlers Test 3_3</a></li>
+			<li><a href="#">Handlers Test 3_4</a></li>
+			<li><a href="#">Handlers Test 3_5</a></li>
+		</ul>
+	</li>
+	<li><a href="#">Handlers Test 4</a>
+		<ul style="display: none;">
+			<li><a href="#">Handlers Test 4_1</a></li>
+			<li><a href="#">Handlers Test 4_2</a></li>
+			<li><a href="#">Handlers Test 4_3</a></li>
+			<li><a href="#">Handlers Test 4_4</a></li>
+			<li><a href="#">Handlers Test 4_5</a></li>
+		</ul>
+	</li>
+</ul>
+
+<h2>2.代理方式实现</h2>
+<ul id="navigation2">
+	<li><a href="#">Handlers Test 1</a>
+		<ul style="display: none;">
+			<li><a href="#">Handlers Test 1_1</a></li>
+			<li><a href="#">Handlers Test 1_2</a></li>
+			<li><a href="#">Handlers Test 1_3</a></li>
+			<li><a href="#">Handlers Test 1_4</a></li>
+			<li><a href="#">Handlers Test 1_5</a></li>
+		</ul>
+	</li>
+	<li><a href="#">Handlers Test 2</a>
+		<ul style="display: none;">
+			<li><a href="#">Handlers Test 2_1</a></li>
+			<li><a href="#">Handlers Test 2_2</a></li>
+			<li><a href="#">Handlers Test 2_3</a></li>
+			<li><a href="#">Handlers Test 2_4</a></li>
+			<li><a href="#">Handlers Test 2_5</a></li>
+		</ul>
+	</li>
+	<li><a href="#">Handlers Test 3</a>
+		<ul style="display: none;">
+			<li><a href="#">Handlers Test 3_1</a></li>
+			<li><a href="#">Handlers Test 3_2</a></li>
+			<li><a href="#">Handlers Test 3_3</a></li>
+			<li><a href="#">Handlers Test 3_4</a></li>
+			<li><a href="#">Handlers Test 3_5</a></li>
+		</ul>
+	</li>
+	<li><a href="#">Handlers Test 4</a>
+		<ul style="display: none;">
+			<li><a href="#">Handlers Test 4_1</a></li>
+			<li><a href="#">Handlers Test 4_2</a></li>
+			<li><a href="#">Handlers Test 4_3</a></li>
+			<li><a href="#">Handlers Test 4_4</a></li>
+			<li><a href="#">Handlers Test 4_5</a></li>
+		</ul>
+	</li>
+</ul>
+<p>
+    请点击上面的一级链接查看效果。然后根据源文件 script 中的说明，实现代码。
+</p>
+
+<script type="text/javascript">
+    // 点击链接，看完效果后，删掉下面这行代码，自己写，自己实现。我不是代码，我只是传说。
+    eval(unescape('%76%61%72%20%59%3d%59%41%48%4f%4f%2e%75%74%69%6c%2c%45%76%65%6e%74%3d%59%2e%45%76%65%6e%74%2c%44%6f%6d%3d%59%2e%44%6f%6d%3b%76%61%72%20%75%6c%73%3d%44%6f%6d%2e%67%65%74%28%22%6e%61%76%69%67%61%74%69%6f%6e%22%29%2e%67%65%74%45%6c%65%6d%65%6e%74%73%42%79%54%61%67%4e%61%6d%65%28%22%55%4c%22%29%2c%73%69%62%6c%69%6e%67%3b%66%6f%72%28%76%61%72%20%69%3d%30%2c%75%6c%3b%75%6c%3d%75%6c%73%5b%69%2b%2b%5d%3b%29%7b%73%69%62%6c%69%6e%67%3d%44%6f%6d%2e%67%65%74%50%72%65%76%69%6f%75%73%53%69%62%6c%69%6e%67%28%75%6c%29%3b%69%66%28%73%69%62%6c%69%6e%67%26%26%73%69%62%6c%69%6e%67%2e%74%61%67%4e%61%6d%65%3d%3d%3d%22%41%22%29%7b%28%66%75%6e%63%74%69%6f%6e%28%61%29%7b%45%76%65%6e%74%2e%6f%6e%28%73%69%62%6c%69%6e%67%2c%22%63%6c%69%63%6b%22%2c%66%75%6e%63%74%69%6f%6e%28%63%29%7b%76%61%72%20%62%3d%61%2e%73%74%79%6c%65%2e%64%69%73%70%6c%61%79%3d%3d%3d%22%6e%6f%6e%65%22%3b%61%2e%73%74%79%6c%65%2e%64%69%73%70%6c%61%79%3d%62%3f%22%22%3a%22%6e%6f%6e%65%22%3b%45%76%65%6e%74%2e%70%72%65%76%65%6e%74%44%65%66%61%75%6c%74%28%63%29%7d%29%7d%29%28%75%6c%29%7d%7d%45%76%65%6e%74%2e%6f%6e%28%22%6e%61%76%69%67%61%74%69%6f%6e%32%22%2c%22%63%6c%69%63%6b%22%2c%66%75%6e%63%74%69%6f%6e%28%64%29%7b%76%61%72%20%63%3d%45%76%65%6e%74%2e%67%65%74%54%61%72%67%65%74%28%64%29%2c%61%3d%44%6f%6d%2e%67%65%74%4e%65%78%74%53%69%62%6c%69%6e%67%28%63%29%3b%69%66%28%61%26%26%61%2e%74%61%67%4e%61%6d%65%3d%3d%3d%22%55%4c%22%29%7b%45%76%65%6e%74%2e%70%72%65%76%65%6e%74%44%65%66%61%75%6c%74%28%64%29%3b%76%61%72%20%62%3d%61%2e%73%74%79%6c%65%2e%64%69%73%70%6c%61%79%3d%3d%3d%22%6e%6f%6e%65%22%3b%61%2e%73%74%79%6c%65%2e%64%69%73%70%6c%61%79%3d%62%3f%22%22%3a%22%6e%6f%6e%65%22%7d%7d%29%3b'));
+
+    // 页头已引入 yahoo-dom-event
+
+    // 1. 传统方式实现
+    // 你的代码
+    
+    // 2. 代理方式实现
+    // 你的代码
+
+</script>
+</body>
+</html>

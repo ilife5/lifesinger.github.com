@@ -1,0 +1,49 @@
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# local dev
+127.0.0.1			t-yubo yubo.com  yubo2.com test.yubo.com test2.yubo.com
+127.0.0.1 			test.daily.taobao.net test.taobao.com
+
+# pre test
+#110.75.14.78 		assets.taobaocdn.com  a.tbcdn.cn
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# project
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# fuck gfw
+64.233.189.104		encrypted.google.com
+
+74.125.47.139		clients2.google.com
+74.125.39.99  		clients4.google.com
+209.85.225.101		docs.google.com
+72.14.203.100		spreadsheets.google.com
+
+174.36.30.67		dropbox.com
+174.36.30.71		www.dropbox.com
+75.101.129.115		dl.dropbox.com
+75.101.159.151		dl-web.dropbox.com
+174.36.30.67		forums.dropbox.com
+
+128.242.240.244		www.twitter.com
+128.242.245.244		dev.twitter.com
+128.242.240.244		twitter.com
+128.242.240.221		api.twitter.com
+
+# app hack
+127.0.0.1			activate.adobe.com
+
+#fuck dns
+205.186.137.185		lifesinger.org
+
+#crack flashfxp
+127.0.0.1			liveupdate.inicom.net 
+127.0.0.1			update.inicom.net
+127.0.0.1			inicom.net
+127.0.0.1			www.inicom.net
+127.0.0.1			liveupdate.flashfxp.com
+127.0.0.1			update.flashfxp.com
+127.0.0.1			flashfxp.com
+127.0.0.1			www.flashfxp.com

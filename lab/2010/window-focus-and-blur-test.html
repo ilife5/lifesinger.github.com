@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="gbk"/>
+<title>Window Focus & Blur Test</title>
+</head>
+<body>
+<div id="log"></div>
+<script>
+    var log = document.getElementById("log");
+    var hf = document.getElementById("hasFocus");
+
+    function now() { return new Date().getTime(); }
+
+    // onload
+    log.innerHTML =  "onload document.hasFocus() = " + document.hasFocus() + " <br />";
+
+    window.onfocus = function() {
+        log.innerHTML +=  "focused at " + now() + " document.hasFocus() = " + document.hasFocus() + " <br />";
+    } ;
+
+    window.onblur = function() {
+        log.innerHTML +=  "blurred at " + now() + " document.hasFocus() = " + document.hasFocus() + " <br />";
+    };
+</script>
+
+<h2>结论</h2>
+<ol>
+    <li>Firefox 下完美，和预期完全一致。</li>
+    <li>IE 区分区域，点击在空白处（非 document 处）时，会触发 blur.</li>
+    <li>从 IE 切换到其它程序时，不会触发 blur.</li>
+    <li>从 IE 的 Tab A 切换到 Tab B 时，Tab B 先触发 focus, 然后立刻又触发 blur（因为没有点击在 document 区域）</li>
+    <li>从其它程序切换到 IE 时，根据点击区域的不同，会连续触发 2 - 3 次事件。</li>
+    <li>注：刚打开 IE 时，不会出现第 2 - 5 描述的问题，而是和 firefox 一样能正确触发事件。但多开几个 Tab, 多操作几次，就出问题了。</li>
+    <li>Chrome 和 IE 的 document.hasFocus() 始终返回 true.</li>
+    <li>通过点击 Chrome 页面，从 blur 切换到 focus 时，会触发 3 次事件。其它情况，Chrome 一切正常。</li>
+    <li>IE6 的表现和 IE8 一样。</li>
+    <li>通过 blur 和 focus 事件监控当前页面是否处于焦点，在 Firefox 下也依旧不完美。比如切换到地址栏时，页面会触发 blur.</li>
+</ol>
+</body>
+</html>

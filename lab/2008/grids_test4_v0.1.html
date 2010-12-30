@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />	
+<title>Grids Layout Test</title>
+<link rel="stylesheet" href="assets/reset-grids.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="grids_v0.1.css" type="text/css" media="screen" />
+<style type="text/css">
+	body { font: 12px/1.5 Tahoma, sans-serif; color: #333; }
+	#hd { text-align: center; margin: 20px 0 10px; }
+	h1 { font: 22px Georgia, serif; }
+	h2 { font: 14px 'Courier New', monospace; margin: 10px 0 5px; }
+	.h { color: #f50 }
+	a { outline: none; text-decoration: none; }
+
+	.gl-g,
+	.gl-g2, .gl-g2f, .gl-g2-c5, .gl-g2-c5f,
+	.gl-g2-c4, .gl-g2-c4f, .gl-g2-c6, .gl-g2-c6f,
+	.gl-g2-c7, .gl-g2-c7f, .gl-g2-c8, .gl-g2-c8f,
+	.gl-g2-c9, .gl-g2-c9f, .gl-g2-c10, .gl-g2-c10f,
+	.gl-g2-c11, .gl-g2-c11f, .gl-g2-c12, .gl-g2-c12f,
+	.gl-g3, .gl-g3f, .gl-g3e, .gl-g3d, .gl-g3c, .gl-g3b {
+	/*	background: #f3f3f3;*/
+	}
+
+	.test-box { padding: 10px; height: 90px; background: #FEF6EE; border: 1px dashed #aaa; }
+	.test-box-big { padding: 10px; height: 120px; border: 1px dashed #aaa; }
+	.test-box-small { padding: 10px; height: 60px; border: 1px dashed #aaa; }
+
+	.width { font-family: 'Courier New', monospace; padding: 10px }
+
+	#hd ul { float: right; }
+	#hd li { float: left; padding: 10px; }
+	#bd { clear: both; }
+	#ft { margin-bottom: 20px; }
+	#ft .top { float: right; padding: 20px; }
+
+	#page, #page2 { *position: relative; } /* 否则ie下切换宽度自适应时布局会乱掉 */
+	#page2 .col-main .width { display: none }
+
+	.col-wrap { zoom: 1 }
+
+</style>
+<script type="text/javascript">
+	window.onload = function() {
+		var trigger = document.getElementById('togglePageId');
+		trigger.onclick = function() {
+			var page = document.getElementById('hd').parentNode;
+			page.id = (page.id == 'page') ? 'page2' : 'page';
+			return false;
+		}
+	};
+</script>
+</head>
+<body>
+<div id="page">
+	<div id="hd">
+		<h1>Grids Layout Test</h1>
+		<ul>
+			<li><a href="grids_test1.html">常用布局</a></li>
+			<li><a href="grids_test2.html">两栏布局</a></li>
+			<li><a href="grids_test3.html">三栏布局</a></li>
+			<li>组合布局</li>
+			<li><a id="togglePageId" href="#" hidefocus="true">自适应宽度</a></li>
+		</ul>
+		<p class="h" style="clear: both">不推荐使用组合布局，原因：1. 把问题弄复杂； 2. 在ie6下有问题； 3. 不能很好的自适应宽度</p>
+	</div>
+	<div id="bd">
+
+		<h2>三栏均分</h2>
+		<div class="gl-g2-c8">
+			<div class="col-main">
+				<div class="col-wrap"><!-- 可以不写 gl-g2-c8 -->
+					<div class="col-main">
+						<div class="col-wrap">
+							<div class="test-box"><span class="width">310px  组合布局对CSS的优先权有要求（比如c8里套一个c2, 需要c2的定义在c8后面，诸如此类），挺麻烦的。</span></div>
+						</div>
+					</div>
+					<div class="col-sub">
+						<div class="test-box"><span class="width">310px</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sub">
+				<div class="test-box"><span class="width">310px</span></div>
+			</div>
+		</div>
+
+		<h2>四栏均分</h2>
+		<div class="gl-g2-c12">
+			<div class="col-main">
+				<div class="col-wrap gl-g2-c6f">
+					<div class="col-main">
+						<div class="col-wrap">
+							<div class="test-box"><span class="width">230px</span></div>
+						</div>
+					</div>
+					<div class="col-sub">
+						<div class="test-box"><span class="width">230px</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sub gl-g2-c6f">
+				<div class="col-main">
+					<div class="col-wrap">
+						<div class="test-box"><span class="width">230px</span></div>
+					</div>
+				</div>
+				<div class="col-sub">
+					<div class="test-box"><span class="width">230px</span></div>
+				</div>
+			</div>
+		</div>
+
+		<h2>三栏 5:10:9</h2>
+		<div class="gl-g2-c5">
+			<div class="col-main">
+				<div class="col-wrap gl-g2-c10">
+					<div class="col-main">
+						<div class="col-wrap">
+							<div class="test-box"><span class="width">350px</span></div>
+						</div>
+					</div>
+					<div class="col-sub">
+						<div class="test-box"><span class="width">390px</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sub">
+				<div class="test-box"><span class="width">190px</span></div>
+			</div>
+		</div>
+		
+		<h2>三栏 4:11:9</h2>
+		<div class="gl-g2-c4">
+			<div class="col-main">
+				<div class="col-wrap gl-g2-c11">
+					<div class="col-main">
+						<div class="col-wrap">
+							<div class="test-box"><span class="width">350px</span></div>
+						</div>
+					</div>
+					<div class="col-sub">
+						<div class="test-box"><span class="width">430px</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sub">
+				<div class="test-box"><span class="width">150px</span></div>
+			</div>
+		</div>
+
+	</div>
+	<div id="ft">
+		<a class="top" href="#hd">返回页首</a>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Crazy Test</title>
+<style type="text/css">
+    body { padding: 100px 200px; }
+    #test-region {
+        background: #eee;
+        border: 1px dashed #ccc;
+        width: 150px;
+        height: 150px;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+
+<input id="test-input" type="text" />
+<div id="test-region"></div>
+<p>要求：1. 点击灰色区域时，上面的输入框能始终保持焦点状态。  2. 点击其它区域，输入框失去焦点。</p>
+
+<script type="text/javascript">
+    window.onload = function() {
+        var u = document.getElementById('test-input'),
+            r = document.getElementById('test-region');
+        u.focus();
+
+        r.onmousedown = function() {
+            u.onbeforedeactivate = function() {
+                window.event.returnValue = false;
+                u.onbeforedeactivate = null;
+            };
+            return false;
+        };
+    };
+</script>
+</body>
+</html>

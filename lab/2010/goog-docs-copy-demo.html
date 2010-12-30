@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Google Docs Copy Test</title>
+<script src="http://kissyteam.github.com/kissy/build/packages/ks-core-min.js"></script>
+</head>
+<body>
+<textarea id="selection-content" readonly rows="1" cols="1"></textarea>
+<div id="test-div">请选中我，Ctrl + C 复制试试，哈哈</div>
+<!--<button id="test-btn">Copy</button>-->
+<script>
+    var S = KISSY, DOM = S.DOM, Event = S.Event,
+        sc = S.get('#selection-content');
+
+    Event.on(document, 'keydown', function(ev) {
+        if(ev.keyCode == 67 && ev.ctrlKey) {
+            S.log('press Ctrl + C');
+            sc.value = 'clipboard is hacked';
+            sc.focus();
+            sc.select();
+        }
+    });
+
+//    Event.on('#test-btn', 'click', function() {
+//        var ev = document.createEvent('KeyboardEvent');
+//        ev.initKeyEvent('keydown', true, true, null, true, false, false, true, 67, 0);
+//        sc.dispatchEvent(ev);
+//    });
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Join Taobao</title>
+<link href="http://kissy.googlecode.com/svn/trunk/build/cssreset/reset-min.css" rel="stylesheet" />
+<style>
+    body { padding: 20px; }
+    h1 { font: 28px Candara; margin: 20px 0; }
+    pre { font-size: 22px; margin: 20px; }
+    #go { padding: 5px 20px; margin-bottom: 20px; }
+    .good-student { border: 1px solid #ccc; background: #E6FFFF; float: left; position: absolute; padding: 5px; }
+    #taobao { width: 800px; height: 400px; position: absolute; left: 50px; top: 200px; }
+    #dest { position: absolute; bottom: 0; right: 0; width: 200px; height: 200px; border: 1px dashed #ccc; }
+</style>
+</head>
+<body>
+<h1>Join Taobao</h1>
+
+<pre>
+    KISSY.all('.good-student').appendTo('#taobao').icanfly();
+</pre>
+<button id="go">Go!</button>
+
+<div class="good-student">Alan Turing</div>
+<div class="good-student">You</div>
+<div class="good-student">马云</div>
+<div class="good-student">Bill Gates</div>
+<div class="good-student">Ted Hoff</div>
+<div class="good-student">Steve Wozniak</div>
+<div class="good-student">Bob Bemer</div>
+<div class="good-student">Gary Kildall</div>
+<div class="good-student">Vint Cerf</div>
+<div class="good-student">老陆</div>
+
+<div id="taobao"><div id="dest"></div></div>
+
+<script src="http://kissy.googlecode.com/svn/trunk/build/packages/ks-core-min.js"></script>
+<script>
+KISSY.ready(function(S) {
+    var DOM = S.DOM, Event = S.Event, timers = [];
+
+    S.NodeList.prototype.icanfly = function() {
+        var targetX = 600, targetY = 200,
+            maxX = 750, maxY = 350;
+
+        S.each(this, function(item, i) {
+            var x = 0, y = 0, speed = Math.random() * 80;
+            timers[i] = S.later(function() {
+                x += Math.random() * speed * (x > maxX ? -1 : 1);
+                y += Math.random() * speed * (y > maxY ? -1 : 1);
+                DOM.css(item, { left: x, top: y });
+                if(x > targetX && y > targetY && x < maxX && y < maxY) {
+                    timers[i].cancel();
+                }
+            }, 100, true);
+        });
+    };
+
+    S.one('#go').on('click', function() {
+        S.each(timers, function(timer) { timer.cancel() });
+        S.all('.good-student').appendTo('#taobao').icanfly();
+    });
+})
+</script>
+</body>
+</html>
