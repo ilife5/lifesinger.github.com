@@ -47,6 +47,7 @@ body { _font-size: 12px; }
         <li>seajs/ <a href="/seajs/src/">src</a></li>
         <li>github: <a href="http://github.com/seajs">seajs</a></li>
         <li>sites: <a href="http://api.jquery.com/">jquery</a> | <a href="http://developer.yahoo.com/yui/3/">yui3</a></li>
+        <li>/ <a href="/third-party/">third-party</a></li>
     </ul>
 </div>
 
