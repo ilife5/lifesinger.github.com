@@ -43,12 +43,10 @@ body { _font-size: 12px; }
 <div class="section<?php if(!$isLocal) { ?> hidden<?php } ?>">
     <h2>Recently</h2>
     <ul>
-        <li>space/ <a href="/space/lab/2010/">lab</a> | <a href="/space/test.html">crazy test</a></li>
-        <li>kissy/ <a href="/kissy/src/">src</a> | <a href="http://kissyui.com/blog/">blog</a>  | <a href="/kissy/docs/">api</a> | <a href="/kissy/tests/">tests</a></li>
-        <li>github: <a href="http://github.com/kissyteam">kissyteam</a> | <a href="http://github.com/kissyteam/kissy">kissy</a></li>
-        <li>sites: <a href="http://developer.yahoo.com/yui/2/">yui2</a> | <a href="http://developer.yahoo.com/yui/3/">yui3</a></li>
-        <li>api: <a href="http://api.jquery.com/">jquery</a> | <a href="/third-party/ext/docs/">ext</a> | <a href="/third-party/yui2/api/">yui2</a> | <a href="/third-party/yui3/api/">yui3</a></li>
-        <li>/ <a href="/third-party/">third-party</a></li>
+        <li>space/ <a href="/space/lab/2010/">lab</a> | <a href="/space/test.html">test</a></li>
+        <li>seajs/ <a href="/seajs/src/">src</a></li>
+        <li>github: <a href="http://github.com/seajs">seajs</a></li>
+        <li>sites: <a href="http://api.jquery.com/">jquery</a> | <a href="http://developer.yahoo.com/yui/3/">yui3</a></li>
     </ul>
 </div>
 
