@@ -43,7 +43,7 @@ body { _font-size: 12px; }
 <div class="section<?php if(!$isLocal) { ?> hidden<?php } ?>">
     <h2>Recently</h2>
     <ul>
-        <li>space/ <a href="/space/lab/2010/">lab</a> | <a href="/space/test.html">test</a></li>
+        <li>space/ <a href="/space/lab/2011/">lab</a> | <a href="/space/test.html">test</a></li>
         <li>seajs/ <a href="/seajs/src/">src</a></li>
         <li>github: <a href="http://github.com/seajs">seajs</a></li>
         <li>sites: <a href="http://api.jquery.com/">jquery</a> | <a href="http://developer.yahoo.com/yui/3/">yui3</a></li>
