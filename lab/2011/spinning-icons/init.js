@@ -5,7 +5,7 @@ module.declare(['spinning', 'jquery'], function(require) {
 
   $(document).ready(function() {
     require('spinning').spinning($('#followIcons a'));
-    $('#followIcons').show();
-  })
+    $('#followIcons').show().parent().css('background', 'none');
+  });
 
 });
