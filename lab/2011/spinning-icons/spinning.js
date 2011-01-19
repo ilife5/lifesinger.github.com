@@ -1,5 +1,5 @@
 
-module.declare(['jquery'], function(require, exports) {
+module.declare(['jquery'], function(require, exports, module) {
 
   var $ = require('jquery');
   var TRANSFORM = $.browser.webkit ? '-webkit-transform' :
