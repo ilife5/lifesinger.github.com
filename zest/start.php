@@ -43,11 +43,11 @@ body { _font-size: 12px; }
 <div class="section<?php if(!$isLocal) { ?> hidden<?php } ?>">
     <h2>Recently</h2>
     <ul>
-        <li>space/ <a href="/space/lab/2011/">lab</a> | <a href="/space/test.html">test</a></li>
-        <li>seajs/ <a href="/seajs/src/">src</a></li>
+        <li>space/ <a href="/~lifesinger/lifesinger.github.com/lab/2011/">lab</a> | <a href="/~lifesinger/lifesinger.github.com/test.html">test</a></li>
+        <li>seajs/ <a href="/~lifesinger/seajs/src/">src</a></li>
         <li>github: <a href="http://github.com/seajs">seajs</a></li>
         <li>sites: <a href="http://api.jquery.com/">jquery</a> | <a href="http://developer.yahoo.com/yui/3/">yui3</a></li>
-        <li>/ <a href="/third-party/">third-party</a></li>
+        <li>/ <a href="/~lifesinger/third-party/">third-party</a></li>
     </ul>
 </div>
 
@@ -60,19 +60,6 @@ body { _font-size: 12px; }
         <li><a href="http://qpub.daily.taobao.net/main.html">模板同步</a> | <a href="http://www.page.taobao.net/">模板测试</a></li>
         <li><a href="http://wiki.ued.taobao.net/doku.php?id=work:svn-branches">Assets 分支地址</a></li>
         <li><a href="http://scm.taobao.net/">SCM 配置管理中心</a></li>
-    </ul>
-</div>
-
-<div class="section">
-    <h2>规范指南</h2>
-    <ul>
-        <li><a href="http://wiki.ued.taobao.net/doku.php?id=work:newbie-guide">新人指南</a></li>
-        <li><a href="http://wiki.ued.taobao.net/doku.php">UED Wiki 平台</a></li>
-        <li><a href="http://wiki.ued.taobao.net/doku.php?id=interaction:index">交互设计规范</a></li>
-        <li><a href="http://wiki.ued.taobao.net/doku.php?id=visual:index">视觉设计规范</a></li>
-        <li><a href="http://wiki.ued.taobao.net/doku.php?id=f2e:index">前端开发规范</a></li>
-        <li><a href="http://wiki.ued.taobao.net/doku.php?id=wf:index">工作流程规范</a></li>
-        <li><a href="http://wiki.ued.taobao.net/doku.php?id=wap:index">无线淘宝设计开发指南</a></li>
     </ul>
 </div>
 
@@ -90,27 +77,6 @@ body { _font-size: 12px; }
     </ul>
 </div>
 
-<div class="section">
-    <h2>学习交流</h2>
-    <ul>
-        <li><a href="http://ued.taobao.com/blog/">UED Blog</a> | <a href="http://ued.taobao.com/blog/wp-login.php">admin</a></li>
-        <li><a href="http://wiki.ued.taobao.net/doku.php?id=lazytalk:index">懒懒交流会</a></li>
-        <li><a href="http://www.taobao.ali.com/chanpin/km/ued/ShareMeeting/default.aspx">碳酸饮料会</a></li>
-        <li><a href="http://wiki.ued.taobao.net/doku.php?id=milktea:index">珍珠奶茶帮</a></li>
-        <li><a href="http://ue.taobao.ali.com/">UE 平台</a> | <a href="http://bangpai.taobao.com/group/332668.htm">啄木鸟</a></li>
-        <li><a href="http://www.taobao.ali.com/chanpin/km/ued/Lists/UED/AllItems.aspx">UED 书库</a></li>
-        <li><a href="http://www.d2forum.org/">D2 前端技术论坛</a></li>
-    </ul>
-</div>
-
-<div class="section">
-    <h2>辅助信息</h2>
-    <ul>
-        <li><a href="http://monitor.taobao.com/monitor-report/performance/frontPerformance.htm">哈勃监控系统</a></li>
-        <li><a href="http://app.ops.taobao.net/check/">淘宝二级域名查询</a></li>
-        <li><a href="file://tbnas/">文件共享服务器</a></li>
-    </ul>
-</div>
 
 <p class="copyright">©Taobao UED - 维护：玉伯</p>
 </body>
