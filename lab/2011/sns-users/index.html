@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SNS Users Estimate</title>
+<style>
+  th { padding-right: 20px }
+</style>
+<script src="calc.js"></script>
+</head>
+<body>
+
+<table><tbody>
+  <tr>
+    <th>月份</th>
+    <th>月初引入用户数</th>
+    <th>月初新用户总数</th>
+    <th>月末用户总数</th>
+    <th>月末一类用户数</th>
+    <th>月末二类用户数</th>
+    <th>月末三类用户数</th>
+  </tr>
+</tbody></table>
+
+<script>
+  (function() {
+
+    var results = calc();
+    var tbody = document.getElementsByTagName('tbody')[0];
+
+    for (var i = 0; i < results.length; i++) {
+      var r = results[i];
+      var tr = document.createElement('tr');
+      tr.appendChild(createTD(i + 1));
+      for(var j = 0; j < r.length; j++) {
+        tr.appendChild(createTD(r[j]));
+      }
+      tbody.appendChild(tr);
+    }
+
+    function createTD(val) {
+      var td = document.createElement('td');
+      td.appendChild(document.createTextNode(Math.floor(val)));
+      return td;
+    }
+
+  })();
+</script>
+
+</body>
+</html>
