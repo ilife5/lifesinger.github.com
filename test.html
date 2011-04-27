@@ -11,6 +11,25 @@
 
 <script>
 
+  window.onerror = function(e) {
+    console.dir(e);
+  };
+
+  var s = document.createElement('script');
+  s.src = 'test2.js';
+  s.onload = function() {
+    console.log('onload');
+  };
+  s.onerror = function() {
+    console.log('onerror');
+  };
+  s.onreadystatechange = function(e) {
+    console.log('s.readyState = ' + s.readyState);
+  };
+  document.body.appendChild(s);
+
+
+
 </script>
 
 
