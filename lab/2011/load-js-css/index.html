@@ -53,11 +53,16 @@ css:
     onreadystatechange 会重复触发
 
   Poll ownerNode:
-    在所有浏览器下都可以获取到 css 是否已经完成（成功或失败）
+    在 Webkit 下可以获取到 css 是否已经完成（成功或失败）
+    其他浏览器下等价立刻执行
+
+  Image onerror:
+    在所有浏览器下都可以，但存在重复请求，不妥
 
   最佳选择：
-    在 IE6-9 下，用 onload
-    在其他浏览器下，用 poll ownerNode 方法
+    在 IE6-9 和 Opera 下，用 onload
+    Webkit 下，用 poll ownerNode 方法
+    其他浏览器下，立刻触发 callback
 
 
 测试环境：
@@ -149,6 +154,13 @@ css:
     }, 0);
 
     s.href = url + '?' + timestamp;
+
+//    var img = new Image();
+//    img.onerror = function() {
+//      print('style is loaded. [image onerror] ' + url);
+//    };
+//    img.src = s.href;
+
     head.appendChild(s);
   }
 
@@ -164,7 +176,7 @@ css:
     for (var i = 0; i < stylesheets.length; i++) {
       var o = stylesheets[i]['ownerNode'] || stylesheets[i]['owningElement'];
       if (o === node) {
-        print('style is loaded. poll ownerNode ' + url);
+        print('style is loaded. [poll ownerNode] ' + url);
         return;
       }
     }
