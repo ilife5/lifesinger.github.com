@@ -40,3 +40,39 @@ S.Node = {
     prepend: noop,
     prependTo: noop
 };
+
+
+// for node.js
+var process = {
+  argv: [],
+  exit: function(){},
+  cwd: function(){}
+};
+
+var require, exports, module;
+
+var fs = {
+  readFileSync: function(){},
+  writeFileSync: function(){},
+  mkdirSync: function(){},
+  rmdirSync: function(){},
+  statSync: function(){},
+  readdir: function(){},
+  readdirSync: function(){},
+  unlinkSync: function(){}
+};
+
+fs.Stats = {
+  isFile: function(){},
+  isDirectory: function(){}
+};
+
+var __filename, __dirname;
+
+var path = {
+  basename: function(){},
+  extname: function(){},
+  existsSync: function() {},
+  join: function() {}
+};
+
