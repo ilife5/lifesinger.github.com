@@ -46,7 +46,8 @@ S.Node = {
 var process = {
   argv: [],
   exit: function(){},
-  cwd: function(){}
+  cwd: function(){},
+  stdout: {}
 };
 
 var require, exports, module;
@@ -76,3 +77,13 @@ var path = {
   join: function() {}
 };
 
+var vm = {
+  runInThisContext: function(){},
+  runInNewContext: function(){}
+};
+
+var jsdom = {
+  jsdom: function(){}
+};
+
+document.createWindow = function() {};
