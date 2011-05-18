@@ -18,8 +18,8 @@
 
 define(function(require) { return function($) {
 
-  $.plug(require('./jquery.easing.1.3.js'));
-  $.plug(require('./jquery.mousewheel.js'));
+  require('./jquery.easing.1.3.js')($);
+  require('./jquery.mousewheel.js')($);
   require('./jquery.fancybox-1.3.4.css');
 
 
